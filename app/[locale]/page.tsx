@@ -34,9 +34,9 @@ export default function HomePage() {
           height={340}
           style={{
             position: 'absolute',
-            left: 0,
+            left: -20,
             bottom: 0,
-            height: 380,
+            height: 480,
             width: 'auto',
             pointerEvents: 'none',
             userSelect: 'none',
@@ -52,9 +52,9 @@ export default function HomePage() {
           height={340}
           style={{
             position: 'absolute',
-            right: 0,
+            right: -20,
             bottom: 40,
-            height: 360,
+            height: 460,
             width: 'auto',
             pointerEvents: 'none',
             userSelect: 'none',
