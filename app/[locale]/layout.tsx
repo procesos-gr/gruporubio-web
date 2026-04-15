@@ -3,7 +3,6 @@ import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
-import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { Providers } from "@/components/providers";
 import { Toaster } from "@/components/ui/Toast";
@@ -35,7 +34,6 @@ export default async function LocaleLayout({
       <body className={`${plusJakartaSans.variable} font-sans antialiased min-h-screen flex flex-col`}>
         <NextIntlClientProvider messages={messages}>
           <Providers>
-            <Navbar />
             <main className="flex-1 w-full flex flex-col">
               {children}
             </main>

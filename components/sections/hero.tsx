@@ -5,13 +5,15 @@ import { MapPin, Search } from 'lucide-react';
 
 export function Hero() {
   return (
-    <section className="w-full bg-[#F8F9FA] pt-32 pb-12">
-      <div className="flex flex-col items-center text-center px-6 max-w-3xl mx-auto">
+    <section style={{ padding: '48px 24px 56px' }}>
+      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', maxWidth: 680, margin: '0 auto' }}>
 
         {/* Pill badge */}
         <div
-          className="inline-flex items-center gap-2 mb-8"
           style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: 8,
             borderRadius: 9999,
             background: '#EEF2FF',
             border: '1px solid #C7D2FE',
@@ -19,9 +21,10 @@ export function Hero() {
             fontSize: 12,
             fontWeight: 600,
             padding: '6px 16px',
+            marginBottom: 32,
           }}
         >
-          <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#546AE7', display: 'inline-block' }} />
+          <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#546AE7', display: 'inline-block', flexShrink: 0 }} />
           Servicios profesionales en Navarra
         </div>
 
@@ -31,7 +34,7 @@ export function Hero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.55, ease: 'easeOut' }}
           style={{
-            fontSize: 'clamp(44px, 6vw, 62px)',
+            fontSize: 'clamp(44px, 5.5vw, 62px)',
             fontWeight: 800,
             color: '#111827',
             lineHeight: 1.08,
@@ -61,9 +64,12 @@ export function Hero() {
 
         {/* Search bar */}
         <div
-          className="w-full flex items-center bg-white"
           style={{
-            maxWidth: 580,
+            width: '100%',
+            maxWidth: 560,
+            display: 'flex',
+            alignItems: 'center',
+            background: '#ffffff',
             borderRadius: 9999,
             border: '1.5px solid #e5e7eb',
             padding: '6px 6px 6px 20px',
@@ -72,38 +78,61 @@ export function Hero() {
         >
           {/* Zone picker */}
           <button
-            className="flex items-center gap-2 flex-shrink-0 hover:text-[#546AE7] transition-colors"
-            style={{ fontSize: 13, fontWeight: 500, color: '#111827', background: 'none', border: 'none', cursor: 'pointer', padding: '4px 0', whiteSpace: 'nowrap' }}
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: 8,
+              fontSize: 13,
+              fontWeight: 500,
+              color: '#111827',
+              background: 'none',
+              border: 'none',
+              cursor: 'pointer',
+              padding: '4px 0',
+              whiteSpace: 'nowrap',
+              flexShrink: 0,
+            }}
           >
             <MapPin size={15} color="#6B7280" />
             Municipio o zona
           </button>
 
           {/* Separator */}
-          <div style={{ width: 1, height: 20, background: '#e5e7eb', flexShrink: 0, margin: '0 12px' }} />
+          <div style={{ width: 1, height: 20, background: '#e5e7eb', flexShrink: 0, margin: '0 14px' }} />
 
           {/* Search input */}
           <input
             type="text"
             placeholder="Busca servicios o productos..."
             readOnly
-            className="flex-1 min-w-0 bg-transparent outline-none border-0"
-            style={{ fontSize: 13, color: '#111827' }}
+            style={{
+              flex: 1,
+              minWidth: 0,
+              background: 'transparent',
+              outline: 'none',
+              border: 'none',
+              fontSize: 13,
+              color: '#111827',
+            }}
+            className="placeholder:text-[#9CA3AF]"
           />
 
           {/* Search button */}
           <button
-            className="flex items-center gap-2 flex-shrink-0 hover:bg-[#1f2937] transition-colors"
             style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: 8,
               borderRadius: 9999,
               background: '#111827',
-              color: '#fff',
+              color: '#ffffff',
               fontSize: 13,
               fontWeight: 600,
               padding: '10px 20px',
               border: 'none',
               cursor: 'pointer',
               whiteSpace: 'nowrap',
+              flexShrink: 0,
             }}
           >
             <Search size={14} />
