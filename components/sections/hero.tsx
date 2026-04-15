@@ -5,28 +5,8 @@ import { MapPin, Search } from 'lucide-react';
 
 export function Hero() {
   return (
-    <section style={{ padding: '48px 24px 56px' }}>
+    <section style={{ padding: '28px 24px 56px' }}>
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', maxWidth: 680, margin: '0 auto' }}>
-
-        {/* Pill badge */}
-        <div
-          style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: 8,
-            borderRadius: 9999,
-            background: '#EEF2FF',
-            border: '1px solid #C7D2FE',
-            color: '#546AE7',
-            fontSize: 12,
-            fontWeight: 600,
-            padding: '6px 16px',
-            marginBottom: 32,
-          }}
-        >
-          <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#546AE7', display: 'inline-block', flexShrink: 0 }} />
-          Servicios profesionales en Navarra
-        </div>
 
         {/* Title */}
         <motion.h1
