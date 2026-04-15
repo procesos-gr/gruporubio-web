@@ -22,13 +22,13 @@ export function Navbar() {
       }}
     >
       {/* Logo — left */}
-      <Link href="/" style={{ display: 'flex', alignItems: 'center', flexShrink: 0, textDecoration: 'none' }}>
+      <Link href="/" style={{ display: 'flex', alignItems: 'center', flexShrink: 0, textDecoration: 'none', marginLeft: 16 }}>
         <Image
           src="/images/brand/logo-grupo-rubio.webp"
           alt="Grupo Rubio"
-          height={36}
-          width={160}
-          style={{ height: 36, width: 'auto' }}
+          height={48}
+          width={200}
+          style={{ height: 48, width: 'auto' }}
           priority
         />
       </Link>
@@ -60,7 +60,7 @@ export function Navbar() {
             display: 'inline-flex',
             alignItems: 'center',
             gap: 6,
-            borderRadius: 9999,
+            borderRadius: 10,
             background: '#546AE7',
             color: '#ffffff',
             fontSize: 13,

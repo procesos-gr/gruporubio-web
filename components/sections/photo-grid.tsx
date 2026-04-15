@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import { ArrowUpRight, Star } from 'lucide-react';
 
-const CARD_RADIUS = 20;
+const CARD_RADIUS = 12;
 
 function ArrowButton() {
   return (
