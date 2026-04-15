@@ -10,13 +10,13 @@ import { FAQ } from "@/components/sections/faq";
 
 export default function HomePage() {
   return (
-    <div className="w-full" style={{ background: '#F0F2F5', minHeight: '100vh' }}>
+    <div className="w-full" style={{ background: '#FFFFFF', minHeight: '100vh' }}>
 
-      {/* Section A-1: Hero card — white card floating on #F0F2F5 */}
+      {/* Section A-1: Hero card — grey card floating on white */}
       <div
         style={{
           margin: 16,
-          background: '#ffffff',
+          background: '#F0F2F5',
           borderRadius: 16,
           overflow: 'hidden',
         }}
@@ -25,7 +25,7 @@ export default function HomePage() {
         <Hero />
       </div>
 
-      {/* Section A-2: Photo grid — transparent, #F0F2F5 shows through gaps + margin */}
+      {/* Section A-2: Photo grid — transparent, #FFFFFF shows through gaps + margin */}
       <div style={{ margin: 16 }}>
         <PhotoGrid />
       </div>
