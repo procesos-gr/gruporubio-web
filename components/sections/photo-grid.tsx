@@ -38,65 +38,67 @@ function ReviewsWidget() {
       style={{
         borderRadius: CARD_RADIUS,
         background: '#546AE7',
-        padding: '16px 18px',
+        padding: '14px 16px',
         height: '100%',
         boxSizing: 'border-box',
         display: 'flex',
-        flexDirection: 'column',
+        flexDirection: 'row',
+        alignItems: 'center',
         justifyContent: 'space-between',
+        gap: 8,
       }}
     >
-      {/* Avatars */}
-      <div style={{ display: 'flex', alignItems: 'center' }}>
-        {AVATARS.map((av, i) => (
-          <div
-            key={i}
-            style={{
-              width: 26,
-              height: 26,
-              borderRadius: '50%',
-              background: av.bg,
-              border: '2px solid #546AE7',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              color: '#fff',
-              fontSize: 9,
-              fontWeight: 700,
-              marginLeft: i === 0 ? 0 : -8,
-              zIndex: AVATARS.length - i,
-              position: 'relative',
-              flexShrink: 0,
-            }}
-          >
-            {av.initials}
-          </div>
-        ))}
-      </div>
-
-      {/* Stat */}
-      <div>
-        <div style={{ fontSize: 34, fontWeight: 800, color: '#ffffff', lineHeight: 1, marginBottom: 4 }}>
-          90%
+      {/* Left: avatars + label + stars */}
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 6, minWidth: 0 }}>
+        {/* Avatars */}
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+          {AVATARS.map((av, i) => (
+            <div
+              key={i}
+              style={{
+                width: 22,
+                height: 22,
+                borderRadius: '50%',
+                background: av.bg,
+                border: '2px solid #546AE7',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                color: '#fff',
+                fontSize: 8,
+                fontWeight: 700,
+                marginLeft: i === 0 ? 0 : -7,
+                zIndex: AVATARS.length - i,
+                position: 'relative',
+                flexShrink: 0,
+              }}
+            >
+              {av.initials}
+            </div>
+          ))}
         </div>
-        <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.72)', lineHeight: 1.4 }}>
+
+        {/* Label */}
+        <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.82)', lineHeight: 1.35, whiteSpace: 'nowrap' }}>
           de clientes<br />satisfechos
         </div>
+
+        {/* Stars */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+          {[1, 2, 3, 4, 5].map((s) => (
+            <Star
+              key={s}
+              size={10}
+              fill={s <= 4 ? '#FCD34D' : 'rgba(255,255,255,0.25)'}
+              color="transparent"
+            />
+          ))}
+        </div>
       </div>
 
-      {/* Stars */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-        {[1, 2, 3, 4, 5].map((s) => (
-          <Star
-            key={s}
-            size={11}
-            fill={s <= 4 ? '#FCD34D' : 'rgba(255,255,255,0.25)'}
-            color="transparent"
-          />
-        ))}
-        <span style={{ fontSize: 10, color: 'rgba(255,255,255,0.6)', marginLeft: 4 }}>
-          4.2 Google
-        </span>
+      {/* Right: big number */}
+      <div style={{ fontSize: 38, fontWeight: 800, color: '#ffffff', lineHeight: 1, flexShrink: 0 }}>
+        90%
       </div>
     </div>
   );
@@ -129,8 +131,8 @@ export function PhotoGrid() {
     <div
       style={{
         display: 'grid',
-        /* Col 1: Limpieza | Col 2: Plagas + Reviews | Col 3: new card (cols < 100% → right breathing room) */
-        gridTemplateColumns: '44% 24% 19%',
+        /* Col 1: Limpieza | Col 2: Plagas + Reviews | Col 3: new card (1fr fills remaining → equal margins) */
+        gridTemplateColumns: '44% 24% 1fr',
         gridTemplateRows: '70% 30%',
         gap: 8,
         height: 420,
