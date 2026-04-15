@@ -29,35 +29,45 @@ function ReviewsWidget() {
   const AVATARS = [
     { initials: 'ML', bg: '#818CF8' },
     { initials: 'CG', bg: '#34D399' },
-    { initials: 'LS', bg: '#FCD34D' },
+    { initials: 'LS', bg: '#FBBF24' },
   ];
 
   return (
     <div
       style={{
         borderRadius: CARD_RADIUS,
-        background: '#546AE7',
-        padding: '14px 16px',
+        background: 'linear-gradient(135deg, #6677EC 0%, #4254CC 100%)',
+        padding: '0 20px',
         height: '100%',
         boxSizing: 'border-box',
         display: 'flex',
-        flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
-        gap: 8,
+        gap: 12,
+        overflow: 'hidden',
+        position: 'relative',
       }}
     >
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 6, minWidth: 0 }}>
+      {/* Decorative circle — background accent */}
+      <div style={{
+        position: 'absolute', right: -28, top: -28,
+        width: 110, height: 110, borderRadius: '50%',
+        background: 'rgba(255,255,255,0.06)',
+        pointerEvents: 'none',
+      }} />
+
+      {/* Left — avatars + label */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexShrink: 0 }}>
         <div style={{ display: 'flex', alignItems: 'center' }}>
           {AVATARS.map((av, i) => (
             <div
               key={i}
               style={{
-                width: 22, height: 22, borderRadius: '50%',
-                background: av.bg, border: '2px solid #546AE7',
+                width: 26, height: 26, borderRadius: '50%',
+                background: av.bg, border: '2.5px solid #5060D8',
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
-                color: '#fff', fontSize: 8, fontWeight: 700,
-                marginLeft: i === 0 ? 0 : -7,
+                color: '#fff', fontSize: 9, fontWeight: 700,
+                marginLeft: i === 0 ? 0 : -9,
                 zIndex: AVATARS.length - i, position: 'relative', flexShrink: 0,
               }}
             >
@@ -65,17 +75,28 @@ function ReviewsWidget() {
             </div>
           ))}
         </div>
-        <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.82)', lineHeight: 1.35, whiteSpace: 'nowrap' }}>
-          de clientes<br />satisfechos
-        </div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+        <span style={{ fontSize: 11, color: 'rgba(255,255,255,0.75)', lineHeight: 1.3, whiteSpace: 'nowrap' }}>
+          Clientes<br />satisfechos
+        </span>
+      </div>
+
+      {/* Center — big stat */}
+      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', flexShrink: 0 }}>
+        <span style={{ fontSize: 32, fontWeight: 800, color: '#fff', lineHeight: 1, letterSpacing: '-1px' }}>
+          90%
+        </span>
+      </div>
+
+      {/* Right — stars + score */}
+      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 3, flexShrink: 0 }}>
+        <div style={{ display: 'flex', gap: 2 }}>
           {[1, 2, 3, 4, 5].map((s) => (
-            <Star key={s} size={10} fill={s <= 4 ? '#FCD34D' : 'rgba(255,255,255,0.25)'} color="transparent" />
+            <Star key={s} size={11} fill={s <= 4 ? '#FBBF24' : 'rgba(255,255,255,0.2)'} color="transparent" />
           ))}
         </div>
-      </div>
-      <div style={{ fontSize: 38, fontWeight: 800, color: '#ffffff', lineHeight: 1, flexShrink: 0 }}>
-        90%
+        <span style={{ fontSize: 10, color: 'rgba(255,255,255,0.55)', whiteSpace: 'nowrap' }}>
+          4.2 · Google
+        </span>
       </div>
     </div>
   );
@@ -87,7 +108,7 @@ export function PhotoGrid() {
       style={{
         display: 'grid',
         gridTemplateColumns: '44% 24% 1fr',
-        gridTemplateRows: '70% 30%',
+        gridTemplateRows: '77% 23%',
         gap: 8,
         height: 420,
       }}
