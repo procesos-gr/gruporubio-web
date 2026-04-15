@@ -1,5 +1,4 @@
 import { Navbar } from "@/components/layout/Navbar";
-import Image from "next/image";
 import { Hero } from "@/components/sections/hero";
 import { PhotoGrid } from "@/components/sections/photo-grid";
 import { TrustLogos } from "@/components/sections/trust-logos";
@@ -26,43 +25,7 @@ export default function HomePage() {
           overflow: 'hidden',
         }}
       >
-        {/* Limpiadora — left edge, grounded at the bottom */}
-        <Image
-          src="/images/limpiadora.png"
-          alt=""
-          width={220}
-          height={340}
-          style={{
-            position: 'absolute',
-            left: -20,
-            bottom: 0,
-            height: 480,
-            width: 'auto',
-            pointerEvents: 'none',
-            userSelect: 'none',
-          }}
-          priority
-        />
-
-        {/* Fulmigador — right edge, higher up */}
-        <Image
-          src="/images/fulmigador.png"
-          alt=""
-          width={220}
-          height={340}
-          style={{
-            position: 'absolute',
-            right: -20,
-            bottom: 40,
-            height: 460,
-            width: 'auto',
-            pointerEvents: 'none',
-            userSelect: 'none',
-          }}
-          priority
-        />
-
-        <Hero />
+<Hero />
       </div>
 
       {/* Section A-2: Photo grid */}
