@@ -129,9 +129,9 @@ export function PhotoGrid() {
     <div
       style={{
         display: 'grid',
-        /* Col 1: Limpieza (narrower) | Col 2: Plagas + Reviews | Col 3: new card */
-        gridTemplateColumns: '50% 27% 23%',
-        gridTemplateRows: '62% 38%',
+        /* Col 1: Limpieza | Col 2: Plagas + Reviews | Col 3: new card (cols < 100% → right breathing room) */
+        gridTemplateColumns: '44% 24% 19%',
+        gridTemplateRows: '70% 30%',
         gap: 8,
         height: 420,
       }}
