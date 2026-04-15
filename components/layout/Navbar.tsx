@@ -28,7 +28,7 @@ export function Navbar() {
         top: 16,
         left: 16,
         right: 16,
-        height: 60,
+        height: 72,
         zIndex: 50,
         borderRadius: 12,
         display: 'flex',
@@ -58,9 +58,9 @@ export function Navbar() {
         <Image
           src="/images/brand/logo-grupo-rubio.webp"
           alt="Grupo Rubio"
-          height={48}
-          width={200}
-          style={{ height: 48, width: 'auto' }}
+          height={58}
+          width={240}
+          style={{ height: 58, width: 'auto' }}
           priority
         />
       </Link>
@@ -75,7 +75,7 @@ export function Navbar() {
               display: 'flex',
               alignItems: 'center',
               gap: 3,
-              fontSize: 14,
+              fontSize: 15,
               fontWeight: 500,
               color: '#374151',
               textDecoration: 'none',

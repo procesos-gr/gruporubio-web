@@ -5,7 +5,7 @@ import { MapPin, Search } from 'lucide-react';
 
 export function Hero() {
   return (
-    <section style={{ padding: '80px 24px 56px' }}>
+    <section style={{ padding: '92px 24px 56px' }}>
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', maxWidth: 680, margin: '0 auto' }}>
 
         {/* Title */}
