@@ -1,0 +1,109 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DATABASE_DIRECT_URL")
+}
+
+enum OrderStatus {
+  PENDING
+  PAID
+  SHIPPED
+  DELIVERED
+  CANCELLED
+}
+
+enum OrderType {
+  B2C
+}
+
+enum RequestStatus {
+  NEW
+  IN_REVIEW
+  QUOTED
+  CLOSED
+}
+
+model Product {
+  id             String           @id @default(uuid())
+  sku            String           @unique
+  slug           String           @unique
+  nameKey        String
+  descriptionKey String
+  price          Decimal          @db.Decimal(10, 2)
+  priceCompare   Decimal?         @db.Decimal(10, 2)
+  images         String[]
+  stock          Int
+  categoryId     String
+  category       Category         @relation(fields: [categoryId], references: [id])
+  active         Boolean          @default(true)
+  variants       ProductVariant[]
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+}
+
+model Category {
+  id       String     @id @default(uuid())
+  slug     String     @unique
+  nameKey  String
+  parentId String?
+  parent   Category?  @relation("SubCategories", fields: [parentId], references: [id])
+  children Category[] @relation("SubCategories")
+  products Product[]
+}
+
+model ProductVariant {
+  id         String   @id @default(uuid())
+  productId  String
+  product    Product  @relation(fields: [productId], references: [id])
+  sku        String   @unique
+  attributes Json
+  price      Decimal? @db.Decimal(10, 2)
+  stock      Int
+}
+
+model Order {
+  id              String      @id @default(uuid())
+  userId          String?
+  guestEmail      String?
+  items           Json
+  total           Decimal     @db.Decimal(10, 2)
+  status          OrderStatus @default(PENDING)
+  stripePaymentId String?     @unique
+  shippingAddress Json?
+  type            OrderType
+  createdAt       DateTime    @default(now())
+  
+  user            CustomerAccount? @relation(fields: [userId], references: [id])
+}
+
+model CartSession {
+  id        String   @id @default(uuid())
+  sessionId String   @unique
+  items     Json
+  expiresAt DateTime
+}
+
+model CustomerAccount {
+  id           String   @id @default(uuid())
+  email        String   @unique
+  name         String
+  passwordHash String
+  address      Json?
+  orders       Order[]
+  createdAt    DateTime @default(now())
+}
+
+model ServiceRequest {
+  id          String        @id @default(uuid())
+  name        String
+  email       String
+  phone       String
+  service     String
+  description String
+  status      RequestStatus @default(NEW)
+  createdAt   DateTime      @default(now())
+}
