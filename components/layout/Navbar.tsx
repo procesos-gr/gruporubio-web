@@ -1,5 +1,6 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { ChevronDown } from 'lucide-react';
@@ -11,18 +12,49 @@ const NAV_LINKS = [
 ];
 
 export function Navbar() {
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const handler = () => setScrolled(window.scrollY > 8);
+    window.addEventListener('scroll', handler, { passive: true });
+    handler();
+    return () => window.removeEventListener('scroll', handler);
+  }, []);
+
   return (
     <nav
       style={{
+        position: 'fixed',
+        top: 16,
+        left: 16,
+        right: 16,
+        height: 60,
+        zIndex: 50,
+        borderRadius: 12,
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
-        height: 64,
-        padding: '0 32px',
+        padding: '0 24px',
+        /* At top: transparent → blends with the grey hero card behind it.
+           On scroll: frosted white so it reads clearly over any content. */
+        background: scrolled ? 'rgba(255,255,255,0.88)' : 'transparent',
+        backdropFilter: scrolled ? 'blur(14px)' : 'none',
+        WebkitBackdropFilter: scrolled ? 'blur(14px)' : 'none',
+        boxShadow: scrolled ? '0 2px 24px rgba(0,0,0,0.07)' : 'none',
+        transition: 'background 0.3s ease, box-shadow 0.3s ease, backdrop-filter 0.3s ease',
       }}
     >
-      {/* Logo — left */}
-      <Link href="/" style={{ display: 'flex', alignItems: 'center', flexShrink: 0, textDecoration: 'none', marginLeft: 16 }}>
+      {/* Logo */}
+      <Link
+        href="/"
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          flexShrink: 0,
+          textDecoration: 'none',
+          marginLeft: 16,
+        }}
+      >
         <Image
           src="/images/brand/logo-grupo-rubio.webp"
           alt="Grupo Rubio"
