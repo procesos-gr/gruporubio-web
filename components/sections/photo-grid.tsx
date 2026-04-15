@@ -1,74 +1,81 @@
 import Image from 'next/image';
-import { ArrowUpRight } from 'lucide-react';
+import { ArrowUpRight, Star } from 'lucide-react';
 
-const CARDS = [
-  {
-    id: 'cleaning',
-    label: 'Limpieza Profesional',
-    src: 'https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=900&q=80',
-    alt: 'Limpieza profesional en oficinas y espacios comerciales',
-    span: 'left',
-  },
-  {
-    id: 'pest',
-    label: 'Control de Plagas',
-    src: 'https://images.unsplash.com/photo-1590247813693-5541d1c609fd?w=600&q=80',
-    alt: 'Control de plagas y tratamientos DDD',
-    span: 'right-top',
-  },
-  {
-    id: 'store',
-    label: 'Nuestra Tienda',
-    src: 'https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=600&q=80',
-    alt: 'Productos de higiene y limpieza profesional',
-    span: 'right-bottom',
-  },
-] as const;
+const CARD_RADIUS = 20;
 
 function ArrowButton() {
   return (
-    <div className="absolute bottom-4 right-4 w-9 h-9 rounded-full bg-white flex items-center justify-center flex-shrink-0 shadow-sm">
-      <ArrowUpRight size={16} className="text-[#111827]" />
+    <div
+      className="absolute bottom-4 right-4 flex items-center justify-center flex-shrink-0 bg-white"
+      style={{ width: 36, height: 36, borderRadius: '50%', boxShadow: '0 1px 4px rgba(0,0,0,0.12)' }}
+    >
+      <ArrowUpRight size={16} color="#111827" />
     </div>
   );
 }
 
 function ReviewsWidget() {
   const AVATARS = [
-    { initials: 'ML', bg: '#546AE7' },
-    { initials: 'CG', bg: '#16A34A' },
-    { initials: 'LS', bg: '#F59E0B' },
+    { initials: 'ML', bg: '#818CF8' },
+    { initials: 'CG', bg: '#34D399' },
+    { initials: 'LS', bg: '#FCD34D' },
   ];
 
   return (
     <div
-      className="absolute bottom-5 left-5 z-20 flex flex-col gap-1.5 rounded-2xl px-4 py-3"
-      style={{ background: '#546AE7', minWidth: 180 }}
+      className="w-full h-full flex flex-col justify-between"
+      style={{
+        borderRadius: CARD_RADIUS,
+        background: '#546AE7',
+        padding: '22px 24px',
+        boxSizing: 'border-box',
+      }}
     >
-      {/* Avatars row */}
-      <div className="flex items-center">
+      {/* Avatars */}
+      <div style={{ display: 'flex', alignItems: 'center' }}>
         {AVATARS.map((av, i) => (
           <div
             key={i}
-            className="w-7 h-7 rounded-full flex items-center justify-center text-white text-[10px] font-bold border-2 border-[#546AE7] flex-shrink-0"
-            style={{ background: av.bg, marginLeft: i === 0 ? 0 : -8, zIndex: AVATARS.length - i }}
+            className="flex items-center justify-center text-white font-bold"
+            style={{
+              width: 32,
+              height: 32,
+              borderRadius: '50%',
+              background: av.bg,
+              border: '2.5px solid #546AE7',
+              fontSize: 11,
+              marginLeft: i === 0 ? 0 : -10,
+              zIndex: AVATARS.length - i,
+              position: 'relative',
+            }}
           >
             {av.initials}
           </div>
         ))}
       </div>
-      {/* Text */}
-      <div className="flex items-baseline gap-1.5">
-        <span className="text-white font-bold text-[22px] leading-none">90%</span>
-        <span className="text-white/80 text-[11px] leading-tight">de clientes<br />satisfechos</span>
+
+      {/* Stat */}
+      <div>
+        <div style={{ fontSize: 42, fontWeight: 800, color: '#fff', lineHeight: 1, marginBottom: 6 }}>
+          90%
+        </div>
+        <div style={{ fontSize: 13, color: 'rgba(255,255,255,0.75)', lineHeight: 1.4 }}>
+          de clientes<br />satisfechos
+        </div>
+      </div>
+
+      {/* Stars */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: 3 }}>
+        {[1, 2, 3, 4, 5].map((s) => (
+          <Star key={s} size={13} fill={s <= 4 ? '#FCD34D' : 'rgba(255,255,255,0.3)'} color="transparent" />
+        ))}
+        <span style={{ fontSize: 11, color: 'rgba(255,255,255,0.65)', marginLeft: 4 }}>4.2 en Google</span>
       </div>
     </div>
   );
 }
 
 export function PhotoGrid() {
-  const [bigCard, topCard, bottomCard] = CARDS;
-
   return (
     <section className="w-full bg-[#F8F9FA] pb-20 px-6 lg:px-12">
       <div
@@ -76,40 +83,40 @@ export function PhotoGrid() {
         style={{
           display: 'grid',
           gridTemplateColumns: '60% 40%',
-          gridTemplateRows: '1fr',
-          gap: '12px',
-          height: 360,
+          gap: 8,
+          height: 380,
         }}
       >
-        {/* Left — big card */}
-        <div className="relative rounded-[24px] overflow-hidden" style={{ gridRow: '1', gridColumn: '1' }}>
+        {/* Left — big Limpieza card */}
+        <div className="relative overflow-hidden" style={{ borderRadius: CARD_RADIUS }}>
           <Image
-            src={bigCard.src}
-            alt={bigCard.alt}
+            src="https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=900&q=80"
+            alt="Limpieza profesional en oficinas y espacios comerciales"
             fill
             className="object-cover object-center"
             sizes="(max-width: 1200px) 60vw, 720px"
           />
-          {/* Gradient overlay */}
           <div
             className="absolute inset-0"
             style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.65) 0%, transparent 55%)' }}
           />
-          {/* Service label */}
-          <span className="absolute bottom-4 left-5 text-white font-bold text-[15px] z-10 leading-tight">
-            {bigCard.label}
+          <span
+            className="absolute text-white font-bold"
+            style={{ bottom: 16, left: 20, fontSize: 15, zIndex: 10 }}
+          >
+            Limpieza Profesional
           </span>
           <ArrowButton />
-          <ReviewsWidget />
         </div>
 
-        {/* Right — two stacked cards */}
-        <div className="flex flex-col gap-3" style={{ gridRow: '1', gridColumn: '2' }}>
-          {/* Top card */}
-          <div className="relative rounded-[24px] overflow-hidden flex-1">
+        {/* Right column — pest photo (top) + reviews widget (bottom) */}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+
+          {/* Top: Control de Plagas photo */}
+          <div className="relative overflow-hidden flex-1" style={{ borderRadius: CARD_RADIUS }}>
             <Image
-              src={topCard.src}
-              alt={topCard.alt}
+              src="https://images.unsplash.com/photo-1590247813693-5541d1c609fd?w=600&q=80"
+              alt="Control de plagas y tratamientos DDD"
               fill
               className="object-cover object-center"
               sizes="(max-width: 1200px) 40vw, 480px"
@@ -118,30 +125,20 @@ export function PhotoGrid() {
               className="absolute inset-0"
               style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.65) 0%, transparent 55%)' }}
             />
-            <span className="absolute bottom-4 left-4 text-white font-bold text-[15px] z-10">
-              {topCard.label}
+            <span
+              className="absolute text-white font-bold"
+              style={{ bottom: 16, left: 16, fontSize: 15, zIndex: 10 }}
+            >
+              Control de Plagas
             </span>
             <ArrowButton />
           </div>
 
-          {/* Bottom card */}
-          <div className="relative rounded-[24px] overflow-hidden flex-1">
-            <Image
-              src={bottomCard.src}
-              alt={bottomCard.alt}
-              fill
-              className="object-cover object-center"
-              sizes="(max-width: 1200px) 40vw, 480px"
-            />
-            <div
-              className="absolute inset-0"
-              style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.65) 0%, transparent 55%)' }}
-            />
-            <span className="absolute bottom-4 left-4 text-white font-bold text-[15px] z-10">
-              {bottomCard.label}
-            </span>
-            <ArrowButton />
+          {/* Bottom: Reviews widget cell */}
+          <div style={{ flex: 1 }}>
+            <ReviewsWidget />
           </div>
+
         </div>
       </div>
     </section>
