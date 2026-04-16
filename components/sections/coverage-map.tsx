@@ -4,7 +4,7 @@ import dynamic from 'next/dynamic';
 
 const MapClient = dynamic(() => import('./coverage-map-client'), { ssr: false });
 
-/* ─── Stats cards ────────────────────────────────────────────────────── */
+/* ─── Stats ──────────────────────────────────────────────────────────── */
 
 const STATS = [
   { number: '+50', label: 'años de experiencia' },
@@ -16,24 +16,24 @@ const STATS = [
 
 export function CoverageMap() {
   return (
-    <section style={{ background: '#0B0C10', padding: '80px 40px' }}>
+    <div style={{ margin: '0 16px 80px', background: '#F0F2F5', borderRadius: 16, padding: '60px 40px' }}>
 
       {/* ── Header ── */}
       <div style={{ marginBottom: 36 }}>
         <div style={{
           display: 'inline-flex', alignItems: 'center',
-          border: '1px solid rgba(255,255,255,0.15)',
+          border: '1px solid #546AE7',
           borderRadius: 6, padding: '4px 12px',
           marginBottom: 14,
         }}>
-          <span style={{ fontSize: 12, fontWeight: 600, color: 'rgba(255,255,255,0.5)', letterSpacing: '0.06em' }}>
+          <span style={{ fontSize: 12, fontWeight: 600, color: '#546AE7', letterSpacing: '0.06em' }}>
             Cobertura
           </span>
         </div>
         <h2 style={{
           fontSize: 'clamp(26px, 3vw, 38px)',
           fontWeight: 800,
-          color: '#ffffff',
+          color: '#111827',
           letterSpacing: '-1px',
           lineHeight: 1.15,
           margin: '0 0 10px',
@@ -45,16 +45,16 @@ export function CoverageMap() {
         </p>
       </div>
 
-      {/* ── Grid: mapa + stats ── */}
+      {/* ── Grid ── */}
       <div style={{
         display: 'grid',
         gridTemplateColumns: '3fr 2fr',
-        gap: 24,
-        alignItems: 'stretch',
+        gap: 40,
+        alignItems: 'center',
       }}>
 
         {/* Mapa */}
-        <div style={{ borderRadius: 8, overflow: 'hidden' }}>
+        <div>
           <MapClient />
         </div>
 
@@ -64,20 +64,19 @@ export function CoverageMap() {
             <div
               key={stat.label}
               style={{
-                background: '#1a1f3a',
+                background: '#ffffff',
                 borderRadius: 8,
+                border: '1px solid #E5E7EB',
                 padding: '24px 28px',
-                flex: 1,
                 display: 'flex',
                 flexDirection: 'column',
-                justifyContent: 'center',
                 gap: 6,
               }}
             >
               <span style={{
-                fontSize: 44,
+                fontSize: 42,
                 fontWeight: 800,
-                color: '#4ade80',
+                color: '#546AE7',
                 lineHeight: 1,
                 letterSpacing: '-1.5px',
               }}>
@@ -85,7 +84,7 @@ export function CoverageMap() {
               </span>
               <span style={{
                 fontSize: 14,
-                color: 'rgba(255,255,255,0.55)',
+                color: '#6B7280',
                 lineHeight: 1.4,
                 fontWeight: 500,
               }}>
@@ -94,8 +93,8 @@ export function CoverageMap() {
             </div>
           ))}
         </div>
-      </div>
 
-    </section>
+      </div>
+    </div>
   );
 }
