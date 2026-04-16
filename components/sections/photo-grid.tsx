@@ -3,6 +3,43 @@ import { ArrowUpRight, Star } from 'lucide-react';
 
 const CARD_RADIUS = 12;
 
+/* Styled label — frosted pill tag + big bold title */
+function CardLabel({ tag, title, large = false }: { tag: string; title: string; large?: boolean }) {
+  return (
+    <div style={{ position: 'absolute', bottom: 20, left: 18, zIndex: 10 }}>
+      {/* Frosted pill */}
+      <div style={{
+        display: 'inline-flex', alignItems: 'center', gap: 5,
+        background: 'rgba(255,255,255,0.18)',
+        backdropFilter: 'blur(8px)',
+        WebkitBackdropFilter: 'blur(8px)',
+        border: '1px solid rgba(255,255,255,0.22)',
+        borderRadius: 999,
+        padding: '3px 10px',
+        marginBottom: 8,
+      }}>
+        <span style={{
+          fontSize: 10, fontWeight: 700, color: 'rgba(255,255,255,0.9)',
+          letterSpacing: '0.07em', textTransform: 'uppercase',
+        }}>
+          {tag}
+        </span>
+      </div>
+      {/* Title */}
+      <div style={{
+        fontSize: large ? 24 : 18,
+        fontWeight: 800,
+        color: '#ffffff',
+        lineHeight: 1.15,
+        letterSpacing: '-0.4px',
+        textShadow: '0 1px 6px rgba(0,0,0,0.35)',
+      }}>
+        {title}
+      </div>
+    </div>
+  );
+}
+
 /* Arrow button — animated on card hover via Tailwind group-hover */
 function ArrowButton() {
   return (
@@ -126,10 +163,8 @@ export function PhotoGrid() {
           className="object-cover object-center transition-transform duration-500 ease-out group-hover:scale-[1.03]"
           sizes="(max-width: 768px) 90vw, 44vw"
         />
-        <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.65) 0%, transparent 55%)' }} />
-        <span className="absolute text-white font-bold" style={{ bottom: 16, left: 18, fontSize: 15, zIndex: 10 }}>
-          Limpieza Profesional
-        </span>
+        <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.72) 0%, rgba(0,0,0,0.1) 50%, transparent 75%)' }} />
+        <CardLabel tag="Servicio" title={"Limpieza\nProfesional"} large />
         <ArrowButton />
       </div>
 
@@ -146,10 +181,8 @@ export function PhotoGrid() {
           className="object-cover object-center transition-transform duration-500 ease-out group-hover:scale-[1.03]"
           sizes="(max-width: 768px) 90vw, 24vw"
         />
-        <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.65) 0%, transparent 55%)' }} />
-        <span className="absolute text-white font-bold" style={{ bottom: 16, left: 16, fontSize: 15, zIndex: 10 }}>
-          Control de Plagas
-        </span>
+        <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.72) 0%, rgba(0,0,0,0.1) 55%, transparent 80%)' }} />
+        <CardLabel tag="Servicio" title={"Control\nde Plagas"} />
         <ArrowButton />
       </div>
 
@@ -171,10 +204,8 @@ export function PhotoGrid() {
           className="object-cover object-center transition-transform duration-500 ease-out group-hover:scale-[1.03]"
           sizes="(max-width: 768px) 90vw, 32vw"
         />
-        <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.65) 0%, transparent 55%)' }} />
-        <span className="absolute text-white font-bold" style={{ bottom: 16, left: 16, fontSize: 15, zIndex: 10 }}>
-          Nuestra Tienda
-        </span>
+        <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.72) 0%, rgba(0,0,0,0.1) 50%, transparent 75%)' }} />
+        <CardLabel tag="Tienda" title={"Nuestra\nTienda"} />
         <ArrowButton />
       </div>
     </div>
