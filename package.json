@@ -10,8 +10,10 @@
   },
   "dependencies": {
     "@prisma/client": "^7.7.0",
+    "@types/leaflet": "^1.9.21",
     "clsx": "^2.1.1",
     "framer-motion": "^12.38.0",
+    "leaflet": "^1.9.4",
     "lucide-react": "^1.8.0",
     "next": "16.2.3",
     "next-auth": "^5.0.0-beta.30",
@@ -19,6 +21,7 @@
     "react": "19.2.4",
     "react-dom": "19.2.4",
     "react-fast-marquee": "^1.6.5",
+    "react-leaflet": "^5.0.0",
     "sharp": "^0.34.5",
     "sonner": "^2.0.7",
     "tailwind-merge": "^3.5.0"

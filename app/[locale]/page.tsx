@@ -4,6 +4,7 @@ import { PhotoGrid } from "@/components/sections/photo-grid";
 import { TrustLogos } from "@/components/sections/trust-logos";
 import { TopServices } from "@/components/sections/top-services";
 import { CTABanner } from "@/components/sections/cta-banner";
+import { CoverageMap } from "@/components/sections/coverage-map";
 import { BusinessLines } from "@/components/sections/business-lines";
 import { ProductShowcase } from "@/components/sections/product-showcase";
 import { AudienceGrid } from "@/components/sections/audience-grid";
@@ -39,6 +40,7 @@ export default function HomePage() {
       <TrustLogos />
       <TopServices />
       <CTABanner />
+      <CoverageMap />
       <BusinessLines />
       <ProductShowcase />
       <AudienceGrid />
