@@ -159,6 +159,17 @@
     "rc_r3_date": "Hace 3 semanas",
     "rc_cta": "Ver todas las reseñas en Google"
   },
+  "Stats": {
+    "label": "Grupo Rubio en cifras",
+    "clients_value": "3.000",
+    "clients_label": "clientes satisfechos",
+    "experience_value": "20",
+    "experience_label": "años de experiencia",
+    "municipalities_value": "170",
+    "municipalities_label": "municipios con cobertura",
+    "services_value": "15",
+    "services_label": "tipos de servicio"
+  },
   "Navigation": {
     "home": "Inicio",
     "services": "Servicios",
@@ -174,5 +185,37 @@
     "services": "Servicios",
     "store": "Tienda",
     "contact": "Contacto"
+  },
+  "Tienda": {
+    "page_title": "Tienda",
+    "page_subtitle": "Productos profesionales de limpieza e higiene para tu negocio.",
+    "breadcrumb_home": "Inicio",
+    "breadcrumb_shop": "Tienda",
+    "no_products": "No hay productos disponibles.",
+    "add_to_cart": "Añadir al carrito",
+    "adding": "Añadiendo...",
+    "view_product": "Ver producto",
+    "select_variant": "Selecciona una opción",
+    "cart_title": "Tu carrito",
+    "cart_empty": "Tu carrito está vacío",
+    "cart_empty_desc": "Explora nuestros productos y añade artículos a tu carrito.",
+    "cart_subtotal": "Subtotal",
+    "cart_checkout": "Ir al checkout",
+    "cart_continue": "Seguir comprando",
+    "qty": "Cantidad",
+    "checkout_title": "Checkout",
+    "checkout_email": "Email",
+    "checkout_name": "Nombre completo",
+    "checkout_address": "Dirección",
+    "checkout_city": "Ciudad",
+    "checkout_postal": "Código postal",
+    "checkout_country": "País",
+    "checkout_payment": "Pago",
+    "checkout_pay": "Confirmar pedido",
+    "checkout_processing": "Procesando...",
+    "checkout_test_card": "Tarjeta de prueba: 4242 4242 4242 4242",
+    "order_confirmed": "Pedido confirmado",
+    "order_confirmed_desc": "Tu pedido ha sido procesado correctamente.",
+    "order_continue": "Volver a la tienda"
   }
 }
