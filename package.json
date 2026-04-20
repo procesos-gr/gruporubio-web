@@ -9,7 +9,10 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@medusajs/js-sdk": "^2.13.6",
     "@prisma/client": "^7.7.0",
+    "@stripe/react-stripe-js": "^6.2.0",
+    "@stripe/stripe-js": "^9.2.0",
     "@types/leaflet": "^1.9.21",
     "clsx": "^2.1.1",
     "framer-motion": "^12.38.0",
@@ -25,7 +28,9 @@
     "react-simple-maps": "^3.0.0",
     "sharp": "^0.34.5",
     "sonner": "^2.0.7",
-    "tailwind-merge": "^3.5.0"
+    "stripe": "^22.0.2",
+    "tailwind-merge": "^3.5.0",
+    "zustand": "^5.0.12"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
