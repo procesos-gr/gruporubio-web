@@ -8,6 +8,7 @@ const logos = [
   { src: "/images/clients/logo-ayuntamiento-tudela.png", alt: "Ayuntamiento de Tudela" },
   { src: "/images/clients/logo-aspil.png", alt: "Aspil" },
   { src: "/images/clients/logo-uvesa.png", alt: "Uvesa" },
+  { src: "/images/clients/logo-urzante.png", alt: "Urzante" },
 ];
 
 export function TrustLogos() {
@@ -53,13 +54,14 @@ export function TrustLogos() {
           gradientWidth={100}
         >
           {logos.map((logo) => (
-            <div key={logo.alt} style={{ margin: '0 56px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <div key={logo.alt} style={{ margin: '0 56px', width: 140, height: 48, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
               <Image
                 src={logo.src}
                 alt={logo.alt}
-                height={56}
-                width={180}
-                className="h-14 w-auto object-contain grayscale opacity-50 hover:grayscale-0 hover:opacity-100 transition-all duration-300"
+                height={48}
+                width={140}
+                className="object-contain grayscale opacity-50 hover:grayscale-0 hover:opacity-100 transition-all duration-300"
+                style={{ width: '100%', height: '100%', objectFit: 'contain' }}
               />
             </div>
           ))}

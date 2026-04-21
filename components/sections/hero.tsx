@@ -2,11 +2,25 @@
 
 import { motion } from 'framer-motion';
 import { MapPin, Search } from 'lucide-react';
+import Image from 'next/image';
 
 export function Hero() {
   return (
-    <section style={{ padding: '92px 24px 56px' }}>
-      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', maxWidth: 680, margin: '0 auto' }}>
+    <section style={{ padding: '130px 24px 90px', position: 'relative', overflow: 'hidden' }}>
+
+      {/* Hero banner — fondo sutil */}
+      <Image
+        src="/images/hero/hero-banner.webp"
+        alt=""
+        fill
+        priority
+        quality={85}
+        className="object-cover object-center"
+        style={{ opacity: 0.55 }}
+      />
+
+
+      <div style={{ position: 'relative', zIndex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', maxWidth: 680, margin: '0 auto' }}>
 
         {/* Title */}
         <motion.h1
@@ -32,14 +46,14 @@ export function Hero() {
           transition={{ duration: 0.55, ease: 'easeOut', delay: 0.12 }}
           style={{
             fontSize: 15,
-            color: '#6B7280',
+            color: '#1F2937',
             lineHeight: 1.6,
             maxWidth: 480,
             marginBottom: 40,
           }}
         >
           Servicios profesionales de limpieza, control de plagas y productos de higiene
-          para hogares y empresas en Navarra.
+          para hogares y empresas.
         </motion.p>
 
         {/* Search bar */}

@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect } from "react"
-import { ShoppingBag } from "lucide-react"
+import { ShoppingCart } from "lucide-react"
 import { useCartStore } from "@/lib/store/cart"
 
 export function CartButton() {
@@ -30,7 +30,7 @@ export function CartButton() {
       }}
       aria-label={`Carrito (${itemCount} artículos)`}
     >
-      <ShoppingBag size={20} />
+      <ShoppingCart size={20} />
       {itemCount > 0 && (
         <span style={{
           position: "absolute",

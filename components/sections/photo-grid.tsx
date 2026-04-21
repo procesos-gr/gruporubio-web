@@ -1,64 +1,65 @@
+'use client';
+
 import Image from 'next/image';
 import { ArrowUpRight, Star } from 'lucide-react';
 
 const CARD_RADIUS = 12;
 
-/* Styled label — frosted pill tag + big bold title */
-function CardLabel({ tag, title, large = false }: { tag: string; title: string; large?: boolean }) {
+/* Centered overlay label + arrow — appears on hover */
+function CardOverlay({ title, large = false }: { title: string; large?: boolean }) {
   return (
-    <div style={{ position: 'absolute', bottom: 20, left: 18, zIndex: 10 }}>
-      {/* Frosted pill */}
-      <div style={{
-        display: 'inline-flex', alignItems: 'center', gap: 5,
-        background: 'rgba(255,255,255,0.18)',
-        backdropFilter: 'blur(8px)',
-        WebkitBackdropFilter: 'blur(8px)',
-        border: '1px solid rgba(255,255,255,0.22)',
-        borderRadius: 999,
-        padding: '3px 10px',
-        marginBottom: 8,
-      }}>
-        <span style={{
-          fontSize: 10, fontWeight: 700, color: 'rgba(255,255,255,0.9)',
-          letterSpacing: '0.07em', textTransform: 'uppercase',
-        }}>
-          {tag}
-        </span>
-      </div>
-      {/* Title */}
-      <div style={{
-        fontSize: large ? 24 : 18,
-        fontWeight: 800,
-        color: '#ffffff',
-        lineHeight: 1.15,
-        letterSpacing: '-0.4px',
-        textShadow: '0 1px 6px rgba(0,0,0,0.35)',
-      }}>
-        {title}
-      </div>
-    </div>
-  );
-}
-
-/* Arrow button — animated on card hover via Tailwind group-hover */
-function ArrowButton() {
-  return (
-    <div
-      className="
-        absolute bottom-3.5 right-3.5
-        w-[34px] h-[34px] rounded-full bg-white
-        flex items-center justify-center
-        shadow-sm
-        transition-transform duration-200 ease-out
-        group-hover:scale-110
-      "
-    >
-      <ArrowUpRight
-        size={15}
-        color="#111827"
-        className="transition-transform duration-200 ease-out group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+    <>
+      {/* Dark overlay — lightens at rest, darkens on hover */}
+      <div
+        className="absolute inset-0 transition-colors duration-400 ease-out"
+        style={{ background: 'rgba(0,0,0,0.28)' }}
       />
-    </div>
+      <div
+        className="absolute inset-0 transition-opacity duration-400 ease-out opacity-0 group-hover:opacity-100"
+        style={{ background: 'rgba(0,0,0,0.38)' }}
+      />
+
+      {/* Centered content */}
+      <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 z-10 px-4 text-center">
+
+        {/* Title */}
+        <div
+          className="transition-all duration-300 ease-out delay-[30ms]"
+          style={{
+            fontSize: large ? 26 : 20,
+            fontWeight: 800,
+            color: '#ffffff',
+            lineHeight: 1.15,
+            letterSpacing: '-0.5px',
+            textShadow: '0 2px 12px rgba(0,0,0,0.45)',
+            whiteSpace: 'pre-line',
+            textAlign: 'center',
+          }}
+        >
+          {title}
+        </div>
+
+        {/* Arrow circle — slides up on hover */}
+        <div
+          className="
+            flex items-center justify-center
+            w-9 h-9 rounded-full
+            transition-all duration-300 ease-out
+            opacity-0 translate-y-2
+            group-hover:opacity-100 group-hover:translate-y-0
+          "
+          style={{
+            background: 'rgba(255,255,255,0.2)',
+            backdropFilter: 'blur(8px)',
+            WebkitBackdropFilter: 'blur(8px)',
+            border: '1.5px solid rgba(255,255,255,0.35)',
+          }}
+        >
+          <ArrowUpRight size={16} color="#ffffff" strokeWidth={2.5} />
+        </div>
+
+      </div>
+    </>
   );
 }
 
@@ -71,68 +72,84 @@ function ReviewsWidget() {
 
   return (
     <div
+      className="group cursor-pointer"
       style={{
         borderRadius: CARD_RADIUS,
         background: 'linear-gradient(135deg, #6677EC 0%, #4254CC 100%)',
-        padding: '0 20px',
+        padding: '0 16px',
         height: '100%',
         boxSizing: 'border-box',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
-        gap: 12,
+        gap: 10,
         overflow: 'hidden',
         position: 'relative',
+        transition: 'filter 0.25s ease, transform 0.25s ease',
+      }}
+      onMouseEnter={e => {
+        (e.currentTarget as HTMLElement).style.filter = 'brightness(1.1)';
+        (e.currentTarget as HTMLElement).style.transform = 'translateY(-1px)';
+      }}
+      onMouseLeave={e => {
+        (e.currentTarget as HTMLElement).style.filter = 'brightness(1)';
+        (e.currentTarget as HTMLElement).style.transform = 'translateY(0)';
       }}
     >
-      {/* Decorative circle — background accent */}
+      {/* Decorative circle */}
       <div style={{
-        position: 'absolute', right: -28, top: -28,
-        width: 110, height: 110, borderRadius: '50%',
-        background: 'rgba(255,255,255,0.06)',
+        position: 'absolute', right: -24, top: -24,
+        width: 100, height: 100, borderRadius: '50%',
+        background: 'rgba(255,255,255,0.07)',
         pointerEvents: 'none',
       }} />
 
-      {/* Left — avatars + label */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexShrink: 0 }}>
-        <div style={{ display: 'flex', alignItems: 'center' }}>
-          {AVATARS.map((av, i) => (
-            <div
-              key={i}
-              style={{
-                width: 26, height: 26, borderRadius: '50%',
-                background: av.bg, border: '2.5px solid #5060D8',
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-                color: '#fff', fontSize: 9, fontWeight: 700,
-                marginLeft: i === 0 ? 0 : -9,
-                zIndex: AVATARS.length - i, position: 'relative', flexShrink: 0,
-              }}
-            >
-              {av.initials}
-            </div>
-          ))}
+      {/* Avatars */}
+      <div style={{ display: 'flex', alignItems: 'center', flexShrink: 0 }}>
+        {AVATARS.map((av, i) => (
+          <div
+            key={i}
+            style={{
+              width: 36, height: 36, borderRadius: '50%',
+              background: av.bg,
+              border: '2.5px solid #5060D8',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              color: '#fff', fontSize: 11, fontWeight: 700,
+              marginLeft: i === 0 ? 0 : -12,
+              zIndex: AVATARS.length - i, position: 'relative', flexShrink: 0,
+              boxShadow: '0 2px 8px rgba(0,0,0,0.18)',
+              transition: 'transform 0.2s ease',
+            }}
+          >
+            {av.initials}
+          </div>
+        ))}
+      </div>
+
+      {/* Score + Google */}
+      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', flexShrink: 0, gap: 4 }}>
+        <span style={{ fontSize: 30, fontWeight: 900, color: '#fff', lineHeight: 1, letterSpacing: '-1px' }}>
+          4.2
+        </span>
+        <div style={{ display: 'flex', gap: 0, fontSize: 15, fontWeight: 800 }}>
+          <span style={{ color: '#4285F4' }}>G</span>
+          <span style={{ color: '#EA4335' }}>o</span>
+          <span style={{ color: '#FBBC05' }}>o</span>
+          <span style={{ color: '#4285F4' }}>g</span>
+          <span style={{ color: '#34A853' }}>l</span>
+          <span style={{ color: '#EA4335' }}>e</span>
         </div>
-        <span style={{ fontSize: 11, color: 'rgba(255,255,255,0.75)', lineHeight: 1.3, whiteSpace: 'nowrap' }}>
-          Clientes<br />satisfechos
-        </span>
       </div>
 
-      {/* Center — big stat */}
-      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', flexShrink: 0 }}>
-        <span style={{ fontSize: 32, fontWeight: 800, color: '#fff', lineHeight: 1, letterSpacing: '-1px' }}>
-          90%
-        </span>
-      </div>
-
-      {/* Right — stars + score */}
-      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 3, flexShrink: 0 }}>
+      {/* Stars */}
+      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 5, flexShrink: 0 }}>
         <div style={{ display: 'flex', gap: 2 }}>
           {[1, 2, 3, 4, 5].map((s) => (
-            <Star key={s} size={11} fill={s <= 4 ? '#FBBF24' : 'rgba(255,255,255,0.2)'} color="transparent" />
+            <Star key={s} size={28} fill={s <= 4 ? '#FBBF24' : 'rgba(255,255,255,0.2)'} color="transparent" />
           ))}
         </div>
         <span style={{ fontSize: 10, color: 'rgba(255,255,255,0.55)', whiteSpace: 'nowrap' }}>
-          4.2 · Google
+          Reseñas en Google
         </span>
       </div>
     </div>
@@ -152,7 +169,7 @@ export function PhotoGrid() {
     >
       {/* Limpieza — col 1, full height */}
       <div
-        className="group"
+        className="group cursor-pointer"
         style={{ position: 'relative', borderRadius: CARD_RADIUS, overflow: 'hidden', gridColumn: 1, gridRow: '1 / 3' }}
       >
         <Image
@@ -160,17 +177,15 @@ export function PhotoGrid() {
           alt="Limpieza profesional en oficinas y espacios comerciales"
           fill
           quality={90}
-          className="object-cover object-center transition-transform duration-500 ease-out group-hover:scale-[1.03]"
+          className="object-cover object-center transition-transform duration-500 ease-out group-hover:scale-[1.04]"
           sizes="(max-width: 768px) 90vw, 44vw"
         />
-        <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.72) 0%, rgba(0,0,0,0.1) 50%, transparent 75%)' }} />
-        <CardLabel tag="Servicio" title={"Limpieza\nProfesional"} large />
-        <ArrowButton />
+        <CardOverlay title={"Limpieza\nProfesional"} large />
       </div>
 
       {/* Control de Plagas — col 2, row 1 */}
       <div
-        className="group"
+        className="group cursor-pointer"
         style={{ position: 'relative', borderRadius: CARD_RADIUS, overflow: 'hidden', gridColumn: 2, gridRow: 1 }}
       >
         <Image
@@ -178,12 +193,10 @@ export function PhotoGrid() {
           alt="Control de plagas y tratamientos DDD"
           fill
           quality={90}
-          className="object-cover object-center transition-transform duration-500 ease-out group-hover:scale-[1.03]"
+          className="object-cover object-center transition-transform duration-500 ease-out group-hover:scale-[1.04]"
           sizes="(max-width: 768px) 90vw, 24vw"
         />
-        <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.72) 0%, rgba(0,0,0,0.1) 55%, transparent 80%)' }} />
-        <CardLabel tag="Servicio" title={"Control\nde Plagas"} />
-        <ArrowButton />
+        <CardOverlay title={"Control\nde Plagas"} />
       </div>
 
       {/* Reviews widget — col 2, row 2 */}
@@ -193,7 +206,7 @@ export function PhotoGrid() {
 
       {/* Tienda — col 3, full height */}
       <div
-        className="group"
+        className="group cursor-pointer"
         style={{ position: 'relative', borderRadius: CARD_RADIUS, overflow: 'hidden', gridColumn: 3, gridRow: '1 / 3' }}
       >
         <Image
@@ -201,12 +214,10 @@ export function PhotoGrid() {
           alt="Nuestra tienda de productos de higiene y limpieza"
           fill
           quality={90}
-          className="object-cover object-center transition-transform duration-500 ease-out group-hover:scale-[1.03]"
+          className="object-cover object-center transition-transform duration-500 ease-out group-hover:scale-[1.04]"
           sizes="(max-width: 768px) 90vw, 32vw"
         />
-        <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.72) 0%, rgba(0,0,0,0.1) 50%, transparent 75%)' }} />
-        <CardLabel tag="Tienda" title={"Nuestra\nTienda"} />
-        <ArrowButton />
+        <CardOverlay title={"Nuestra\nTienda"} />
       </div>
     </div>
   );

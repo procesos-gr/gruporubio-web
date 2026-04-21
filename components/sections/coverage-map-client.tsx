@@ -1,64 +1,48 @@
 'use client';
 
+import { memo } from 'react';
 import { ComposableMap, Geographies, Geography } from 'react-simple-maps';
 
 const GEO_URL = '/spain-communities.geojson';
-const VISIBLE = ['Navarra', 'La Rioja', 'Aragon'];
+const SHOW = new Set(['Navarra', 'La Rioja', 'Aragon']);
 
-export default function CoverageMapClient() {
+export default memo(function CoverageMapClient() {
   return (
-    <div style={{ position: 'relative', width: '100%' }}>
-      {/* Glow behind highlighted zones */}
-      <div style={{
-        position: 'absolute',
-        inset: 0,
-        background: 'radial-gradient(ellipse 55% 40% at 58% 42%, rgba(74,222,128,0.18) 0%, transparent 70%)',
-        pointerEvents: 'none',
-        zIndex: 1,
-      }} />
+    <ComposableMap
+      projection="geoMercator"
+      projectionConfig={{ center: [-1.2, 41.8], scale: 7500 }}
+      style={{ width: '100%', height: '100%' }}
+    >
+      <defs>
+        <pattern
+          id="dots-active"
+          x="0" y="0" width="7" height="7"
+          patternUnits="userSpaceOnUse"
+        >
+          <rect x="1.8" y="1.8" width="3.4" height="3.4" fill="#7B9CF4" rx="0.6" />
+        </pattern>
+      </defs>
 
-      <ComposableMap
-        projection="geoMercator"
-        projectionConfig={{ center: [-1.2, 41.8], scale: 7500 }}
-        style={{ width: '100%', height: '420px', position: 'relative', zIndex: 2 }}
-      >
-        <Geographies geography={GEO_URL}>
-          {({ geographies }) =>
-            geographies
-              .filter((geo) => VISIBLE.includes(geo.properties.name as string))
-              .map((geo) => (
-                <Geography
-                  key={geo.rsmKey}
-                  geography={geo}
-                  fill="rgba(74,222,128,0.22)"
-                  stroke="#4ade80"
-                  strokeWidth={1.8}
-                  style={{
-                    default: {
-                      outline: 'none',
-                      filter: 'drop-shadow(0 0 8px rgba(74,222,128,0.6))',
-                    },
-                    hover:   { outline: 'none', fill: 'rgba(74,222,128,0.22)' },
-                    pressed: { outline: 'none' },
-                  }}
-                />
-              ))
-          }
-        </Geographies>
-      </ComposableMap>
-
-      {/* Grid overlay — subtle lines like sensoneo */}
-      <svg
-        style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', zIndex: 0, pointerEvents: 'none' }}
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <defs>
-          <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
-            <path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(255,255,255,0.04)" strokeWidth="0.5" />
-          </pattern>
-        </defs>
-        <rect width="100%" height="100%" fill="url(#grid)" />
-      </svg>
-    </div>
+      <Geographies geography={GEO_URL}>
+        {({ geographies }) =>
+          geographies
+            .filter(g => SHOW.has(g.properties.name))
+            .map(geo => (
+              <Geography
+                key={geo.rsmKey}
+                geography={geo}
+                fill="url(#dots-active)"
+                stroke="#546AE7"
+                strokeWidth={1.5}
+                style={{
+                  default: { outline: 'none' },
+                  hover:   { outline: 'none' },
+                  pressed: { outline: 'none' },
+                }}
+              />
+            ))
+        }
+      </Geographies>
+    </ComposableMap>
   );
-}
+});

@@ -2,14 +2,13 @@ import { Navbar } from "@/components/layout/Navbar";
 import { Hero } from "@/components/sections/hero";
 import { PhotoGrid } from "@/components/sections/photo-grid";
 import { TrustLogos } from "@/components/sections/trust-logos";
+import { StatsBand } from "@/components/sections/stats-band";
 import { TopServices } from "@/components/sections/top-services";
+import { FeaturedProducts } from "@/components/sections/featured-products";
 import { CTABanner } from "@/components/sections/cta-banner";
-import { CoverageMap } from "@/components/sections/coverage-map";
-import { BusinessLines } from "@/components/sections/business-lines";
-import { ProductShowcase } from "@/components/sections/product-showcase";
-import { AudienceGrid } from "@/components/sections/audience-grid";
 import { ReviewsCarousel } from "@/components/sections/reviews-carousel";
 import { FAQ } from "@/components/sections/faq";
+import Footer from "@/components/sections/Footer";
 
 export default function HomePage() {
   return (
@@ -22,7 +21,6 @@ export default function HomePage() {
       <div
         style={{
           margin: 16,
-          background: '#F0F2F5',
           borderRadius: 16,
           position: 'relative',
           overflow: 'hidden',
@@ -30,6 +28,8 @@ export default function HomePage() {
       >
 <Hero />
       </div>
+
+      <StatsBand />
 
       {/* Section A-2: Photo grid */}
       <div style={{ margin: 16 }}>
@@ -40,12 +40,10 @@ export default function HomePage() {
       <TrustLogos />
       <TopServices />
       <CTABanner />
-      <CoverageMap />
-      <BusinessLines />
-      <ProductShowcase />
-      <AudienceGrid />
+      <FeaturedProducts />
       <ReviewsCarousel />
       <FAQ />
+      <Footer />
 
     </div>
   );

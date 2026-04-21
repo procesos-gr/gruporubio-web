@@ -1,65 +1,154 @@
 'use client';
 
-import { useState } from "react";
-import { useTranslations } from "next-intl";
-import { ChevronDown } from "lucide-react";
+import { useState } from 'react';
+import { Plus, Minus } from 'lucide-react';
+
+const FAQS = [
+  {
+    q: '¿En qué zonas trabajáis?',
+    a: 'Operamos principalmente en Navarra, La Rioja y Aragón, aunque realizamos proyectos en todo el ámbito nacional. Contamos con equipos propios en Tudela, Pamplona y Zaragoza.',
+  },
+  {
+    q: '¿Cómo solicito un presupuesto?',
+    a: 'Puedes contactarnos a través del formulario de nuestra web, por email a info@gruporubio.net o por teléfono al 948 000 000. Respondemos en menos de 24 horas laborables con un presupuesto personalizado y sin compromiso.',
+  },
+  {
+    q: '¿Trabajáis con particulares y con empresas?',
+    a: 'Sí. Atendemos tanto a particulares (limpieza de pisos, comunidades de vecinos) como a empresas, industrias, hoteles, colegios e instituciones públicas. Cada servicio se adapta a las necesidades específicas del cliente.',
+  },
+  {
+    q: '¿Qué incluye el servicio de control de plagas?',
+    a: 'Nuestro servicio DDD cubre desratización, desinsectación y desinfección. Utilizamos productos homologados a nivel europeo, seguros para personas, animales y el medio ambiente. También realizamos tratamientos de termitas, legionela y ozonización.',
+  },
+  {
+    q: '¿Tenéis certificaciones de calidad?',
+    a: 'Sí, contamos con certificación ISO 9001 y seguimos los protocolos APPCC para servicios de seguridad alimentaria. Nuestros técnicos están formados y habilitados por las autoridades sanitarias competentes.',
+  },
+  {
+    q: '¿Con qué frecuencia se realizan los servicios?',
+    a: 'La frecuencia se acuerda según las necesidades de cada cliente: diaria, semanal, quincenal o mensual. Para servicios puntuales como limpiezas de fin de obra o tratamientos DDD también ofrecemos intervenciones únicas.',
+  },
+  {
+    q: '¿Podéis trabajar fuera del horario laboral?',
+    a: 'Sí. Adaptamos nuestros horarios para no interrumpir la actividad de nuestros clientes. Trabajamos en horario nocturno, fines de semana y festivos cuando es necesario, especialmente en entornos industriales y hostelería.',
+  },
+];
 
 export function FAQ() {
-  const t = useTranslations("Index");
-  const [open, setOpen] = useState<number | null>(0);
-
-  const faqs = [
-    { q: t("faq_1_q"), a: t("faq_1_a") },
-    { q: t("faq_2_q"), a: t("faq_2_a") },
-    { q: t("faq_3_q"), a: t("faq_3_a") },
-    { q: t("faq_4_q"), a: t("faq_4_a") },
-    { q: t("faq_5_q"), a: t("faq_5_a") },
-  ];
+  const [open, setOpen] = useState<number | null>(null);
 
   return (
-    <section className="w-full py-24 bg-white border-y border-border">
-      <div className="container mx-auto px-6 lg:px-8 max-w-7xl">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8">
-          
-          <div className="lg:col-span-4">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 tracking-tight leading-tight sticky top-32">
-              {t("faq_title")}
-            </h2>
-          </div>
-          
-          <div className="lg:col-span-8 flex flex-col space-y-4">
-            {faqs.map((faq, idx) => {
-              const isOpen = open === idx;
-              
-              return (
-                <div 
-                  key={idx} 
-                  className={`border rounded-xl transition-colors duration-200 ${isOpen ? 'bg-[#EEF4FB] border-blue-200' : 'bg-white border-gray-200 hover:border-gray-300'}`}
-                >
-                  <button
-                    onClick={() => setOpen(isOpen ? null : idx)}
-                    className="flex justify-between items-center w-full p-6 text-left focus:outline-none"
-                    aria-expanded={isOpen}
-                  >
-                    <span className="text-lg font-semibold text-gray-900 pr-6">
-                      {faq.q}
-                    </span>
-                    <ChevronDown className={`w-6 h-6 text-primary flex-shrink-0 transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`} />
-                  </button>
-                  
-                  <div 
-                    className={`overflow-hidden transition-all duration-300 ease-in-out ${isOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'}`}
-                  >
-                    <div className="p-6 pt-0 text-gray-600 leading-relaxed">
-                      {faq.a}
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
+    <section style={{ background: '#ffffff', padding: '80px 24px' }}>
+      <div style={{ maxWidth: 1100, margin: '0 auto', display: 'grid', gridTemplateColumns: '1fr 1.6fr', gap: 80, alignItems: 'start' }}>
 
+        {/* Left — título sticky */}
+        <div style={{ position: 'sticky', top: 100 }}>
+          <p style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#9CA3AF', marginBottom: 12 }}>
+            Preguntas frecuentes
+          </p>
+          <h2 style={{
+            fontSize: 'clamp(26px, 3vw, 38px)',
+            fontWeight: 800,
+            color: '#111827',
+            letterSpacing: '-1.5px',
+            lineHeight: 1.12,
+            margin: '0 0 20px',
+          }}>
+            Todo lo que necesitas saber
+          </h2>
+          <p style={{ fontSize: 14, color: '#6B7280', lineHeight: 1.65, margin: '0 0 28px' }}>
+            Si no encuentras lo que buscas, escríbenos y te respondemos en menos de 24h.
+          </p>
+          <a
+            href="/contacto"
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: 6,
+              background: '#111827',
+              color: '#ffffff',
+              fontSize: 13,
+              fontWeight: 600,
+              padding: '11px 22px',
+              borderRadius: 8,
+              textDecoration: 'none',
+            }}
+          >
+            Contactar →
+          </a>
         </div>
+
+        {/* Right — acordeón */}
+        <div style={{ display: 'flex', flexDirection: 'column' }}>
+          {FAQS.map((faq, i) => {
+            const isOpen = open === i;
+            return (
+              <div
+                key={i}
+                style={{ borderBottom: '1px solid #F3F4F6' }}
+              >
+                <button
+                  onClick={() => setOpen(isOpen ? null : i)}
+                  style={{
+                    width: '100%',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    gap: 16,
+                    padding: '20px 0',
+                    background: 'none',
+                    border: 'none',
+                    cursor: 'pointer',
+                    textAlign: 'left',
+                  }}
+                >
+                  <span style={{
+                    fontSize: 15,
+                    fontWeight: 600,
+                    color: '#111827',
+                    lineHeight: 1.4,
+                  }}>
+                    {faq.q}
+                  </span>
+                  <div
+                    style={{
+                      width: 28, height: 28,
+                      borderRadius: 7,
+                      background: isOpen ? '#111827' : '#F3F4F6',
+                      display: 'flex', alignItems: 'center', justifyContent: 'center',
+                      flexShrink: 0,
+                      transition: 'background 0.2s ease',
+                    }}
+                  >
+                    {isOpen
+                      ? <Minus size={13} color="#ffffff" />
+                      : <Plus size={13} color="#6B7280" />
+                    }
+                  </div>
+                </button>
+
+                <div
+                  style={{
+                    maxHeight: isOpen ? 300 : 0,
+                    overflow: 'hidden',
+                    transition: 'max-height 0.3s ease',
+                  }}
+                >
+                  <p style={{
+                    fontSize: 14,
+                    color: '#6B7280',
+                    lineHeight: 1.7,
+                    paddingBottom: 20,
+                    margin: 0,
+                  }}>
+                    {faq.a}
+                  </p>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+
       </div>
     </section>
   );

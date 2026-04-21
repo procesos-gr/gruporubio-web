@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname, useRouter } from 'next/navigation';
-import { ChevronDown, ArrowRight, ShoppingBag } from 'lucide-react';
+import { ChevronDown, ArrowRight, Store } from 'lucide-react';
 import { SERVICES, CATEGORY_LABELS, ServiceCategory } from '@/lib/services-data';
 import { CartButton } from "@/components/tienda/CartButton"
 
@@ -107,7 +107,9 @@ export function Navbar() {
   const isOnDarkPage =
     pathname.includes('/servicios') ||
     pathname.includes('/nosotros') ||
-    pathname.includes('/contacto');
+    pathname.includes('/contacto') ||
+    pathname.includes('/tienda') ||
+    pathname.includes('/presupuesto');
 
   const showDark = scrolled || open;
 
@@ -150,7 +152,7 @@ export function Navbar() {
           transition: transform 0.5s ease;
         }
         .nav-btn-tienda:hover::before { transform: translateX(100%); }
-        .nav-btn-tienda:hover { transform: translateY(-1px); box-shadow: 0 4px 16px rgba(14,165,233,0.35); }
+        .nav-btn-tienda:hover { transform: translateY(-1px); box-shadow: 0 4px 16px rgba(37,99,235,0.40); }
         .nav-btn-cta:hover { opacity: 0.88; transform: translateY(-1px); }
         .nav-btn-cta { transition: opacity 0.2s ease, transform 0.2s ease; }
       `}</style>
@@ -176,13 +178,13 @@ export function Navbar() {
         <div style={{ display: 'flex', alignItems: 'center', gap: 2, margin: '0 auto' }}>
 
           {/* Logo */}
-          <Link href="/" style={{ display: 'flex', alignItems: 'center', textDecoration: 'none', flexShrink: 0, marginRight: 16 }}>
+          <Link href="/" style={{ display: 'flex', alignItems: 'center', textDecoration: 'none', flexShrink: 0, marginRight: 36 }}>
             <Image
               src="/images/brand/logo-grupo-rubio.webp"
               alt="Grupo Rubio"
-              height={48}
-              width={200}
-              style={{ height: 48, width: 'auto' }}
+              height={56}
+              width={220}
+              style={{ height: 56, width: 'auto' }}
               priority
             />
           </Link>
@@ -419,35 +421,9 @@ export function Navbar() {
             </div>
           </div>
 
-          {/* Tienda — accent button */}
-          <Link
-            href="/tienda"
-            className="nav-btn-tienda"
-            style={{
-              display: 'inline-flex', alignItems: 'center', gap: 7,
-              borderRadius: 8,
-              background: !showDark && isOnDarkPage
-                ? 'rgba(255,255,255,0.12)'
-                : 'linear-gradient(135deg, #0EA5E9 0%, #0284C7 100%)',
-              border: !showDark && isOnDarkPage ? '1px solid rgba(255,255,255,0.22)' : '1px solid transparent',
-              color: '#ffffff',
-              fontSize: 13, fontWeight: 600,
-              padding: '10px 18px',
-              textDecoration: 'none',
-              flexShrink: 0, whiteSpace: 'nowrap',
-              marginLeft: 16,
-              boxShadow: !showDark && isOnDarkPage ? 'none' : '0 2px 8px rgba(14,165,233,0.25)',
-            }}
-          >
-            <ShoppingBag size={14} />
-            Tienda
-          </Link>
-
-          <CartButton />
-
           {/* CTA */}
           <Link
-            href="/contacto"
+            href="/presupuesto"
             className="nav-btn-cta"
             style={{
               display: 'inline-flex', alignItems: 'center', gap: 6,
@@ -464,6 +440,34 @@ export function Navbar() {
           >
             Solicitar presupuesto
           </Link>
+
+          {/* Tienda — accent button */}
+          <Link
+            href="/tienda"
+            className="nav-btn-tienda"
+            style={{
+              display: 'inline-flex', alignItems: 'center', gap: 7,
+              borderRadius: 8,
+              background: !showDark && isOnDarkPage
+                ? 'rgba(255,255,255,0.12)'
+                : 'linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%)',
+              border: !showDark && isOnDarkPage ? '1px solid rgba(255,255,255,0.22)' : '1px solid transparent',
+              color: '#ffffff',
+              fontSize: 13, fontWeight: 600,
+              padding: '10px 18px',
+              textDecoration: 'none',
+              flexShrink: 0, whiteSpace: 'nowrap',
+              marginLeft: 8,
+              boxShadow: !showDark && isOnDarkPage ? 'none' : '0 2px 8px rgba(37,99,235,0.30)',
+            }}
+          >
+            <Store size={14} />
+            Tienda
+          </Link>
+
+          <div style={{ color: linkColor }}>
+            <CartButton />
+          </div>
 
         </div>
       </nav>

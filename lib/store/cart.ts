@@ -99,7 +99,7 @@ export const useCartStore = create<CartStore>()(
             cartId = newCart.id
             set({ cartId })
           }
-          const { cart } = await medusa.store.cart.createLineItem(cartId, {
+          const { cart } = await medusa.store.cart.createLineItem(cartId!, {
             variant_id: variantId,
             quantity,
           })

@@ -1,210 +1,226 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
-import { useTranslations } from 'next-intl';
-import { Award, ShieldCheck, ClipboardCheck, Leaf, ChevronLeft, ChevronRight, Star } from 'lucide-react';
-import type { LucideIcon } from 'lucide-react';
+import { AnimatePresence, motion } from 'framer-motion';
+import { Star, ChevronLeft, ChevronRight } from 'lucide-react';
 
-interface Review {
-  initials: string;
-  name: string;
-  company: string;
-  text: string;
-  date: string;
-}
+const REVIEWS = [
+  {
+    initials: 'MG',
+    name: 'María G.',
+    company: 'Comunidad de propietarios · Pamplona',
+    text: 'Llevamos 3 años con Grupo Rubio y la limpieza de nuestra comunidad ha mejorado notablemente. El equipo es puntual, cuidadoso y muy profesional.',
+    rating: 5,
+    date: 'Hace 2 semanas',
+  },
+  {
+    initials: 'CL',
+    name: 'Carlos L.',
+    company: 'Gerente · Hotel Restaurante, Tudela',
+    text: 'Contratamos sus servicios para la limpieza del hotel y el resultado es impecable. Muy contentos con la atención y la disponibilidad del equipo.',
+    rating: 5,
+    date: 'Hace 1 mes',
+  },
+  {
+    initials: 'RF',
+    name: 'Rosa F.',
+    company: 'Responsable de instalaciones · Zaragoza',
+    text: 'El servicio de control de plagas DDD fue muy efectivo. Solución rápida sin interrumpir nuestra actividad. Totalmente recomendable.',
+    rating: 5,
+    date: 'Hace 3 semanas',
+  },
+  {
+    initials: 'JM',
+    name: 'Javier M.',
+    company: 'Director · Colegio Público, Tudela',
+    text: 'Llevan años encargándose de las instalaciones del colegio. Siempre cumplen con los plazos y el resultado es perfecto. Empresa de total confianza.',
+    rating: 5,
+    date: 'Hace 2 meses',
+  },
+  {
+    initials: 'AB',
+    name: 'Ana B.',
+    company: 'Propietaria · Piso de alquiler, Logroño',
+    text: 'Hicieron la limpieza de fin de obra y el piso quedó perfecto. Muy detallistas, rápidos y el precio muy ajustado. Sin duda volvería a contratarles.',
+    rating: 5,
+    date: 'Hace 1 semana',
+  },
+  {
+    initials: 'PS',
+    name: 'Pedro S.',
+    company: 'Encargado · Nave industrial, Pamplona',
+    text: 'Excelente servicio de limpieza industrial. Trabajan fuera de horario para no interrumpir la producción y dejan todo impecable. Muy recomendables.',
+    rating: 5,
+    date: 'Hace 3 meses',
+  },
+];
 
-interface TrustPill {
-  title: string;
-  desc: string;
-  Icon: LucideIcon;
-}
-
-function Stars() {
-  return (
-    <div className="flex items-center gap-0.5 flex-shrink-0">
-      {[1, 2, 3, 4, 5].map((i) => (
-        <Star key={i} className="w-4 h-4 fill-amber-400 text-amber-400" />
-      ))}
-    </div>
-  );
-}
+const variants = {
+  enter: (dir: number) => ({ x: dir > 0 ? 60 : -60, opacity: 0 }),
+  center: { x: 0, opacity: 1 },
+  exit: (dir: number) => ({ x: dir > 0 ? -60 : 60, opacity: 0 }),
+};
 
 export function ReviewsCarousel() {
-  const t = useTranslations('Index');
-  const [active, setActive] = useState(0);
+  const [[index, dir], setPage] = useState([0, 0]);
   const [paused, setPaused] = useState(false);
-  const [animKey, setAnimKey] = useState(0);
 
-  const reviews: Review[] = [
-    {
-      initials: t('rc_r1_initials'),
-      name: t('rc_r1_name'),
-      company: t('rc_r1_company'),
-      text: t('rc_r1_text'),
-      date: t('rc_r1_date'),
-    },
-    {
-      initials: t('rc_r2_initials'),
-      name: t('rc_r2_name'),
-      company: t('rc_r2_company'),
-      text: t('rc_r2_text'),
-      date: t('rc_r2_date'),
-    },
-    {
-      initials: t('rc_r3_initials'),
-      name: t('rc_r3_name'),
-      company: t('rc_r3_company'),
-      text: t('rc_r3_text'),
-      date: t('rc_r3_date'),
-    },
-  ];
-
-  const pills: TrustPill[] = [
-    { title: t('rc_pill_1_title'), desc: t('rc_pill_1_desc'), Icon: Award },
-    { title: t('rc_pill_2_title'), desc: t('rc_pill_2_desc'), Icon: ShieldCheck },
-    { title: t('rc_pill_3_title'), desc: t('rc_pill_3_desc'), Icon: ClipboardCheck },
-    { title: t('rc_pill_4_title'), desc: t('rc_pill_4_desc'), Icon: Leaf },
-  ];
-
-  const goTo = useCallback((idx: number) => {
-    setActive(idx);
-    setAnimKey((k) => k + 1);
+  const go = useCallback((newDir: number) => {
+    setPage(([prev]) => [(prev + newDir + REVIEWS.length) % REVIEWS.length, newDir]);
   }, []);
-
-  const next = useCallback(() => {
-    goTo((active + 1) % reviews.length);
-  }, [active, reviews.length, goTo]);
-
-  const prev = useCallback(() => {
-    goTo((active - 1 + reviews.length) % reviews.length);
-  }, [active, reviews.length, goTo]);
 
   useEffect(() => {
     if (paused) return;
-    const timer = setInterval(next, 5000);
-    return () => clearInterval(timer);
-  }, [paused, next]);
+    const t = setInterval(() => go(1), 4500);
+    return () => clearInterval(t);
+  }, [paused, go]);
 
-  const review = reviews[active];
+  const review = REVIEWS[index];
 
   return (
-    <section className="w-full bg-[#f9fafb] py-16">
-      <div className="container mx-auto px-6 lg:px-8 max-w-7xl">
+    <section style={{ background: '#F9FAFB', padding: '80px 24px' }}>
+      <div style={{ maxWidth: 860, margin: '0 auto' }}>
 
-        {/* Cabecera centrada */}
-        <div className="text-center mb-10">
-          <p className="text-xs font-semibold tracking-widest text-gray-400 uppercase mb-3">
-            {t('rc_label')}
+        {/* Header */}
+        <div style={{ textAlign: 'center', marginBottom: 48 }}>
+          <p style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#9CA3AF', marginBottom: 12 }}>
+            Lo que dicen nuestros clientes
           </p>
-          <h2 className="text-[28px] font-bold text-gray-900">
-            {t('rc_title')}
+          <h2 style={{ fontSize: 'clamp(26px, 3vw, 36px)', fontWeight: 800, color: '#111827', letterSpacing: '-1.5px', lineHeight: 1.1, margin: 0 }}>
+            Clientes que confían en nosotros en Google
           </h2>
         </div>
 
-        {/* Trust pills 2×2 */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-2xl mx-auto mb-12">
-          {pills.map((pill) => (
-            <div key={pill.title} className="flex items-start gap-3">
-              <div
-                className="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0"
-                style={{ backgroundColor: '#f3f4f6', borderRadius: '8px' }}
-              >
-                <pill.Icon className="w-5 h-5 text-[#6b7280]" />
-              </div>
-              <div>
-                <p className="text-sm font-bold text-gray-900 leading-snug">
-                  {pill.title}
-                </p>
-                <p className="text-[13px] text-gray-400 leading-snug mt-0.5">
-                  {pill.desc}
-                </p>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {/* Carousel */}
+        {/* Card carousel */}
         <div
-          className="relative flex items-center justify-center"
+          style={{ position: 'relative' }}
           onMouseEnter={() => setPaused(true)}
           onMouseLeave={() => setPaused(false)}
         >
-          {/* Flecha izquierda */}
+          {/* Prev */}
           <button
-            onClick={prev}
-            aria-label="Reseña anterior"
-            className="absolute left-0 md:-left-6 z-10 w-10 h-10 rounded-full border border-gray-200 bg-white hover:bg-gray-50 flex items-center justify-center transition-colors duration-150 flex-shrink-0"
+            onClick={() => go(-1)}
+            aria-label="Anterior"
+            style={{
+              position: 'absolute', left: -20, top: '50%', transform: 'translateY(-50%)',
+              zIndex: 10, width: 40, height: 40, borderRadius: '50%',
+              background: '#fff', border: '1px solid #E5E7EB',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              cursor: 'pointer', boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
+            }}
           >
-            <ChevronLeft className="w-5 h-5 text-gray-500" />
+            <ChevronLeft size={18} color="#374151" />
           </button>
 
           {/* Card */}
-          <div className="w-full max-w-[640px] mx-12 md:mx-14">
-            <div
-              key={animKey}
-              className="bg-white border border-gray-200 rounded-2xl p-8 animate-fade-slide"
-            >
-              {/* Fila superior */}
-              <div className="flex items-start justify-between gap-4 mb-6">
-                <div className="flex items-center gap-3">
-                  <div className="w-14 h-14 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0">
-                    <span className="text-base font-bold text-blue-600">
-                      {review.initials}
-                    </span>
-                  </div>
-                  <div>
-                    <p className="text-base font-bold text-gray-900 leading-tight">
-                      {review.name}
-                    </p>
-                    <p className="text-[13px] text-gray-400 leading-snug mt-0.5">
-                      {review.company}
-                    </p>
-                  </div>
+          <div style={{ overflow: 'hidden', borderRadius: 16 }}>
+            <AnimatePresence custom={dir} mode="wait">
+              <motion.div
+                key={index}
+                custom={dir}
+                variants={variants}
+                initial="enter"
+                animate="center"
+                exit="exit"
+                transition={{ duration: 0.35, ease: 'easeInOut' }}
+                style={{
+                  background: '#ffffff',
+                  border: '1px solid #E5E7EB',
+                  borderRadius: 16,
+                  padding: '40px 48px',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  gap: 24,
+                  textAlign: 'center',
+                }}
+              >
+                {/* Stars */}
+                <div style={{ display: 'flex', gap: 4 }}>
+                  {[1,2,3,4,5].map(s => (
+                    <Star key={s} size={18} fill={s <= review.rating ? '#FBBF24' : '#E5E7EB'} color="transparent" />
+                  ))}
                 </div>
-                <Stars />
-              </div>
 
-              {/* Texto */}
-              <p className="text-base italic text-gray-700 text-center leading-relaxed mb-6">
-                &ldquo;{review.text}&rdquo;
-              </p>
+                {/* Text */}
+                <p style={{ fontSize: 17, color: '#111827', lineHeight: 1.7, margin: 0, maxWidth: 620, fontWeight: 400 }}>
+                  "{review.text}"
+                </p>
 
-              {/* Pie */}
-              <p className="text-xs text-gray-400 text-center">{review.date}</p>
-            </div>
+                {/* Author */}
+                <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
+                  <div style={{
+                    width: 44, height: 44, borderRadius: '50%',
+                    background: '#F0F2F5',
+                    display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
+                  }}>
+                    <span style={{ fontSize: 14, fontWeight: 700, color: '#374151' }}>{review.initials}</span>
+                  </div>
+                  <div style={{ textAlign: 'left' }}>
+                    <p style={{ fontSize: 14, fontWeight: 700, color: '#111827', margin: 0 }}>{review.name}</p>
+                    <p style={{ fontSize: 12, color: '#9CA3AF', margin: 0, marginTop: 2 }}>{review.company}</p>
+                  </div>
+                  {/* Google logo */}
+                  <svg width="18" height="18" viewBox="0 0 24 24" style={{ marginLeft: 4, flexShrink: 0 }}>
+                    <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+                    <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+                    <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/>
+                    <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+                  </svg>
+                </div>
+
+                {/* Date */}
+                <p style={{ fontSize: 12, color: '#D1D5DB', margin: 0 }}>{review.date}</p>
+              </motion.div>
+            </AnimatePresence>
           </div>
 
-          {/* Flecha derecha */}
+          {/* Next */}
           <button
-            onClick={next}
-            aria-label="Siguiente reseña"
-            className="absolute right-0 md:-right-6 z-10 w-10 h-10 rounded-full border border-gray-200 bg-white hover:bg-gray-50 flex items-center justify-center transition-colors duration-150 flex-shrink-0"
+            onClick={() => go(1)}
+            aria-label="Siguiente"
+            style={{
+              position: 'absolute', right: -20, top: '50%', transform: 'translateY(-50%)',
+              zIndex: 10, width: 40, height: 40, borderRadius: '50%',
+              background: '#fff', border: '1px solid #E5E7EB',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              cursor: 'pointer', boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
+            }}
           >
-            <ChevronRight className="w-5 h-5 text-gray-500" />
+            <ChevronRight size={18} color="#374151" />
           </button>
         </div>
 
         {/* Dots */}
-        <div className="flex justify-center gap-2 mt-6">
-          {reviews.map((_, i) => (
+        <div style={{ display: 'flex', justifyContent: 'center', gap: 6, marginTop: 28 }}>
+          {REVIEWS.map((_, i) => (
             <button
               key={i}
-              onClick={() => goTo(i)}
-              aria-label={`Ir a la reseña ${i + 1}`}
-              className={`w-2.5 h-2.5 rounded-full transition-colors duration-200 ${
-                i === active ? 'bg-primary' : 'bg-gray-300'
-              }`}
+              onClick={() => setPage([i, i > index ? 1 : -1])}
+              aria-label={`Reseña ${i + 1}`}
+              style={{
+                width: i === index ? 20 : 8,
+                height: 8,
+                borderRadius: 99,
+                background: i === index ? '#111827' : '#D1D5DB',
+                border: 'none',
+                cursor: 'pointer',
+                padding: 0,
+                transition: 'width 0.3s ease, background 0.3s ease',
+              }}
             />
           ))}
         </div>
 
-        {/* CTA Google */}
-        <div className="text-center mt-8">
+        {/* CTA */}
+        <div style={{ textAlign: 'center', marginTop: 32 }}>
           <a
-            href="#"
-            className="text-[13px] text-primary font-medium hover:opacity-75 transition-opacity"
+            href="https://www.google.com/maps/search/Grupo+Rubio+Navarra/"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ fontSize: 13, color: '#6B7280', textDecoration: 'none', fontWeight: 500 }}
           >
-            {t('rc_cta')} →
+            Ver todas las reseñas en Google →
           </a>
         </div>
 
