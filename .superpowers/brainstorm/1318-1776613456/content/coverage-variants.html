@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Coverage Map – Variantes</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', system-ui, sans-serif; background: #0f1117; color: #f9fafb; padding: 32px 24px; }
+
+  h1 { font-size: 15px; font-weight: 600; color: #9ca3af; letter-spacing: .08em; text-transform: uppercase; margin-bottom: 8px; }
+  .lead { font-size: 13px; color: #6b7280; margin-bottom: 36px; }
+
+  .variants { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+
+  .variant {
+    border: 2px solid #1f2937;
+    border-radius: 12px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: border-color .18s, transform .18s;
+  }
+  .variant:hover { border-color: #546AE7; transform: translateY(-2px); }
+  .variant.selected { border-color: #546AE7; box-shadow: 0 0 0 3px rgba(84,106,231,.25); }
+
+  .variant-label {
+    padding: 10px 14px;
+    background: #161b27;
+    border-bottom: 1px solid #1f2937;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .variant-label .badge {
+    width: 22px; height: 22px; border-radius: 6px;
+    background: #546AE7; color: #fff;
+    font-size: 11px; font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .variant-label .name { font-size: 13px; font-weight: 600; color: #e5e7eb; }
+  .variant-label .desc { font-size: 11px; color: #6b7280; margin-left: auto; }
+
+  /* ── MOCKUP STYLES ── */
+  .mockup { width: 100%; background: #fff; }
+
+  /* A — Actual layout (referencia) */
+  .mock-a {
+    display: grid; grid-template-columns: 1.3fr 1fr;
+    gap: 0; height: 220px;
+  }
+  .mock-a .map-side {
+    background: #f0f2f5; padding: 12px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .mock-a .map-placeholder {
+    width: 100%; height: 100%;
+    background: #e5e7eb;
+    border-radius: 8px;
+    position: relative;
+    overflow: hidden;
+  }
+  .mock-a .map-placeholder svg { width: 100%; height: 100%; }
+  .mock-a .info-side {
+    padding: 20px 16px;
+    display: flex; flex-direction: column; gap: 12px;
+    background: #fff;
+  }
+  .mock-a .label-tag { font-size: 9px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: #546AE7; }
+  .mock-a .zone-list { display: flex; flex-direction: column; gap: 0; }
+  .mock-a .zone-item { font-size: 16px; font-weight: 800; color: #111827; padding: 6px 0; border-bottom: 1px solid #e5e7eb; }
+  .mock-a .zone-item:first-child { border-top: 1px solid #546AE7; }
+  .mock-a .stats { display: flex; flex-direction: column; gap: 4px; }
+  .mock-a .stat { font-size: 10px; color: #6b7280; }
+  .mock-a .stat strong { color: #111827; font-weight: 800; }
+
+  /* B — Dark full-bleed */
+  .mock-b { background: #0d1226; height: 220px; display: grid; grid-template-columns: 1fr 1.4fr; }
+  .mock-b .left-side { padding: 20px 16px; display: flex; flex-direction: column; gap: 12px; }
+  .mock-b .label-tag { font-size: 9px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: #7B9CF4; }
+  .mock-b .heading { font-size: 14px; font-weight: 800; color: #f9fafb; line-height: 1.3; }
+  .mock-b .stats-grid { display: flex; flex-direction: column; gap: 8px; margin-top: auto; }
+  .mock-b .stat-row { display: flex; align-items: baseline; gap: 6px; }
+  .mock-b .stat-num { font-size: 22px; font-weight: 900; color: #7B9CF4; }
+  .mock-b .stat-label { font-size: 10px; color: #9ca3af; }
+  .mock-b .right-side {
+    position: relative; overflow: hidden;
+  }
+  .mock-b .map-bg {
+    position: absolute; inset: 0;
+    background: #111c3a;
+  }
+  .mock-b .map-glow {
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
+    width: 140px; height: 140px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(84,106,231,.35) 0%, transparent 70%);
+  }
+  .mock-b .region-chips {
+    position: absolute; bottom: 12px; left: 50%; transform: translateX(-50%);
+    display: flex; gap: 6px;
+  }
+  .mock-b .chip { background: rgba(84,106,231,.7); color: #fff; font-size: 9px; font-weight: 700; padding: 3px 8px; border-radius: 4px; white-space: nowrap; }
+
+  /* C — Stats top, map full-width centered */
+  .mock-c { height: 220px; background: #fff; display: flex; flex-direction: column; }
+  .mock-c .stats-bar {
+    display: flex; align-items: center; justify-content: space-around;
+    padding: 12px 20px; border-bottom: 1px solid #f0f2f5;
+    background: #fafafa;
+  }
+  .mock-c .stat-block { text-align: center; }
+  .mock-c .stat-num { font-size: 20px; font-weight: 900; color: #546AE7; line-height: 1; }
+  .mock-c .stat-label { font-size: 9px; color: #9ca3af; margin-top: 2px; }
+  .mock-c .divider { width: 1px; height: 28px; background: #e5e7eb; }
+  .mock-c .map-area {
+    flex: 1; position: relative; overflow: hidden;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .mock-c .map-bg-light { position: absolute; inset: 0; background: #f8f9ff; }
+  .mock-c .region-labels {
+    position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%);
+    display: flex; gap: 8px;
+  }
+  .mock-c .region-label { font-size: 9px; font-weight: 700; color: #546AE7; background: rgba(84,106,231,.08); padding: 3px 8px; border-radius: 4px; }
+
+  /* D — Minimal: big headline left, borderless map right */
+  .mock-d { height: 220px; background: #fff; display: grid; grid-template-columns: 1fr 1.6fr; }
+  .mock-d .left { padding: 20px 16px; display: flex; flex-direction: column; justify-content: space-between; }
+  .mock-d .eyebrow { font-size: 9px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: #546AE7; }
+  .mock-d .big-title { font-size: 18px; font-weight: 900; color: #111827; line-height: 1.2; margin-top: 6px; }
+  .mock-d .zones-inline { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px; }
+  .mock-d .zone-tag { font-size: 10px; font-weight: 600; color: #374151; background: #f0f2f5; padding: 3px 8px; border-radius: 4px; }
+  .mock-d .stat-line { font-size: 11px; color: #6b7280; margin-top: auto; }
+  .mock-d .stat-line strong { color: #111827; }
+  .mock-d .right-map {
+    background: linear-gradient(135deg, #f8f9ff 0%, #eef0ff 100%);
+    position: relative; overflow: hidden;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .mock-d .map-dot-pattern {
+    position: absolute; inset: 0; opacity: .6;
+    background-image: radial-gradient(circle, #c7d0fa 1px, transparent 1px);
+    background-size: 8px 8px;
+  }
+  .mock-d .map-outline {
+    position: relative; z-index: 1;
+    width: 90px; height: 90px; border-radius: 50%;
+    background: rgba(84,106,231,.12);
+    border: 2px solid rgba(84,106,231,.3);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 10px; font-weight: 700; color: #546AE7;
+  }
+
+  .select-hint {
+    text-align: center; margin-top: 24px;
+    font-size: 12px; color: #6b7280;
+  }
+  .select-hint span { color: #546AE7; }
+</style>
+<script>
+  function select(el) {
+    document.querySelectorAll('.variant').forEach(v => v.classList.remove('selected'));
+    el.classList.add('selected');
+    const choice = el.dataset.choice;
+    const name = el.querySelector('.name').textContent;
+    if (window.parent && window.parent.postMessage) {
+      window.parent.postMessage({ type: 'click', choice, text: name }, '*');
+    }
+    try {
+      fetch('/event', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ type:'click', choice, text: name }) });
+    } catch(e) {}
+  }
+</script>
+</head>
+<body>
+
+<h1>Sección de Cobertura Geográfica — Variantes</h1>
+<p class="lead">Haz clic en la variante que más te encaje visualmente</p>
+
+<div class="variants">
+
+  <!-- A: Actual (referencia) -->
+  <div class="variant" data-choice="a" onclick="select(this)">
+    <div class="variant-label">
+      <div class="badge">A</div>
+      <div class="name">Actual (referencia)</div>
+      <div class="desc">Mapa izq. + sidebar dcha.</div>
+    </div>
+    <div class="mockup mock-a">
+      <div class="map-side">
+        <div class="map-placeholder">
+          <svg viewBox="0 0 200 160" xmlns="http://www.w3.org/2000/svg">
+            <!-- simplified Spain outline -->
+            <rect x="0" y="0" width="200" height="160" fill="#e5e7eb"/>
+            <!-- dot pattern region -->
+            <defs>
+              <pattern id="dp" x="0" y="0" width="6" height="6" patternUnits="userSpaceOnUse">
+                <rect x="1.5" y="1.5" width="3" height="3" fill="#7B9CF4" rx="0.5"/>
+              </pattern>
+            </defs>
+            <!-- simplified region shapes -->
+            <polygon points="95,30 135,28 145,55 130,72 100,70 80,60 75,40" fill="url(#dp)" stroke="#546AE7" stroke-width="1.2"/>
+            <polygon points="60,65 85,62 90,82 70,90 50,80 48,70" fill="url(#dp)" stroke="#546AE7" stroke-width="1.2"/>
+            <polygon points="135,50 170,45 175,80 155,90 130,80 128,60" fill="url(#dp)" stroke="#546AE7" stroke-width="1.2"/>
+          </svg>
+        </div>
+      </div>
+      <div class="info-side">
+        <div class="label-tag">Cobertura geográfica</div>
+        <div class="zone-list">
+          <div class="zone-item">Navarra</div>
+          <div class="zone-item">La Rioja</div>
+          <div class="zone-item">Aragón</div>
+        </div>
+        <div class="stats">
+          <div class="stat"><strong>+50</strong> años de experiencia</div>
+          <div class="stat"><strong>+80</strong> profesionales</div>
+          <div class="stat"><strong>3</strong> comunidades</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- B: Dark full-bleed -->
+  <div class="variant" data-choice="b" onclick="select(this)">
+    <div class="variant-label">
+      <div class="badge">B</div>
+      <div class="name">Oscuro — Fondo azul marino</div>
+      <div class="desc">Stats izq. + mapa oscuro dcha.</div>
+    </div>
+    <div class="mockup mock-b">
+      <div class="left-side">
+        <div class="label-tag">Cobertura geográfica</div>
+        <div class="heading">Navarra · La Rioja · Aragón</div>
+        <div class="stats-grid">
+          <div class="stat-row"><span class="stat-num">+50</span><span class="stat-label">años de experiencia</span></div>
+          <div class="stat-row"><span class="stat-num">+80</span><span class="stat-label">profesionales</span></div>
+          <div class="stat-row"><span class="stat-num">3</span><span class="stat-label">comunidades autónomas</span></div>
+        </div>
+      </div>
+      <div class="right-side">
+        <div class="map-bg"></div>
+        <div class="map-glow"></div>
+        <svg style="position:absolute;inset:0;width:100%;height:100%;opacity:.5" viewBox="0 0 200 160">
+          <defs>
+            <pattern id="dp2" x="0" y="0" width="6" height="6" patternUnits="userSpaceOnUse">
+              <rect x="1.5" y="1.5" width="3" height="3" fill="#7B9CF4" rx="0.5"/>
+            </pattern>
+          </defs>
+          <polygon points="75,30 115,28 125,55 110,72 80,70 60,60 55,40" fill="url(#dp2)" stroke="#546AE7" stroke-width="1.2"/>
+          <polygon points="40,65 65,62 70,82 50,90 30,80 28,70" fill="url(#dp2)" stroke="#546AE7" stroke-width="1.2"/>
+          <polygon points="115,50 150,45 155,80 135,90 110,80 108,60" fill="url(#dp2)" stroke="#546AE7" stroke-width="1.2"/>
+        </svg>
+        <div class="region-chips">
+          <div class="chip">Navarra</div>
+          <div class="chip">La Rioja</div>
+          <div class="chip">Aragón</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- C: Stats top banner + mapa centrado -->
+  <div class="variant" data-choice="c" onclick="select(this)">
+    <div class="variant-label">
+      <div class="badge">C</div>
+      <div class="name">Stats arriba + mapa centrado</div>
+      <div class="desc">Banner horizontal de stats + mapa grande</div>
+    </div>
+    <div class="mockup mock-c">
+      <div class="stats-bar">
+        <div class="stat-block">
+          <div class="stat-num">+50</div>
+          <div class="stat-label">años de experiencia</div>
+        </div>
+        <div class="divider"></div>
+        <div class="stat-block">
+          <div class="stat-num">+80</div>
+          <div class="stat-label">profesionales</div>
+        </div>
+        <div class="divider"></div>
+        <div class="stat-block">
+          <div class="stat-num">3</div>
+          <div class="stat-label">comunidades</div>
+        </div>
+      </div>
+      <div class="map-area">
+        <div class="map-bg-light"></div>
+        <svg style="position:relative;z-index:1;height:100%;width:auto" viewBox="0 0 300 120">
+          <defs>
+            <pattern id="dp3" x="0" y="0" width="6" height="6" patternUnits="userSpaceOnUse">
+              <rect x="1.5" y="1.5" width="3" height="3" fill="#7B9CF4" rx="0.5"/>
+            </pattern>
+          </defs>
+          <polygon points="120,10 180,8 195,45 170,62 130,60 100,48 95,22" fill="url(#dp3)" stroke="#546AE7" stroke-width="1.2"/>
+          <polygon points="70,55 105,52 112,78 85,88 58,76 55,63" fill="url(#dp3)" stroke="#546AE7" stroke-width="1.2"/>
+          <polygon points="185,38 240,33 248,72 218,84 182,72 178,50" fill="url(#dp3)" stroke="#546AE7" stroke-width="1.2"/>
+        </svg>
+        <div class="region-labels">
+          <div class="region-label">Navarra</div>
+          <div class="region-label">La Rioja</div>
+          <div class="region-label">Aragón</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- D: Minimal texto izquierda + mapa texturizado -->
+  <div class="variant" data-choice="d" onclick="select(this)">
+    <div class="variant-label">
+      <div class="badge">D</div>
+      <div class="name">Minimal — Texto + textura</div>
+      <div class="desc">Copy prominente + mapa ilustrado</div>
+    </div>
+    <div class="mockup mock-d">
+      <div class="left">
+        <div>
+          <div class="eyebrow">Cobertura geográfica</div>
+          <div class="big-title">Navarra<br>La Rioja<br>Aragón</div>
+          <div class="zones-inline" style="margin-top:10px">
+            <div class="zone-tag">+50 años</div>
+            <div class="zone-tag">+80 profesionales</div>
+            <div class="zone-tag">3 comunidades</div>
+          </div>
+        </div>
+        <div class="stat-line">Empresas certificadas<br><strong>ISO 9001 · APPCC</strong></div>
+      </div>
+      <div class="right-map">
+        <div class="map-dot-pattern"></div>
+        <svg style="position:relative;z-index:1;width:90%;height:90%" viewBox="0 0 200 160">
+          <defs>
+            <pattern id="dp4" x="0" y="0" width="6" height="6" patternUnits="userSpaceOnUse">
+              <rect x="1.5" y="1.5" width="3" height="3" fill="#546AE7" rx="0.5"/>
+            </pattern>
+          </defs>
+          <polygon points="85,25 130,22 142,52 124,68 90,66 68,55 63,33" fill="url(#dp4)" stroke="#546AE7" stroke-width="1.5" stroke-dasharray="none"/>
+          <polygon points="48,60 78,57 84,80 60,90 36,78 34,66" fill="url(#dp4)" stroke="#546AE7" stroke-width="1.5"/>
+          <polygon points="130,45 168,40 174,76 150,88 126,75 123,57" fill="url(#dp4)" stroke="#546AE7" stroke-width="1.5"/>
+          <!-- labels on map -->
+          <text x="95" y="50" font-size="8" font-weight="bold" fill="#111827" text-anchor="middle">Navarra</text>
+          <text x="55" y="75" font-size="7" font-weight="bold" fill="#111827" text-anchor="middle">La Rioja</text>
+          <text x="148" y="65" font-size="7" font-weight="bold" fill="#111827" text-anchor="middle">Aragón</text>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<p class="select-hint">Haz clic para seleccionar · También puedes responder en el terminal</p>
+
+</body>
+</html>
