@@ -2,6 +2,7 @@ import Link from "next/link";
 import { SERVICES, CATEGORY_LABELS, ServiceCategory } from "@/lib/services-data";
 import { Navbar } from "@/components/layout/Navbar";
 import Footer from "@/components/sections/Footer";
+import { HashScrollCenter, ServiciosQuickNav } from "@/components/sections/services/scroll-center";
 import { ArrowRight, Phone } from "lucide-react";
 
 const CATEGORY_ORDER: ServiceCategory[] = ["limpieza", "plagas", "alimentaria", "maquinaria", "formacion"];
@@ -27,6 +28,7 @@ export default function ServiciosPage() {
       <Navbar />
 
       {/* ── Header ── */}
+      <HashScrollCenter />
       <div style={{ background: "#111827", padding: "100px 32px 64px" }}>
         <div style={{ maxWidth: 1100, margin: "0 auto" }}>
           {/* Breadcrumb */}
@@ -48,24 +50,7 @@ export default function ServiciosPage() {
             Cinco áreas de actuación especializadas para cubrir todas las necesidades higiénicas de tu empresa.
           </p>
 
-          {/* Category quick nav */}
-          <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
-            {CATEGORY_ORDER.map((cat) => (
-              <a
-                key={cat}
-                href={`#${cat}`}
-                style={{
-                  display: "inline-flex", alignItems: "center",
-                  fontSize: 12, fontWeight: 600, color: "rgba(255,255,255,0.7)",
-                  background: "rgba(255,255,255,0.07)", border: "1px solid rgba(255,255,255,0.12)",
-                  borderRadius: 6, padding: "6px 14px", textDecoration: "none",
-                  whiteSpace: "nowrap", transition: "background 0.15s",
-                }}
-              >
-                {CATEGORY_LABELS[cat]}
-              </a>
-            ))}
-          </div>
+          <ServiciosQuickNav />
         </div>
       </div>
 

@@ -1,6 +1,7 @@
 'use client';
 
 import Image from 'next/image';
+import Link from 'next/link';
 import { ArrowUpRight, Star } from 'lucide-react';
 
 const CARD_RADIUS = 12;
@@ -41,13 +42,7 @@ function CardOverlay({ title, large = false }: { title: string; large?: boolean 
 
         {/* Arrow circle — slides up on hover */}
         <div
-          className="
-            flex items-center justify-center
-            w-9 h-9 rounded-full
-            transition-all duration-300 ease-out
-            opacity-0 translate-y-2
-            group-hover:opacity-100 group-hover:translate-y-0
-          "
+          className="flex items-center justify-center w-9 h-9 rounded-full transition-all duration-300 ease-out opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0"
           style={{
             background: 'rgba(255,255,255,0.2)',
             backdropFilter: 'blur(8px)',
@@ -168,36 +163,40 @@ export function PhotoGrid() {
       }}
     >
       {/* Limpieza — col 1, full height */}
-      <div
-        className="group cursor-pointer"
-        style={{ position: 'relative', borderRadius: CARD_RADIUS, overflow: 'hidden', gridColumn: 1, gridRow: '1 / 3' }}
-      >
-        <Image
-          src="/images/servicios/limpieza_profesional.jpg"
-          alt="Limpieza profesional en oficinas y espacios comerciales"
-          fill
-          quality={90}
-          className="object-cover object-center transition-transform duration-500 ease-out group-hover:scale-[1.04]"
-          sizes="(max-width: 768px) 90vw, 44vw"
-        />
-        <CardOverlay title={"Limpieza\nProfesional"} large />
-      </div>
+      <Link href="/servicios#limpieza" style={{ display: 'contents' }}>
+        <div
+          className="group cursor-pointer"
+          style={{ position: 'relative', borderRadius: CARD_RADIUS, overflow: 'hidden', gridColumn: 1, gridRow: '1 / 3' }}
+        >
+          <Image
+            src="/images/home/limpieza-profesional.webp"
+            alt="Limpieza profesional en oficinas y espacios comerciales"
+            fill
+            quality={90}
+            className="object-cover object-center transition-transform duration-500 ease-out group-hover:scale-[1.04]"
+            sizes="(max-width: 768px) 90vw, 44vw"
+          />
+          <CardOverlay title={"Limpieza\nProfesional"} large />
+        </div>
+      </Link>
 
       {/* Control de Plagas — col 2, row 1 */}
-      <div
-        className="group cursor-pointer"
-        style={{ position: 'relative', borderRadius: CARD_RADIUS, overflow: 'hidden', gridColumn: 2, gridRow: 1 }}
-      >
-        <Image
-          src="/images/servicios/control_de_plagas.jpg"
-          alt="Control de plagas y tratamientos DDD"
-          fill
-          quality={90}
-          className="object-cover object-center transition-transform duration-500 ease-out group-hover:scale-[1.04]"
-          sizes="(max-width: 768px) 90vw, 24vw"
-        />
-        <CardOverlay title={"Control\nde Plagas"} />
-      </div>
+      <Link href="/servicios#plagas" style={{ display: 'contents' }}>
+        <div
+          className="group cursor-pointer"
+          style={{ position: 'relative', borderRadius: CARD_RADIUS, overflow: 'hidden', gridColumn: 2, gridRow: 1 }}
+        >
+          <Image
+            src="/images/home/control-de-plagas.webp"
+            alt="Control de plagas y tratamientos DDD"
+            fill
+            quality={90}
+            className="object-cover object-center transition-transform duration-500 ease-out group-hover:scale-[1.04]"
+            sizes="(max-width: 768px) 90vw, 24vw"
+          />
+          <CardOverlay title={"Control\nde Plagas"} />
+        </div>
+      </Link>
 
       {/* Reviews widget — col 2, row 2 */}
       <div style={{ gridColumn: 2, gridRow: 2 }}>
@@ -205,20 +204,22 @@ export function PhotoGrid() {
       </div>
 
       {/* Tienda — col 3, full height */}
-      <div
-        className="group cursor-pointer"
-        style={{ position: 'relative', borderRadius: CARD_RADIUS, overflow: 'hidden', gridColumn: 3, gridRow: '1 / 3' }}
-      >
-        <Image
-          src="/images/servicios/tienda.jpg"
-          alt="Nuestra tienda de productos de higiene y limpieza"
-          fill
-          quality={90}
-          className="object-cover object-center transition-transform duration-500 ease-out group-hover:scale-[1.04]"
-          sizes="(max-width: 768px) 90vw, 32vw"
-        />
-        <CardOverlay title={"Nuestra\nTienda"} />
-      </div>
+      <Link href="/tienda" style={{ display: 'contents' }}>
+        <div
+          className="group cursor-pointer"
+          style={{ position: 'relative', borderRadius: CARD_RADIUS, overflow: 'hidden', gridColumn: 3, gridRow: '1 / 3' }}
+        >
+          <Image
+            src="/images/home/tienda.webp"
+            alt="Nuestra tienda de productos de higiene y limpieza"
+            fill
+            quality={90}
+            className="object-cover object-center transition-transform duration-500 ease-out group-hover:scale-[1.04]"
+            sizes="(max-width: 768px) 90vw, 32vw"
+          />
+          <CardOverlay title={"Nuestra\nTienda"} />
+        </div>
+      </Link>
     </div>
   );
 }

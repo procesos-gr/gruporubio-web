@@ -78,14 +78,11 @@ export function ReviewsCarousel() {
   const review = REVIEWS[index];
 
   return (
-    <section style={{ background: '#F9FAFB', padding: '80px 24px' }}>
+    <section style={{ background: '#F9FAFB', padding: '80px 24px', position: 'relative', zIndex: 1 }}>
       <div style={{ maxWidth: 860, margin: '0 auto' }}>
 
         {/* Header */}
         <div style={{ textAlign: 'center', marginBottom: 48 }}>
-          <p style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#9CA3AF', marginBottom: 12 }}>
-            Lo que dicen nuestros clientes
-          </p>
           <h2 style={{ fontSize: 'clamp(26px, 3vw, 36px)', fontWeight: 800, color: '#111827', letterSpacing: '-1.5px', lineHeight: 1.1, margin: 0 }}>
             Clientes que confían en nosotros en Google
           </h2>

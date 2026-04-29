@@ -85,8 +85,12 @@ export const useCartStore = create<CartStore>()(
             set({ cartId: cart.id, items: [], total: 0, itemCount: 0 })
           }
         } catch {
-          const { cart } = await medusa.store.cart.create({ region_id: REGION_ID })
-          set({ cartId: cart.id, items: [], total: 0, itemCount: 0 })
+          try {
+            const { cart } = await medusa.store.cart.create({ region_id: REGION_ID })
+            set({ cartId: cart.id, items: [], total: 0, itemCount: 0 })
+          } catch {
+            // Medusa unavailable (dev without backend)
+          }
         }
       },
 

@@ -23,7 +23,6 @@ export default function HomePage() {
           margin: 16,
           borderRadius: 16,
           position: 'relative',
-          overflow: 'hidden',
         }}
       >
 <Hero />

@@ -1,6 +1,7 @@
 "use client";
 
 import { Phone, MapPin, Mail, ArrowUpRight } from "lucide-react";
+import { usePathname } from "next/navigation";
 
 function LinkedinIcon({ size = 16 }: { size?: number }) {
   return (
@@ -53,6 +54,9 @@ const legalLinks = [
 ];
 
 export default function Footer() {
+  const pathname = usePathname();
+  const isPresupuesto = pathname?.includes("/presupuesto");
+
   return (
     <footer
       style={{ backgroundColor: "#1F2937", fontFamily: "'Plus Jakarta Sans', sans-serif" }}
@@ -86,7 +90,7 @@ export default function Footer() {
           {/* CTA */}
           <div className="flex flex-col sm:flex-row gap-3 lg:items-end">
             <a
-              href="/contacto"
+              href={isPresupuesto ? "/contacto" : "/presupuesto"}
               style={{
                 display: "inline-flex", alignItems: "center", gap: 8,
                 background: "#ffffff", color: "#111827",
@@ -94,19 +98,7 @@ export default function Footer() {
                 borderRadius: 8, textDecoration: "none", whiteSpace: "nowrap",
               }}
             >
-              Solicitar presupuesto <ArrowUpRight size={15} />
-            </a>
-            <a
-              href="tel:+34948825025"
-              style={{
-                display: "inline-flex", alignItems: "center", gap: 8,
-                background: "transparent", color: "#D1D5DB",
-                fontSize: 14, fontWeight: 500, padding: "13px 24px",
-                borderRadius: 8, textDecoration: "none",
-                border: "1px solid #374151", whiteSpace: "nowrap",
-              }}
-            >
-              <Phone size={14} /> 948 82 50 25
+              {isPresupuesto ? "Contactar" : "Solicitar presupuesto"} <ArrowUpRight size={15} />
             </a>
           </div>
 
@@ -210,8 +202,8 @@ export default function Footer() {
             </span>
             <ul className="flex flex-col gap-3">
               {[
-                { icon: Phone, text: "948 82 50 25",        href: "tel:+34948825025" },
-                { icon: Mail,  text: "info@gruporubio.es",  href: "mailto:info@gruporubio.es" },
+                { icon: Phone,  text: "948 82 50 25",       href: "tel:+34948825025" },
+                { icon: Mail,   text: "info@gruporubio.es", href: "mailto:info@gruporubio.es" },
                 { icon: MapPin, text: "Tudela, Navarra",    href: null },
               ].map(({ icon: Icon, text, href }) => (
                 <li key={text} className="flex items-center gap-3">

@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Navbar } from "@/components/layout/Navbar";
 import Footer from "@/components/sections/Footer";
 import { PresupuestoForm } from "@/components/sections/PresupuestoForm";
@@ -20,16 +21,15 @@ export default function PresupuestoPage() {
           pointerEvents: "none",
         }} />
         <div style={{ maxWidth: 1100, margin: "0 auto", position: "relative" }}>
-          <div style={{
-            display: "inline-flex", alignItems: "center", gap: 6,
-            background: "rgba(37,99,235,0.15)", border: "1px solid rgba(37,99,235,0.30)",
-            borderRadius: 6, padding: "4px 12px", marginBottom: 20,
-          }}>
-            <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#60A5FA", display: "inline-block" }} />
-            <span style={{ fontSize: 11, fontWeight: 700, color: "#93C5FD", letterSpacing: "0.1em", textTransform: "uppercase" }}>
-              Sin compromiso · Respuesta en 24h
-            </span>
-          </div>
+          {/* Breadcrumb */}
+          <nav style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 24 }}>
+            <Link href="/" style={{ fontSize: 13, color: "rgba(255,255,255,0.45)", textDecoration: "none" }}>
+              Inicio
+            </Link>
+            <span style={{ color: "rgba(255,255,255,0.25)", fontSize: 13 }}>/</span>
+            <span style={{ fontSize: 13, color: "rgba(255,255,255,0.85)" }}>Solicitar presupuesto</span>
+          </nav>
+
           <h1 style={{
             fontSize: "clamp(30px, 4vw, 54px)", fontWeight: 800, color: "#F9FAFB",
             letterSpacing: "-2px", lineHeight: 1.06, maxWidth: 640, marginBottom: 16,

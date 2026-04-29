@@ -4,9 +4,10 @@ import { useState } from 'react';
 import {
   MessageSquare, Wrench, AlertTriangle, Handshake,
   Phone, Mail, MapPin, Clock, CheckCircle2, AlertCircle, X, Send, ChevronRight,
+  PackageOpen, CalendarDays,
 } from 'lucide-react';
 
-type ContactType = 'general' | 'soporte' | 'urgencia' | 'comercial';
+type ContactType = 'general' | 'soporte' | 'urgencia' | 'comercial' | 'alquiler';
 
 interface Option {
   id: ContactType;
@@ -23,6 +24,12 @@ const OPTIONS: Option[] = [
     icon: <MessageSquare size={20} />,
     label: 'Información general',
     description: 'Presupuestos, información sobre servicios y consultas generales.',
+  },
+  {
+    id: 'alquiler',
+    icon: <PackageOpen size={20} />,
+    label: 'Alquiler de maquinaria',
+    description: 'Solicitar disponibilidad, precios y condiciones de alquiler de equipos.',
   },
   {
     id: 'soporte',
@@ -46,10 +53,28 @@ const OPTIONS: Option[] = [
 
 const LABELS: Record<ContactType, string> = {
   general: 'Información general',
+  alquiler: 'Alquiler de maquinaria',
   soporte: 'Soporte técnico',
   urgencia: 'Aviso urgente',
   comercial: 'Acuerdos comerciales',
 };
+
+const MAQUINAS_ALQUILER = [
+  'Fregadora Industrial Conductor a Pie (batería)',
+  'Fregadora Industrial Conductor Sentado (batería)',
+  'Barredora Industrial a Batería (interior)',
+  'Barredora Industrial a Gasolina (exterior)',
+  'Aspirador Industrial Seco/Húmedo',
+  'Aspirador Profesional a Batería (inalámbrico)',
+  'Hidrolimpiadora Agua Fría Monofásica (230V)',
+  'Hidrolimpiadora Agua Fría Trifásica (400V)',
+  'Hidrolimpiadora Agua Caliente',
+  'Lavamoquetas Inyección-Extracción (Kärcher Puzzi)',
+  'Generador de Ozono Industrial',
+  'Deshumidificadora Industrial',
+  'Rotativa Abrillantadora Monodisco',
+  'No sé cuál necesito / necesito asesoramiento',
+];
 
 type ToastType = 'success' | 'error';
 
@@ -86,7 +111,7 @@ function Toast({ type, message, onClose }: { type: ToastType; message: string; o
 
 export function ContactSection() {
   const [selected, setSelected] = useState<ContactType>('general');
-  const [form, setForm] = useState({ name: '', email: '', phone: '', message: '' });
+  const [form, setForm] = useState({ name: '', email: '', phone: '', message: '', maquina: '', fechaInicio: '', fechaFin: '', localidad: '' });
   const [loading, setLoading] = useState(false);
   const [toast, setToast] = useState<{ type: ToastType; message: string } | null>(null);
   const [sent, setSent] = useState(false);
@@ -128,7 +153,7 @@ export function ContactSection() {
               <p style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#9CA3AF', marginBottom: 14 }}>
                 Paso 1 — Tipo de consulta
               </p>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: 10 }}>
                 {OPTIONS.map((opt) => {
                   const isActive = selected === opt.id;
                   return (
@@ -238,6 +263,74 @@ export function ContactSection() {
                       placeholder="tu@empresa.com" style={inputStyle} />
                   </div>
 
+                  {/* Campos extra para alquiler */}
+                  {selected === 'alquiler' && (
+                    <>
+                      <div style={{ height: 1, background: '#F3F4F6' }} />
+
+                      <div style={{
+                        background: '#EFF6FF', border: '1px solid #BFDBFE',
+                        borderRadius: 8, padding: '12px 16px',
+                        display: 'flex', alignItems: 'center', gap: 8,
+                      }}>
+                        <CalendarDays size={14} style={{ color: '#2563EB', flexShrink: 0 }} />
+                        <p style={{ fontSize: 12, color: '#1D4ED8', margin: 0, fontWeight: 500 }}>
+                          Rellena los detalles del alquiler y te confirmamos disponibilidad en menos de 24h.
+                        </p>
+                      </div>
+
+                      <div>
+                        <label style={{ display: 'block', fontSize: 13, fontWeight: 600, color: '#374151', marginBottom: 6 }}>
+                          Equipo que necesitas *
+                        </label>
+                        <div style={{ position: 'relative' }}>
+                          <select
+                            required
+                            value={form.maquina}
+                            onChange={(e) => setForm({ ...form, maquina: e.target.value })}
+                            style={{ ...inputStyle, appearance: 'none', WebkitAppearance: 'none', paddingRight: 36, cursor: 'pointer', color: form.maquina ? '#111827' : '#9CA3AF' }}
+                          >
+                            <option value="" disabled>Selecciona un equipo</option>
+                            {MAQUINAS_ALQUILER.map((m) => (
+                              <option key={m} value={m}>{m}</option>
+                            ))}
+                          </select>
+                          <ChevronRight size={14} style={{ position: 'absolute', right: 12, top: '50%', transform: 'translateY(-50%) rotate(90deg)', color: '#9CA3AF', pointerEvents: 'none' }} />
+                        </div>
+                      </div>
+
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                          <label style={{ display: 'block', fontSize: 13, fontWeight: 600, color: '#374151', marginBottom: 6 }}>
+                            Fecha de inicio *
+                          </label>
+                          <input type="date" required value={form.fechaInicio}
+                            onChange={(e) => setForm({ ...form, fechaInicio: e.target.value })}
+                            style={inputStyle} />
+                        </div>
+                        <div>
+                          <label style={{ display: 'block', fontSize: 13, fontWeight: 600, color: '#374151', marginBottom: 6 }}>
+                            Fecha de fin (aprox.)
+                          </label>
+                          <input type="date" value={form.fechaFin}
+                            onChange={(e) => setForm({ ...form, fechaFin: e.target.value })}
+                            style={inputStyle} />
+                        </div>
+                      </div>
+
+                      <div>
+                        <label style={{ display: 'block', fontSize: 13, fontWeight: 600, color: '#374151', marginBottom: 6 }}>
+                          Localidad / provincia *
+                        </label>
+                        <input type="text" required value={form.localidad}
+                          onChange={(e) => setForm({ ...form, localidad: e.target.value })}
+                          placeholder="Ej: Pamplona, Navarra" style={inputStyle} />
+                      </div>
+
+                      <div style={{ height: 1, background: '#F3F4F6' }} />
+                    </>
+                  )}
+
                   <div>
                     <label style={{ display: 'block', fontSize: 13, fontWeight: 600, color: '#374151', marginBottom: 6 }}>
                       Mensaje <span style={{ color: '#9CA3AF', fontWeight: 400 }}>(opcional)</span>
@@ -249,6 +342,8 @@ export function ContactSection() {
                           ? 'Describe la urgencia y la dirección del problema...'
                           : selected === 'soporte'
                           ? 'Modelo de maquinaria, número de serie y descripción del problema...'
+                          : selected === 'alquiler'
+                          ? 'Accesos especiales, condiciones del espacio, cualquier detalle relevante...'
                           : 'Cuéntanos cómo podemos ayudarte...'
                       }
                       style={{ ...inputStyle, resize: 'vertical', lineHeight: 1.55 }}

@@ -1,10 +1,18 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { SERVICES, getServiceBySlug, getRelatedServices } from "@/lib/services-data";
+import { SERVICES, getServiceBySlug, getRelatedServices, ServiceData } from "@/lib/services-data";
 import { Navbar } from "@/components/layout/Navbar";
 import Footer from "@/components/sections/Footer";
 import { ServiceQuoteForm } from "@/components/sections/services/service-quote-form";
+import { MaquinariaAlquilerStrip } from "@/components/alquiler/MaquinariaAlquilerStrip";
+import Image from "next/image";
 import { Phone, CheckCircle2, ArrowRight, ImageIcon } from "lucide-react";
+
+const SLUGS_CON_ALQUILER = new Set([
+  'alquiler-de-maquinaria',
+  'servicio-tecnico-oficial-karcher',
+  'reparaciones-y-mantenimientos',
+]);
 
 export async function generateStaticParams() {
   const locales = ["es", "en", "fr"];
@@ -14,10 +22,10 @@ export async function generateStaticParams() {
 }
 
 interface PageProps {
-  params: Promise<{ locale: string; slug: string }>;
+  params: Promise<{ locale: string; slug: string }>
 }
 
-function ImgSlot({ ratio = "4/3", label = "Foto — sustituir" }: { ratio?: string; label?: string }) {
+function ImgSlot({ ratio = "4/3" }: { ratio?: string }) {
   return (
     <div style={{
       width: "100%", aspectRatio: ratio,
@@ -26,25 +34,132 @@ function ImgSlot({ ratio = "4/3", label = "Foto — sustituir" }: { ratio?: stri
       alignItems: "center", justifyContent: "center", gap: 8,
     }}>
       <ImageIcon size={22} style={{ color: "#CBD5E1" }} />
-      <span style={{ fontSize: 11, fontWeight: 600, color: "#CBD5E1", letterSpacing: "0.07em", textTransform: "uppercase" }}>
-        {label}
-      </span>
     </div>
   );
 }
 
+function ServiceImg({ src, alt, ratio }: { src?: string; alt: string; ratio: string }) {
+  if (!src) return <ImgSlot ratio={ratio} />;
+  return (
+    <div style={{ width: "100%", aspectRatio: ratio, borderRadius: 8, overflow: "hidden", position: "relative", flexShrink: 0 }}>
+      <Image src={src} alt={alt} fill className="object-cover" />
+    </div>
+  );
+}
+
+function IncludesList({ items }: { items: string[] }) {
+  return (
+    <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "flex", flexDirection: "column", gap: 13 }}>
+      {items.map((item, i) => (
+        <li key={i} style={{ display: "flex", alignItems: "flex-start", gap: 12 }}>
+          <CheckCircle2 size={17} style={{ color: "#374151", flexShrink: 0, marginTop: 3 }} />
+          <span style={{ fontSize: 15, color: "#374151", lineHeight: 1.65 }}>{item}</span>
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+// ── Layout A (índices 0, 3, 6…) ─────────────────────────────────────────────
+// Qué incluye: [lista | img portrait]   Cómo funciona: [img cuadrado | texto]
+function LayoutA({ service }: { service: ServiceData }) {
+  return (
+    <>
+      <div style={{ marginBottom: 52 }}>
+        <SectionTag text="Qué incluye" />
+        <h2 style={h2}>Alcance del servicio</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-[1fr_220px] gap-6 items-start">
+          <IncludesList items={service.includes} />
+          <ServiceImg src={service.image} alt={service.title} ratio="3/4" />
+        </div>
+      </div>
+
+      <div style={{ marginBottom: 52 }}>
+        <SectionTag text="Cómo funciona" />
+        <h2 style={h2}>El proceso paso a paso</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-[260px_1fr] gap-6 items-start">
+          <ServiceImg src={service.image2 ?? service.image} alt={service.title} ratio="1/1" />
+          <p style={{ fontSize: 15, color: "#4B5563", lineHeight: 1.8, margin: 0 }}>{service.howItWorks}</p>
+        </div>
+      </div>
+    </>
+  );
+}
+
+// ── Layout B (índices 1, 4, 7…) ─────────────────────────────────────────────
+// Qué incluye: [img portrait | lista]   Cómo funciona: [texto | img cuadrado]
+function LayoutB({ service }: { service: ServiceData }) {
+  return (
+    <>
+      <div style={{ marginBottom: 52 }}>
+        <SectionTag text="Qué incluye" />
+        <h2 style={h2}>Alcance del servicio</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-[200px_1fr] gap-6 items-start">
+          <ServiceImg src={service.image} alt={service.title} ratio="4/5" />
+          <IncludesList items={service.includes} />
+        </div>
+      </div>
+
+      <div style={{ marginBottom: 52 }}>
+        <SectionTag text="Cómo funciona" />
+        <h2 style={h2}>El proceso paso a paso</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-[1fr_260px] gap-6 items-start">
+          <p style={{ fontSize: 15, color: "#4B5563", lineHeight: 1.8, margin: 0 }}>{service.howItWorks}</p>
+          <ServiceImg src={service.image2 ?? service.image} alt={service.title} ratio="1/1" />
+        </div>
+      </div>
+    </>
+  );
+}
+
+// ── Layout C (índices 2, 5, 8…) ─────────────────────────────────────────────
+// Qué incluye: img panorámica arriba + lista en 2 col abajo
+// Cómo funciona: texto a la izq + img 4:3 a la dcha (más ancha)
+function LayoutC({ service }: { service: ServiceData }) {
+  return (
+    <>
+      <div style={{ marginBottom: 52 }}>
+        <SectionTag text="Qué incluye" />
+        <h2 style={h2}>Alcance del servicio</h2>
+        <div style={{ marginBottom: 20 }}>
+          <ServiceImg src={service.image} alt={service.title} ratio="16/7" />
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-3">
+          {service.includes.map((item, i) => (
+            <div key={i} style={{ display: "flex", alignItems: "flex-start", gap: 10 }}>
+              <CheckCircle2 size={16} style={{ color: "#374151", flexShrink: 0, marginTop: 3 }} />
+              <span style={{ fontSize: 14, color: "#374151", lineHeight: 1.6 }}>{item}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div style={{ marginBottom: 52 }}>
+        <SectionTag text="Cómo funciona" />
+        <h2 style={h2}>El proceso paso a paso</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-[1fr_300px] gap-6 items-start">
+          <p style={{ fontSize: 15, color: "#4B5563", lineHeight: 1.8, margin: 0 }}>{service.howItWorks}</p>
+          <ServiceImg src={service.image2 ?? service.image} alt={service.title} ratio="4/3" />
+        </div>
+      </div>
+    </>
+  );
+}
+
 export default async function ServicePage({ params }: PageProps) {
-  const { slug } = await params;
+  const { slug, locale } = await params;
   const service = getServiceBySlug(slug);
   if (!service) notFound();
 
+  const serviceIndex = SERVICES.findIndex(s => s.slug === slug);
+  const layout = serviceIndex % 3;
   const related = getRelatedServices(service.relatedSlugs);
 
   return (
     <div style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
       <Navbar />
 
-      {/* ── Hero — dark, clean ── */}
+      {/* ── Hero ── */}
       <section style={{ background: "#111827", padding: "120px 32px 64px" }}>
         <div style={{ maxWidth: 1100, margin: "0 auto" }}>
           <nav style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 28 }}>
@@ -81,36 +196,13 @@ export default async function ServicePage({ params }: PageProps) {
       <section style={{ background: "#FFFFFF", padding: "72px 32px" }}>
         <div className="max-w-[1100px] mx-auto grid grid-cols-1 lg:grid-cols-[1fr_360px] gap-10 lg:gap-16 items-start">
 
-          {/* Left */}
+          {/* Left — layout variable */}
           <div>
-            {/* Qué incluye */}
-            <div style={{ marginBottom: 52 }}>
-              <SectionTag text="Qué incluye" />
-              <h2 style={h2}>Alcance del servicio</h2>
-              <div className="grid grid-cols-1 sm:grid-cols-[1fr_220px] gap-6 items-start">
-                <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "flex", flexDirection: "column", gap: 13 }}>
-                  {service.includes.map((item, i) => (
-                    <li key={i} style={{ display: "flex", alignItems: "flex-start", gap: 12 }}>
-                      <CheckCircle2 size={17} style={{ color: "#374151", flexShrink: 0, marginTop: 3 }} />
-                      <span style={{ fontSize: 15, color: "#374151", lineHeight: 1.65 }}>{item}</span>
-                    </li>
-                  ))}
-                </ul>
-                <ImgSlot ratio="3/4" label="Foto" />
-              </div>
-            </div>
+            {layout === 0 && <LayoutA service={service} />}
+            {layout === 1 && <LayoutB service={service} />}
+            {layout === 2 && <LayoutC service={service} />}
 
-            {/* Cómo funciona */}
-            <div style={{ marginBottom: 52 }}>
-              <SectionTag text="Cómo funciona" />
-              <h2 style={h2}>El proceso paso a paso</h2>
-              <div className="grid grid-cols-1 sm:grid-cols-[280px_1fr] gap-6 items-start">
-                <ImgSlot ratio="1/1" label="Foto" />
-                <p style={{ fontSize: 15, color: "#4B5563", lineHeight: 1.8, margin: 0 }}>{service.howItWorks}</p>
-              </div>
-            </div>
-
-            {/* Por qué Grupo Rubio */}
+            {/* Por qué Grupo Rubio — igual en todos */}
             <div style={{ background: "#F9FAFB", borderRadius: 8, padding: 28, border: "1px solid #E5E7EB" }}>
               <SectionTag text="Por qué elegirnos" />
               <h2 style={{ ...h2, marginBottom: 14 }}>Por qué Grupo Rubio</h2>
@@ -153,6 +245,9 @@ export default async function ServicePage({ params }: PageProps) {
           </div>
         </div>
       </section>
+
+      {/* ── Alquiler strip ── */}
+      {SLUGS_CON_ALQUILER.has(slug) && <MaquinariaAlquilerStrip locale={locale} />}
 
       {/* ── Quote form ── */}
       <section id="solicitar" style={{ background: "#FFFFFF", padding: "72px 32px", borderTop: "1px solid #F3F4F6" }}>

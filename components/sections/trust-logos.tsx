@@ -9,6 +9,11 @@ const logos = [
   { src: "/images/clients/logo-aspil.png", alt: "Aspil" },
   { src: "/images/clients/logo-uvesa.png", alt: "Uvesa" },
   { src: "/images/clients/logo-urzante.png", alt: "Urzante" },
+  { src: "/images/clients/sendaviva.png", alt: "Sendaviva" },
+  { src: "/images/clients/remigio.png", alt: "Hotel Remigio" },
+  { src: "/images/clients/samanes.png", alt: "Samanes" },
+  { src: "/images/clients/hoteldelta.png", alt: "Hotel Delta+", invert: true },
+  { src: "/images/clients/bodegacirsus.png", alt: "Bodegas Cirsus" },
 ];
 
 export function TrustLogos() {
@@ -32,15 +37,17 @@ export function TrustLogos() {
         </h2>
 
         {/* Subtitle */}
-        <p style={{
-          fontSize: 15,
-          color: '#6B7280',
-          lineHeight: 1.65,
-          maxWidth: 500,
-          marginBottom: 0,
-        }}>
-          {t('ticker_subtitle')}
-        </p>
+        {t('ticker_subtitle') && (
+          <p style={{
+            fontSize: 15,
+            color: '#6B7280',
+            lineHeight: 1.65,
+            maxWidth: 500,
+            marginBottom: 0,
+          }}>
+            {t('ticker_subtitle')}
+          </p>
+        )}
 
       </div>
 
@@ -60,7 +67,7 @@ export function TrustLogos() {
                 alt={logo.alt}
                 height={48}
                 width={140}
-                className="object-contain grayscale opacity-50 hover:grayscale-0 hover:opacity-100 transition-all duration-300"
+                className={`object-contain grayscale opacity-50 hover:grayscale-0 hover:opacity-100 transition-all duration-300${logo.invert ? ' invert' : ''}`}
                 style={{ width: '100%', height: '100%', objectFit: 'contain' }}
               />
             </div>

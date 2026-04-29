@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname, useRouter } from 'next/navigation';
-import { ChevronDown, ArrowRight, Store } from 'lucide-react';
+import { ChevronDown, ArrowRight, Store, Phone, MapPin, Truck } from 'lucide-react';
 import { SERVICES, CATEGORY_LABELS, ServiceCategory } from '@/lib/services-data';
 import { CartButton } from "@/components/tienda/CartButton"
 
@@ -86,12 +86,70 @@ const FEATURED: Record<ServiceCategory, string[]> = {
   ],
 };
 
+function TopBar({ scrolled }: { scrolled: boolean }) {
+  return (
+    <div
+      style={{
+        position: 'fixed',
+        top: scrolled ? -36 : 0, left: 0, right: 0,
+        height: 36,
+        background: '#FFFFFF',
+        borderBottom: '1px solid #F3F4F6',
+        transition: 'top 0.3s ease',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'flex-end',
+        padding: '0 32px',
+        zIndex: 51,
+        gap: 24,
+      }}
+    >
+      <a
+        href="tel:+34948825025"
+        style={{
+          display: 'flex', alignItems: 'center', gap: 6,
+          fontSize: 11.5, fontWeight: 500, color: '#6B7280',
+          textDecoration: 'none',
+          transition: 'color 0.15s',
+        }}
+        onMouseEnter={e => (e.currentTarget.style.color = '#111827')}
+        onMouseLeave={e => (e.currentTarget.style.color = '#6B7280')}
+      >
+        <Phone size={11} strokeWidth={2} />
+        948 82 50 25
+      </a>
+      <span style={{ width: 1, height: 14, background: '#E5E7EB' }} />
+      <span style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 11.5, color: '#9CA3AF' }}>
+        <MapPin size={11} strokeWidth={2} />
+        Tudela, Navarra
+      </span>
+      <span style={{ width: 1, height: 14, background: '#E5E7EB' }} />
+      <Link
+        href="/alquiler"
+        style={{
+          display: 'flex', alignItems: 'center', gap: 5,
+          fontSize: 11.5, fontWeight: 600,
+          color: '#111827',
+          textDecoration: 'none',
+          transition: 'color 0.15s',
+        }}
+        onMouseEnter={e => (e.currentTarget.style.color = '#374151')}
+        onMouseLeave={e => (e.currentTarget.style.color = '#111827')}
+      >
+        <Truck size={11} strokeWidth={2} />
+        Alquiler de maquinaria
+      </Link>
+    </div>
+  );
+}
+
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const [langOpen, setLangOpen] = useState(false);
   const pathname = usePathname();
   const router = useRouter();
+  const navRef = useRef<HTMLElement>(null);
   const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const langTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -109,6 +167,7 @@ export function Navbar() {
     pathname.includes('/nosotros') ||
     pathname.includes('/contacto') ||
     pathname.includes('/tienda') ||
+    pathname.includes('/alquiler') ||
     pathname.includes('/presupuesto');
 
   const showDark = scrolled || open;
@@ -132,11 +191,9 @@ export function Navbar() {
   const linkColor = (!showDark && isOnDarkPage) ? 'rgba(255,255,255,0.88)' : '#374151';
   const chevronColor = (!showDark && isOnDarkPage) ? 'rgba(255,255,255,0.45)' : '#9CA3AF';
 
-  // Navbar bottom edge = top(16) + height(68) = 84
-  const NAVBAR_BOTTOM = 84;
-
   return (
     <>
+      <TopBar scrolled={scrolled} />
       <style>{`
         .nav-btn-tienda {
           transition: all 0.25s ease;
@@ -158,9 +215,10 @@ export function Navbar() {
       `}</style>
 
       <nav
+        ref={navRef}
         style={{
           position: 'fixed',
-          top: 16, left: 16, right: 16,
+          top: scrolled ? 16 : 52, left: 16, right: 16,
           height: 68,
           zIndex: 50,
           borderRadius: open ? '12px 12px 0 0' : 12,
@@ -171,8 +229,8 @@ export function Navbar() {
           background: (scrolled || open) ? 'rgba(255,255,255,0.96)' : 'transparent',
           backdropFilter: (scrolled || open) ? 'blur(14px)' : 'none',
           WebkitBackdropFilter: (scrolled || open) ? 'blur(14px)' : 'none',
-          boxShadow: scrolled ? '0 2px 24px rgba(0,0,0,0.07)' : 'none',
-          transition: 'background 0.3s ease, box-shadow 0.3s ease, border-radius 0.15s ease',
+          boxShadow: (scrolled && !open) ? '0 2px 24px rgba(0,0,0,0.07)' : 'none',
+          transition: 'background 0.3s ease, box-shadow 0.3s ease, border-radius 0.15s ease, top 0.3s ease',
         }}
       >
         <div style={{ display: 'flex', alignItems: 'center', gap: 2, margin: '0 auto' }}>
@@ -241,90 +299,6 @@ export function Navbar() {
               />
             </Link>
 
-            {/* ── Mega-menu dropdown — flush with navbar bottom ── */}
-            <div
-              onMouseEnter={onEnter}
-              onMouseLeave={onLeave}
-              style={{
-                position: 'fixed',
-                top: NAVBAR_BOTTOM,
-                left: 16,
-                right: 16,
-                background: '#FFFFFF',
-                borderRadius: '0 0 12px 12px',
-                boxShadow: '0 24px 64px rgba(0,0,0,0.13), 0 4px 16px rgba(0,0,0,0.06)',
-                borderLeft: '1px solid #E5E7EB',
-                borderRight: '1px solid #E5E7EB',
-                borderBottom: '1px solid #E5E7EB',
-                padding: '28px 32px 24px',
-                zIndex: 49,
-                pointerEvents: open ? 'auto' : 'none',
-                opacity: open ? 1 : 0,
-                transform: open ? 'translateY(0)' : 'translateY(-6px)',
-                transition: 'opacity 0.18s ease, transform 0.18s ease',
-              }}
-            >
-              {/* Category columns */}
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: 28 }}>
-                {CATEGORY_ORDER.map((cat) => {
-                  const catServices = FEATURED[cat]
-                    .map((slug) => SERVICES.find((s) => s.slug === slug))
-                    .filter(Boolean);
-                  return (
-                    <div key={cat}>
-                      <p style={{
-                        fontSize: 10, fontWeight: 700, letterSpacing: '0.11em',
-                        textTransform: 'uppercase', color: '#9CA3AF',
-                        margin: '0 0 10px',
-                      }}>
-                        {CATEGORY_LABELS[cat]}
-                      </p>
-                      <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: 2 }}>
-                        {catServices.map((s) => s && (
-                          <li key={s.slug}>
-                            <Link
-                              href={`/servicios/${s.slug}`}
-                              onClick={() => setOpen(false)}
-                              style={{
-                                display: 'block', fontSize: 13, fontWeight: 500,
-                                color: '#374151', textDecoration: 'none',
-                                padding: '5px 8px', borderRadius: 6, lineHeight: 1.4,
-                                transition: 'background 0.12s ease, color 0.12s ease',
-                              }}
-                              onMouseEnter={(e) => {
-                                (e.currentTarget as HTMLElement).style.background = '#F9FAFB';
-                                (e.currentTarget as HTMLElement).style.color = '#111827';
-                              }}
-                              onMouseLeave={(e) => {
-                                (e.currentTarget as HTMLElement).style.background = 'transparent';
-                                (e.currentTarget as HTMLElement).style.color = '#374151';
-                              }}
-                            >
-                              {s.title}
-                            </Link>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  );
-                })}
-              </div>
-
-              {/* Bottom bar — just the catalog link */}
-              <div style={{ borderTop: '1px solid #F3F4F6', paddingTop: 14, marginTop: 20, display: 'flex', justifyContent: 'flex-end' }}>
-                <Link
-                  href="/servicios"
-                  onClick={() => setOpen(false)}
-                  style={{
-                    display: 'flex', alignItems: 'center', gap: 6,
-                    fontSize: 13, fontWeight: 600, color: '#111827',
-                    textDecoration: 'none',
-                  }}
-                >
-                  Ver catálogo completo <ArrowRight size={13} />
-                </Link>
-              </div>
-            </div>
           </div>
 
           {/* Nosotros + Contacto */}
@@ -469,6 +443,105 @@ export function Navbar() {
             <CartButton />
           </div>
 
+        </div>
+
+        {/* ── Mega-menu dropdown — absolute child of nav ── */}
+        <div
+          onMouseEnter={onEnter}
+          onMouseLeave={onLeave}
+          style={{
+            position: 'absolute',
+            top: '100%',
+            left: 0,
+            right: 0,
+            background: '#FFFFFF',
+            borderRadius: '0 0 12px 12px',
+            boxShadow: '0 24px 64px rgba(0,0,0,0.13), 0 4px 16px rgba(0,0,0,0.06)',
+            borderLeft: '1px solid #E5E7EB',
+            borderRight: '1px solid #E5E7EB',
+            borderBottom: '1px solid #E5E7EB',
+            padding: '28px 32px 24px',
+            pointerEvents: open ? 'auto' : 'none',
+            opacity: open ? 1 : 0,
+            visibility: open ? 'visible' : 'hidden',
+            transition: 'opacity 0.18s ease, visibility 0.18s ease',
+          }}
+        >
+          {/* Category columns */}
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: 28 }}>
+            {CATEGORY_ORDER.map((cat) => {
+              const catServices = FEATURED[cat]
+                .map((slug) => SERVICES.find((s) => s.slug === slug))
+                .filter(Boolean);
+              return (
+                <div key={cat}>
+                  <p style={{
+                    fontSize: 10, fontWeight: 700, letterSpacing: '0.11em',
+                    textTransform: 'uppercase', color: '#9CA3AF',
+                    margin: '0 0 10px',
+                  }}>
+                    {CATEGORY_LABELS[cat]}
+                  </p>
+                  <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: 2 }}>
+                    {catServices.map((s) => s && (
+                      <li key={s.slug}>
+                        <Link
+                          href={`/servicios/${s.slug}`}
+                          onClick={() => setOpen(false)}
+                          style={{
+                            display: 'block', fontSize: 13, fontWeight: 500,
+                            color: '#374151', textDecoration: 'none',
+                            padding: '5px 8px', borderRadius: 6, lineHeight: 1.4,
+                            transition: 'background 0.12s ease, color 0.12s ease',
+                          }}
+                          onMouseEnter={(e) => {
+                            (e.currentTarget as HTMLElement).style.background = '#F9FAFB';
+                            (e.currentTarget as HTMLElement).style.color = '#111827';
+                          }}
+                          onMouseLeave={(e) => {
+                            (e.currentTarget as HTMLElement).style.background = 'transparent';
+                            (e.currentTarget as HTMLElement).style.color = '#374151';
+                          }}
+                        >
+                          {s.title}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              );
+            })}
+          </div>
+
+          {/* Bottom bar */}
+          <div style={{ borderTop: '1px solid #F3F4F6', paddingTop: 14, marginTop: 20, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <Link
+              href="/alquiler"
+              onClick={() => setOpen(false)}
+              style={{
+                display: 'inline-flex', alignItems: 'center', gap: 7,
+                fontSize: 12, fontWeight: 600,
+                color: '#fff',
+                background: '#111827',
+                padding: '7px 14px',
+                borderRadius: 6,
+                textDecoration: 'none',
+              }}
+            >
+              <Truck size={12} /> Catálogo de alquiler
+            </Link>
+            <Link
+              href="/servicios"
+              onClick={() => setOpen(false)}
+              style={{
+                display: 'flex', alignItems: 'center', gap: 6,
+                fontSize: 13, fontWeight: 600, color: '#111827',
+                textDecoration: 'none',
+              }}
+            >
+              Ver catálogo completo <ArrowRight size={13} />
+            </Link>
+          </div>
         </div>
       </nav>
     </>

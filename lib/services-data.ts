@@ -17,6 +17,8 @@ export interface ServiceData {
   whyUs: string;
   extraFact: string;
   pexelsQuery: string;
+  image?: string;
+  image2?: string;
   relatedSlugs: string[];
 }
 
@@ -43,6 +45,8 @@ export const SERVICES: ServiceData[] = [
     extraFact:
       "Un plan de limpieza industrial profesional no solo previene accidentes, sino que reduce el desgaste abrasivo en la propia maquinaria de producción del cliente, incrementando el tiempo de actividad y mejorando la salud respiratoria del personal.",
     pexelsQuery: "industrial cleaning factory floor professional",
+    image: "/images/servicios/limpiezas-industriales/1.webp",
+    image2: "/images/servicios/limpiezas-industriales/2.webp",
     relatedSlugs: [
       "servicios-globales-de-higiene",
       "tratamientos-de-suelos",
@@ -70,6 +74,8 @@ export const SERVICES: ServiceData[] = [
     extraFact:
       "La desratización urbana evita brotes epidemiológicos; los roedores e insectos tratados son vectores de zoonosis como el tifus, la fiebre aftosa, la rabia y el cólera.",
     pexelsQuery: "pest control professional disinfection spray",
+    image: "/images/servicios/ddd-desratizacion-desinsectacion-desinfeccion/1-hq.webp",
+    image2: "/images/servicios/ddd-desratizacion-desinsectacion-desinfeccion/2.webp",
     relatedSlugs: [
       "eliminar-plagas-de-cucarachas",
       "retirada-de-nidos-de-avispas",
@@ -98,6 +104,8 @@ export const SERVICES: ServiceData[] = [
     extraFact:
       "La ozonización preventiva reduce la incidencia de conjuntivitis, cefaleas, faringitis y procesos alérgicos respiratorios en las plantillas laborales.",
     pexelsQuery: "air purification ozone clean environment office",
+    image: "/images/servicios/ozonizacion/1-hq.webp",
+    image2: "/images/servicios/ozonizacion/2.webp",
     relatedSlugs: [
       "limpiezas-de-siniestros",
       "mantenimiento-y-conservacion",
@@ -126,6 +134,8 @@ export const SERVICES: ServiceData[] = [
     extraFact:
       "La agilidad operativa, soportada por nuestro propio parque de maquinaria, asegura una reducción drástica en los tiempos de espera entre la finalización de albañilería y la habitabilidad real del espacio.",
     pexelsQuery: "construction cleaning post renovation apartment",
+    image: "/images/servicios/limpiezas-de-fin-de-obra/1.webp",
+    image2: "/images/servicios/limpiezas-de-fin-de-obra/2.webp",
     relatedSlugs: [
       "limpiezas-de-siniestros",
       "tratamientos-de-suelos",
@@ -154,6 +164,8 @@ export const SERVICES: ServiceData[] = [
     extraFact:
       "La eficiencia del sistema radica en su invisibilidad tóxica: la termita obrera no detecta que el cebo es un biocida de acción lenta, y continúa reclutando compañeras hacia la estación hasta que ya es demasiado tarde para la colonia.",
     pexelsQuery: "termite wood damage pest inspection house",
+    image: "/images/servicios/tratamiento-anti-termitas/1-hq.webp",
+    image2: "/images/servicios/tratamiento-anti-termitas/2.webp",
     relatedSlugs: [
       "desinsectacion-de-carcoma",
       "tratamiento-anti-xilofagos",
@@ -182,6 +194,8 @@ export const SERVICES: ServiceData[] = [
     extraFact:
       "El umbral de riesgo alcanza su pico al final del verano. Las obreras se vuelven extremadamente agresivas en las inmediaciones de fuentes azucaradas y presencia humana.",
     pexelsQuery: "wasp nest removal pest control exterminator",
+    image: "/images/servicios/retirada-de-nidos-de-avispas/1.webp",
+    image2: "/images/servicios/retirada-de-nidos-de-avispas/2.webp",
     relatedSlugs: [
       "ddd-desratizacion-desinsectacion-desinfeccion",
       "eliminar-plagas-de-cucarachas",
@@ -210,6 +224,8 @@ export const SERVICES: ServiceData[] = [
     extraFact:
       "Las patas espinosas de las cucarachas son excelentes vectores mecánicos que arrastran microorganismos desde el alcantarillado, provocando contaminación cruzada sobre alimentos.",
     pexelsQuery: "cockroach pest control kitchen hygiene",
+    image: "/images/servicios/eliminar-plagas-de-cucarachas/1.webp",
+    image2: "/images/servicios/eliminar-plagas-de-cucarachas/2.webp",
     relatedSlugs: [
       "ddd-desratizacion-desinsectacion-desinfeccion",
       "eliminar-plagas-de-hormigas",
@@ -238,6 +254,8 @@ export const SERVICES: ServiceData[] = [
     extraFact:
       "El servicio tiene flexibilidad total: puede activarse como intervención de choque puntual o estructurarse como plan de mantenimiento periódico para conservación a largo plazo.",
     pexelsQuery: "window cleaning highrise building facade professional",
+    image: "/images/servicios/limpiezas-en-altura/1.webp",
+    image2: "/images/servicios/limpiezas-en-altura/2.webp",
     relatedSlugs: [
       "limpiezas-de-fachadas-y-grafitis",
       "mantenimiento-y-conservacion",
@@ -322,6 +340,8 @@ export const SERVICES: ServiceData[] = [
     extraFact:
       "La tienda especializada en Tudela provee más de 135 referencias de productos químicos y 241 útiles de limpieza profesionales para apoyar la logística de estos servicios.",
     pexelsQuery: "hygiene services professional cleaning team commercial",
+    image: "/images/servicios/servicios-globales-de-higiene/1.webp",
+    image2: "/images/servicios/servicios-globales-de-higiene/2.webp",
     relatedSlugs: [
       "mantenimiento-y-conservacion",
       "limpiezas-industriales",
@@ -350,6 +370,8 @@ export const SERVICES: ServiceData[] = [
     extraFact:
       "La ausencia de mantenimiento en conductos representa uno de los mayores riesgos de incendio estructural, y su correcta higienización proporciona un drástico ahorro en el consumo eléctrico de los motores.",
     pexelsQuery: "HVAC duct cleaning ventilation system industrial",
+    image: "/images/servicios/limpieza-de-conductos-de-climatizacion/1.webp",
+    image2: "/images/servicios/limpieza-de-conductos-de-climatizacion/2.webp",
     relatedSlugs: [
       "mantenimiento-y-conservacion",
       "limpiezas-industriales",
@@ -378,6 +400,8 @@ export const SERVICES: ServiceData[] = [
     extraFact:
       "Los tratamientos protectores permanentes actúan como agentes hidro-repelentes, impidiendo la filtración capilar de aguas pluviales y previniendo patologías estructurales y proliferación de mohos.",
     pexelsQuery: "building facade cleaning graffiti removal exterior",
+    image: "/images/servicios/limpiezas-de-fachadas-y-grafitis/1.webp",
+    image2: "/images/servicios/limpiezas-de-fachadas-y-grafitis/2.webp",
     relatedSlugs: [
       "limpiezas-en-altura",
       "mantenimiento-y-conservacion",
@@ -460,6 +484,8 @@ export const SERVICES: ServiceData[] = [
     extraFact:
       "Los tricomas (pelos urticantes) cargados de taumetopoeína causan urticarias extremas en humanos y son célebres por causar necrosis de la lengua en perros.",
     pexelsQuery: "pine processionary caterpillar pine forest pest",
+    image: "/images/servicios/tratamientos-contra-la-procesionaria/1.webp",
+    image2: "/images/servicios/tratamientos-contra-la-procesionaria/2.webp",
     relatedSlugs: [
       "ddd-desratizacion-desinsectacion-desinfeccion",
       "control-de-aves",
@@ -516,6 +542,8 @@ export const SERVICES: ServiceData[] = [
     extraFact:
       "Anobium Punctatum es el agente detrás del 75% de los daños en maderas estructurales y ornamentales, devorando tanto coníferas blandas como frondosas duras.",
     pexelsQuery: "woodworm beetle wood damage antique furniture treatment",
+    image: "/images/servicios/desinsectacion-de-carcoma/1.webp",
+    image2: "/images/servicios/desinsectacion-de-carcoma/2.webp",
     relatedSlugs: [
       "tratamiento-anti-termitas",
       "tratamiento-anti-xilofagos",
@@ -684,6 +712,7 @@ export const SERVICES: ServiceData[] = [
     extraFact:
       "Beber agua infectada no causa la enfermedad. El contagio se produce cuando la bacteria viaja en aerosol de una ducha o torre de enfriamiento e inhala directamente hasta los alvéolos pulmonares.",
     pexelsQuery: "water treatment legionella plumbing system hotel",
+    image: "/images/servicios/tratamientos-de-legionela/1-hq.webp",
     relatedSlugs: [
       "ddd-desratizacion-desinsectacion-desinfeccion",
       "mantenimiento-y-conservacion",
@@ -712,6 +741,8 @@ export const SERVICES: ServiceData[] = [
     extraFact:
       "Las palomas transportan patógenos respiratorios causantes de histoplasmosis y clamidia, e infestan interiores con ácaros, arácnidos, pulgas y garrapatas asociados.",
     pexelsQuery: "pigeon control bird exclusion building urban pest",
+    image: "/images/servicios/control-de-aves/1.webp",
+    image2: "/images/servicios/control-de-aves/2.webp",
     relatedSlugs: [
       "ddd-desratizacion-desinsectacion-desinfeccion",
       "tratamientos-contra-la-procesionaria",
@@ -768,6 +799,8 @@ export const SERVICES: ServiceData[] = [
     extraFact:
       "El mayor vector de alteración biológica en plantas de procesado es la falta de praxis higiénica personal. Esta capacitación formal es la primera línea defensiva contra brotes epidemiológicos.",
     pexelsQuery: "food safety training hygiene food handler certificate",
+    image: "/images/servicios/formacion-de-manipulador-de-alimentos/1.webp",
+    image2: "/images/servicios/formacion-de-manipulador-de-alimentos/2.webp",
     relatedSlugs: [
       "appcc-implantacion-y-verificacion",
       "centro-de-formacion",
@@ -796,6 +829,8 @@ export const SERVICES: ServiceData[] = [
     extraFact:
       "El Plan de Trazabilidad permite ordenar retiradas quirúrgicas y ultrarrápidas de lotes intoxicados, mitigando el colapso financiero de la marca y las imputaciones de responsabilidad penal.",
     pexelsQuery: "food safety HACCP quality control food industry audit",
+    image: "/images/servicios/appcc-implantacion-y-verificacion/1.webp",
+    image2: "/images/servicios/appcc-implantacion-y-verificacion/2.webp",
     relatedSlugs: [
       "formacion-de-manipulador-de-alimentos",
       "ddd-desratizacion-desinsectacion-desinfeccion",
@@ -824,6 +859,8 @@ export const SERVICES: ServiceData[] = [
     extraFact:
       "Alquilar la maquinaria de ozono es altamente rentable para concesionarios y el mercado inmobiliario: permite neutralizar hedores a humo sin asumir costes salariales externos.",
     pexelsQuery: "industrial cleaning equipment floor scrubber rental",
+    image: "/images/servicios/alquiler-de-maquinaria/1-hq.webp",
+    image2: "/images/servicios/alquiler-de-maquinaria/2.webp",
     relatedSlugs: [
       "servicio-tecnico-oficial-karcher",
       "reparaciones-y-mantenimientos",
@@ -852,6 +889,7 @@ export const SERVICES: ServiceData[] = [
     extraFact:
       "La proyección de hielo seco (Dry Ice) permite limpiar cuadros eléctricos conectados y motores en funcionamiento sin peligro de electrocución ni corrosión galvánica.",
     pexelsQuery: "Karcher pressure washer repair technical service professional",
+    image: "/images/servicios/servicio-tecnico-oficial-karcher/1-hq.webp",
     relatedSlugs: [
       "alquiler-de-maquinaria",
       "reparaciones-y-mantenimientos",
@@ -880,6 +918,7 @@ export const SERVICES: ServiceData[] = [
     extraFact:
       "Un aspirador con filtros rotos devuelve continuamente una nube letal de partículas finas (PM10 y sílice respirable) al entorno de trabajo, comprometiendo la salud del personal.",
     pexelsQuery: "machine repair workshop cleaning equipment maintenance",
+    image: "/images/servicios/reparaciones-y-mantenimientos/1.webp",
     relatedSlugs: [
       "servicio-tecnico-oficial-karcher",
       "alquiler-de-maquinaria",

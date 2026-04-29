@@ -70,8 +70,8 @@
     "faq_4_a": "Sí, nuestros servicios están adaptados tanto para clientes particulares como para comunidades e instituciones.",
     "faq_5_q": "¿Qué productos utilizáis?",
     "faq_5_a": "Utilizamos exclusivamente productos homologados a nivel europeo, respetuosos con el medio ambiente y los materiales.",
-    "ticker_title": "Más de 500 clientes confían en nosotros",
-    "ticker_subtitle": "Empresas, instituciones y comunidades de Navarra, La Rioja y Aragón que llevan años eligiéndonos",
+    "ticker_title": "Más de 300 empresas e instituciones confían en nosotros",
+    "ticker_subtitle": "",
     "bl_section_title": "Lo que hacemos",
     "bl_section_subtitle": "Tres líneas de servicio, un solo equipo",
     "bl_1_title": "Limpieza profesional",
@@ -185,6 +185,17 @@
     "services": "Servicios",
     "store": "Tienda",
     "contact": "Contacto"
+  },
+  "Alquiler": {
+    "page_title": "Alquiler de Maquinaria",
+    "page_subtitle": "Maquinaria industrial profesional para alquiler en Navarra y ámbito nacional.",
+    "breadcrumb": "Alquiler de maquinaria",
+    "disponible": "Disponible",
+    "no_disponible": "No disponible",
+    "desde": "Desde",
+    "ficha_tecnica": "Ficha técnica",
+    "solicitar": "Solicitar alquiler",
+    "otras_maquinas": "Más maquinaria disponible"
   },
   "Tienda": {
     "page_title": "Tienda",
