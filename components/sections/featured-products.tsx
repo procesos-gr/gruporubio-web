@@ -1,8 +1,8 @@
 'use client';
 
-import { useRef, useState } from 'react';
+import { useRef, useState, useEffect, useCallback } from 'react';
 import { motion } from 'framer-motion';
-import { ArrowRight, ArrowLeft } from 'lucide-react';
+import { ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -158,15 +158,25 @@ function ProductCard({ product }: { product: typeof PRODUCTS[number] }) {
 }
 
 export function FeaturedProducts() {
-  const trackRef = useRef<HTMLDivElement>(null);
-  const [dragMax, setDragMax] = useState(0);
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const [canLeft, setCanLeft] = useState(false);
+  const [canRight, setCanRight] = useState(true);
 
-  // Recalcula el límite de arrastre según el ancho real del track
-  const measure = () => {
-    if (!trackRef.current) return;
-    const total = PRODUCTS.length * (CARD_W + GAP) - GAP;
-    const visible = trackRef.current.offsetWidth;
-    setDragMax(Math.max(0, total - visible));
+  const update = useCallback(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    setCanLeft(el.scrollLeft > 4);
+    setCanRight(el.scrollLeft < el.scrollWidth - el.clientWidth - 4);
+  }, []);
+
+  useEffect(() => {
+    update();
+    window.addEventListener('resize', update);
+    return () => window.removeEventListener('resize', update);
+  }, [update]);
+
+  const scrollByDir = (dir: 1 | -1) => {
+    scrollRef.current?.scrollBy({ left: dir * (CARD_W + GAP) * 2, behavior: 'smooth' });
   };
 
   return (
@@ -210,35 +220,56 @@ export function FeaturedProducts() {
         </div>
       </div>
 
-      {/* Carrusel arrastrable — sangra hasta el borde derecho */}
-      <div style={{ maxWidth: 1200, margin: '0 auto', padding: '0 0 0 24px' }}>
-        <motion.div
-          ref={trackRef}
-          style={{ cursor: 'grab', overflow: 'hidden' }}
-          whileTap={{ cursor: 'grabbing' }}
-          onMouseEnter={measure}
-          onTouchStart={measure}
-        >
-          <motion.div
-            drag="x"
-            dragConstraints={{ left: -dragMax, right: 0 }}
-            dragElastic={0.08}
-            style={{ display: 'flex', gap: GAP, width: 'max-content', paddingRight: 24 }}
-          >
-            {PRODUCTS.map((product) => (
-              <ProductCard key={product.name} product={product} />
-            ))}
-          </motion.div>
-        </motion.div>
+      {/* Carrusel con botones laterales */}
+      <div style={{ maxWidth: 1200, margin: '0 auto', padding: '0 0 0 24px', position: 'relative' }}>
+        <style>{`
+          .fp-track { display: flex; gap: ${GAP}px; overflow-x: auto; padding-right: 24px; scrollbar-width: none; }
+          .fp-track::-webkit-scrollbar { display: none; }
+          .fp-nav-btn { transition: background 0.2s ease, opacity 0.2s ease, transform 0.15s ease; }
+          .fp-nav-btn:hover:not(:disabled) { background: #ffffff !important; transform: scale(1.06); }
+          .fp-nav-btn:hover:not(:disabled) svg { stroke: #0F1623 !important; }
+        `}</style>
 
-        {/* Hint de arrastre */}
-        <div style={{ maxWidth: 1200, margin: '0 auto', padding: '20px 24px 0', display: 'flex', alignItems: 'center', gap: 8 }}>
-          <ArrowLeft size={14} color="rgba(255,255,255,0.4)" />
-          <span style={{ fontSize: 12, color: 'rgba(255,255,255,0.4)', fontWeight: 500, letterSpacing: '0.04em' }}>
-            Arrastra para ver más
-          </span>
-          <ArrowRight size={14} color="rgba(255,255,255,0.4)" />
+        <div ref={scrollRef} className="fp-track" onScroll={update}>
+          {PRODUCTS.map((product) => (
+            <ProductCard key={product.name} product={product} />
+          ))}
         </div>
+
+        {/* Botones laterales */}
+        {([
+          { dir: -1 as const, side: { left: 8 }, enabled: canLeft, Icon: ChevronLeft, label: 'Anterior' },
+          { dir: 1 as const, side: { right: 8 }, enabled: canRight, Icon: ChevronRight, label: 'Siguiente' },
+        ]).map(({ dir, side, enabled, Icon, label }) => (
+          <button
+            key={label}
+            className="fp-nav-btn"
+            onClick={() => scrollByDir(dir)}
+            disabled={!enabled}
+            aria-label={label}
+            style={{
+              position: 'absolute',
+              top: '50%',
+              transform: 'translateY(-50%)',
+              ...side,
+              width: 44,
+              height: 44,
+              borderRadius: 8,
+              background: 'rgba(255,255,255,0.12)',
+              backdropFilter: 'blur(8px)',
+              WebkitBackdropFilter: 'blur(8px)',
+              border: '1px solid rgba(255,255,255,0.25)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              cursor: enabled ? 'pointer' : 'default',
+              opacity: enabled ? 1 : 0.25,
+              zIndex: 2,
+            }}
+          >
+            <Icon size={20} color="#ffffff" strokeWidth={2.5} />
+          </button>
+        ))}
       </div>
     </section>
   );
