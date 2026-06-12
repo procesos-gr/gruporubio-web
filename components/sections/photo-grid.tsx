@@ -1,10 +1,18 @@
 'use client';
 
+import { useEffect, useRef, useState } from 'react';
+import { motion, useInView, animate } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
-import { ArrowUpRight, Star } from 'lucide-react';
+import { ArrowUpRight } from 'lucide-react';
 
 const CARD_RADIUS = 12;
+
+/* URL de las reseñas de Google — sustituir por el enlace con place_id real */
+const GOOGLE_REVIEWS_URL =
+  'https://www.google.com/search?q=Grupo+Rubio+limpiezas+rese%C3%B1as';
+const RATING = 4.2;
+const REVIEW_COUNT = 184;
 
 /* Centered overlay label + arrow — appears on hover */
 function CardOverlay({ title, large = false }: { title: string; large?: boolean }) {
@@ -58,96 +66,128 @@ function CardOverlay({ title, large = false }: { title: string; large?: boolean 
   );
 }
 
+/* Logo "G" oficial de Google (4 colores) */
+function GoogleG({ size = 22 }: { size?: number }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 48 48" aria-hidden>
+      <path fill="#4285F4" d="M45.12 24.5c0-1.56-.14-3.06-.4-4.5H24v8.51h11.84c-.51 2.75-2.06 5.08-4.39 6.64v5.52h7.11c4.16-3.83 6.56-9.47 6.56-16.17z" />
+      <path fill="#34A853" d="M24 46c5.94 0 10.92-1.97 14.56-5.33l-7.11-5.52c-1.97 1.32-4.49 2.1-7.45 2.1-5.73 0-10.58-3.87-12.31-9.07H4.34v5.7C7.96 41.07 15.4 46 24 46z" />
+      <path fill="#FBBC05" d="M11.69 28.18C11.25 26.86 11 25.45 11 24s.25-2.86.69-4.18v-5.7H4.34A21.99 21.99 0 0 0 2 24c0 3.55.85 6.91 2.34 9.88l7.35-5.7z" />
+      <path fill="#EA4335" d="M24 10.75c3.23 0 6.13 1.11 8.41 3.29l6.31-6.31C34.91 4.18 29.93 2 24 2 15.4 2 7.96 6.93 4.34 14.12l7.35 5.7c1.73-5.2 6.58-9.07 12.31-9.07z" />
+    </svg>
+  );
+}
+
+/* Estrella individual — se rellena animada al entrar en viewport */
+function AnimatedStar({ fillRatio, delay, play }: { fillRatio: number; delay: number; play: boolean }) {
+  const clipId = useRef(`star-clip-${Math.random().toString(36).slice(2)}`).current;
+  return (
+    <svg width={15} height={15} viewBox="0 0 24 24" style={{ display: 'block' }}>
+      <defs>
+        <clipPath id={clipId}>
+          <motion.rect
+            x="0" y="0" height="24"
+            initial={{ width: 0 }}
+            animate={{ width: play ? 24 * fillRatio : 0 }}
+            transition={{ duration: 0.4, delay, ease: 'easeOut' }}
+          />
+        </clipPath>
+      </defs>
+      <path
+        d="M12 2l2.9 6.26L21.8 9.27l-5 4.87 1.18 6.86L12 17.77l-6 3.23 1.18-6.86-5-4.87 6.9-1.01L12 2z"
+        fill="#E5E7EB"
+      />
+      <path
+        d="M12 2l2.9 6.26L21.8 9.27l-5 4.87 1.18 6.86L12 17.77l-6 3.23 1.18-6.86-5-4.87 6.9-1.01L12 2z"
+        fill="#FBBF24"
+        clipPath={`url(#${clipId})`}
+      />
+    </svg>
+  );
+}
+
 function ReviewsWidget() {
-  const AVATARS = [
-    { initials: 'ML', bg: '#818CF8' },
-    { initials: 'CG', bg: '#34D399' },
-    { initials: 'LS', bg: '#FBBF24' },
-  ];
+  const ref = useRef<HTMLAnchorElement>(null);
+  const inView = useInView(ref, { once: true, amount: 0.6 });
+  const [score, setScore] = useState(0);
+
+  useEffect(() => {
+    if (!inView) return;
+    const controls = animate(0, RATING, {
+      duration: 0.9,
+      ease: 'easeOut',
+      onUpdate: (v) => setScore(v),
+    });
+    return () => controls.stop();
+  }, [inView]);
 
   return (
-    <div
-      className="group cursor-pointer"
+    <motion.a
+      ref={ref}
+      href={GOOGLE_REVIEWS_URL}
+      target="_blank"
+      rel="noopener noreferrer"
+      whileHover={{ y: -3 }}
+      transition={{ type: 'spring', stiffness: 350, damping: 22 }}
+      className="group"
       style={{
         borderRadius: CARD_RADIUS,
-        background: 'linear-gradient(135deg, #6677EC 0%, #4254CC 100%)',
-        padding: '0 16px',
+        background: '#ffffff',
+        border: '1px solid #EEF1F6',
+        boxShadow: '0 1px 2px rgba(16,24,40,0.04), 0 6px 16px rgba(16,24,40,0.06)',
         height: '100%',
         boxSizing: 'border-box',
         display: 'flex',
         alignItems: 'center',
-        justifyContent: 'space-between',
-        gap: 10,
+        gap: 12,
+        padding: '0 16px',
         overflow: 'hidden',
+        textDecoration: 'none',
         position: 'relative',
-        transition: 'filter 0.25s ease, transform 0.25s ease',
-      }}
-      onMouseEnter={e => {
-        (e.currentTarget as HTMLElement).style.filter = 'brightness(1.1)';
-        (e.currentTarget as HTMLElement).style.transform = 'translateY(-1px)';
-      }}
-      onMouseLeave={e => {
-        (e.currentTarget as HTMLElement).style.filter = 'brightness(1)';
-        (e.currentTarget as HTMLElement).style.transform = 'translateY(0)';
       }}
     >
-      {/* Decorative circle */}
-      <div style={{
-        position: 'absolute', right: -24, top: -24,
-        width: 100, height: 100, borderRadius: '50%',
-        background: 'rgba(255,255,255,0.07)',
-        pointerEvents: 'none',
-      }} />
+      {/* Logo Google */}
+      <div style={{ flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <GoogleG size={26} />
+      </div>
 
-      {/* Avatars */}
-      <div style={{ display: 'flex', alignItems: 'center', flexShrink: 0 }}>
-        {AVATARS.map((av, i) => (
-          <div
-            key={i}
-            style={{
-              width: 36, height: 36, borderRadius: '50%',
-              background: av.bg,
-              border: '2.5px solid #5060D8',
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
-              color: '#fff', fontSize: 11, fontWeight: 700,
-              marginLeft: i === 0 ? 0 : -12,
-              zIndex: AVATARS.length - i, position: 'relative', flexShrink: 0,
-              boxShadow: '0 2px 8px rgba(0,0,0,0.18)',
-              transition: 'transform 0.2s ease',
-            }}
-          >
-            {av.initials}
+      <div style={{ width: 1, height: 30, background: '#EEF1F6', flexShrink: 0 }} />
+
+      {/* Score + estrellas + label */}
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 3, minWidth: 0, flex: 1 }}>
+        <div style={{ display: 'flex', alignItems: 'baseline', gap: 8 }}>
+          <span style={{ fontSize: 26, fontWeight: 800, color: '#111827', lineHeight: 1, letterSpacing: '-1px', fontVariantNumeric: 'tabular-nums', flexShrink: 0 }}>
+            {score.toFixed(1)}
+          </span>
+          <div style={{ display: 'flex', gap: 1.5 }}>
+            {[0, 1, 2, 3, 4].map((i) => (
+              <AnimatedStar
+                key={i}
+                play={inView}
+                delay={0.15 + i * 0.08}
+                fillRatio={Math.max(0, Math.min(1, RATING - i))}
+              />
+            ))}
           </div>
-        ))}
-      </div>
-
-      {/* Score + Google */}
-      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', flexShrink: 0, gap: 4 }}>
-        <span style={{ fontSize: 30, fontWeight: 900, color: '#fff', lineHeight: 1, letterSpacing: '-1px' }}>
-          4.2
-        </span>
-        <div style={{ display: 'flex', gap: 0, fontSize: 15, fontWeight: 800 }}>
-          <span style={{ color: '#4285F4' }}>G</span>
-          <span style={{ color: '#EA4335' }}>o</span>
-          <span style={{ color: '#FBBC05' }}>o</span>
-          <span style={{ color: '#4285F4' }}>g</span>
-          <span style={{ color: '#34A853' }}>l</span>
-          <span style={{ color: '#EA4335' }}>e</span>
         </div>
-      </div>
-
-      {/* Stars */}
-      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 5, flexShrink: 0 }}>
-        <div style={{ display: 'flex', gap: 2 }}>
-          {[1, 2, 3, 4, 5].map((s) => (
-            <Star key={s} size={28} fill={s <= 4 ? '#FBBF24' : 'rgba(255,255,255,0.2)'} color="transparent" />
-          ))}
-        </div>
-        <span style={{ fontSize: 10, color: 'rgba(255,255,255,0.55)', whiteSpace: 'nowrap' }}>
-          Reseñas en Google
+        <span style={{ fontSize: 11, color: '#6B7280', fontWeight: 500, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+          Reseñas de Google · {REVIEW_COUNT}
         </span>
       </div>
-    </div>
+
+      {/* Arrow — aparece al hover */}
+      <div
+        className="transition-all duration-300 ease-out opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0"
+        style={{
+          flexShrink: 0,
+          width: 28, height: 28, borderRadius: 8,
+          background: '#F3F4F6',
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+        }}
+      >
+        <ArrowUpRight size={15} color="#111827" strokeWidth={2.5} />
+      </div>
+    </motion.a>
   );
 }
 
@@ -169,7 +209,7 @@ export function PhotoGrid() {
           style={{ position: 'relative', borderRadius: CARD_RADIUS, overflow: 'hidden', gridColumn: 1, gridRow: '1 / 3' }}
         >
           <Image
-            src="/images/home/limpieza-profesional.webp"
+            src="/images/home/limpieza-profesional-fullbody.webp"
             alt="Limpieza profesional en oficinas y espacios comerciales"
             fill
             quality={90}
@@ -210,7 +250,7 @@ export function PhotoGrid() {
           style={{ position: 'relative', borderRadius: CARD_RADIUS, overflow: 'hidden', gridColumn: 3, gridRow: '1 / 3' }}
         >
           <Image
-            src="/images/home/tienda.webp"
+            src="/images/home/tienda.jpg"
             alt="Nuestra tienda de productos de higiene y limpieza"
             fill
             quality={90}

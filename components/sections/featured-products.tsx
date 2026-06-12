@@ -1,7 +1,8 @@
 'use client';
 
+import { useRef, useState } from 'react';
 import { motion } from 'framer-motion';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, ArrowLeft } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -44,16 +45,20 @@ const PRODUCTS = [
   },
 ];
 
+const CARD_W = 250;
+const GAP = 16;
+
 function ProductCard({ product }: { product: typeof PRODUCTS[number] }) {
   return (
-    <Link href="/tienda" style={{ textDecoration: 'none', display: 'block' }}>
+    <Link href="/tienda" style={{ textDecoration: 'none', display: 'block' }} draggable={false}>
     <motion.div
       whileHover="hover"
       initial="rest"
       animate="rest"
       style={{
-        borderRadius: 8,
-        border: '1px solid #E5E7EB',
+        width: CARD_W,
+        flexShrink: 0,
+        borderRadius: 12,
         cursor: 'pointer',
         background: '#ffffff',
         overflow: 'hidden',
@@ -61,18 +66,19 @@ function ProductCard({ product }: { product: typeof PRODUCTS[number] }) {
       }}
     >
       {/* Image — tall, dominates the card */}
-      <div style={{ position: 'relative', height: 155, overflow: 'hidden' }}>
+      <div style={{ position: 'relative', height: 220, overflow: 'hidden' }}>
         <motion.div
-          variants={{ rest: { scale: 1 }, hover: { scale: 1.05 } }}
-          transition={{ duration: 0.35, ease: 'easeOut' }}
+          variants={{ rest: { scale: 1 }, hover: { scale: 1.06 } }}
+          transition={{ duration: 0.4, ease: 'easeOut' }}
           style={{ position: 'absolute', inset: 0 }}
         >
           <Image
             src={product.img}
             alt={product.name}
             fill
-            sizes="20vw"
-            className="object-cover object-center"
+            sizes="250px"
+            className="object-cover object-center pointer-events-none"
+            draggable={false}
           />
         </motion.div>
 
@@ -80,12 +86,12 @@ function ProductCard({ product }: { product: typeof PRODUCTS[number] }) {
         <div
           style={{
             position: 'absolute',
-            top: 8,
-            right: 8,
+            top: 10,
+            right: 10,
             background: 'rgba(255,255,255,0.92)',
             backdropFilter: 'blur(4px)',
-            borderRadius: 9999,
-            padding: '2px 7px',
+            borderRadius: 8,
+            padding: '3px 8px',
             fontSize: 11,
             fontWeight: 700,
             color: '#111827',
@@ -99,23 +105,23 @@ function ProductCard({ product }: { product: typeof PRODUCTS[number] }) {
         </div>
       </div>
 
-      {/* Compact info strip */}
+      {/* Info strip */}
       <div
         style={{
-          padding: '8px 10px',
+          padding: '12px 14px',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
-          gap: 6,
+          gap: 8,
         }}
       >
         <div style={{ minWidth: 0 }}>
           <p
             style={{
-              fontSize: 11,
+              fontSize: 12.5,
               fontWeight: 600,
               color: '#374151',
-              margin: '0 0 2px',
+              margin: '0 0 3px',
               whiteSpace: 'nowrap',
               overflow: 'hidden',
               textOverflow: 'ellipsis',
@@ -123,7 +129,7 @@ function ProductCard({ product }: { product: typeof PRODUCTS[number] }) {
           >
             {product.name}
           </p>
-          <span style={{ fontSize: 13, fontWeight: 800, color: '#111827' }}>
+          <span style={{ fontSize: 15, fontWeight: 800, color: '#111827' }}>
             {product.price}
           </span>
         </div>
@@ -134,16 +140,16 @@ function ProductCard({ product }: { product: typeof PRODUCTS[number] }) {
           transition={{ duration: 0.18, ease: 'easeOut' }}
           style={{
             flexShrink: 0,
-            width: 28,
-            height: 28,
-            borderRadius: 6,
+            width: 30,
+            height: 30,
+            borderRadius: 8,
             background: '#546AE7',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
           }}
         >
-          <ArrowRight size={13} color="#ffffff" strokeWidth={2.5} />
+          <ArrowRight size={14} color="#ffffff" strokeWidth={2.5} />
         </motion.div>
       </div>
     </motion.div>
@@ -152,70 +158,87 @@ function ProductCard({ product }: { product: typeof PRODUCTS[number] }) {
 }
 
 export function FeaturedProducts() {
+  const trackRef = useRef<HTMLDivElement>(null);
+  const [dragMax, setDragMax] = useState(0);
+
+  // Recalcula el límite de arrastre según el ancho real del track
+  const measure = () => {
+    if (!trackRef.current) return;
+    const total = PRODUCTS.length * (CARD_W + GAP) - GAP;
+    const visible = trackRef.current.offsetWidth;
+    setDragMax(Math.max(0, total - visible));
+  };
+
   return (
-    <section style={{ background: '#ffffff', padding: '80px 24px' }}>
-      <div style={{ maxWidth: 1200, margin: '0 auto' }}>
+    <section style={{ background: '#0F1623', padding: '88px 0', overflow: 'hidden' }}>
+      <div style={{ maxWidth: 1200, margin: '0 auto', padding: '0 24px' }}>
 
-        <div style={{ display: 'grid', gridTemplateColumns: '40% 60%', gap: 48, alignItems: 'center' }}>
-
-          {/* Left */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+        {/* Header */}
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', gap: 24, marginBottom: 36, flexWrap: 'wrap' }}>
+          <div style={{ maxWidth: 560 }}>
             <h2
               style={{
-                fontSize: 'clamp(24px, 2.8vw, 34px)',
+                fontSize: 'clamp(26px, 3vw, 38px)',
                 fontWeight: 800,
-                color: '#111827',
+                color: '#ffffff',
                 letterSpacing: '-1px',
                 lineHeight: 1.15,
-                margin: 0,
+                margin: '0 0 12px',
                 fontFamily: 'var(--font-plus-jakarta), sans-serif',
               }}
             >
               Lo que nuestros clientes más eligen
             </h2>
-            <p
-              style={{
-                fontSize: 15,
-                color: '#6B7280',
-                margin: 0,
-                lineHeight: 1.65,
-                fontFamily: 'var(--font-plus-jakarta), sans-serif',
-              }}
-            >
-              Selección de productos profesionales de limpieza, higiene y desinfección
-              utilizados por empresas, restaurantes y centros de trabajo en toda la región.
+            <p style={{ fontSize: 15, color: 'rgba(255,255,255,0.65)', margin: 0, lineHeight: 1.65, fontFamily: 'var(--font-plus-jakarta), sans-serif' }}>
+              Productos profesionales de limpieza, higiene y desinfección usados por empresas,
+              restaurantes y centros de trabajo de toda la región.
             </p>
-            <div>
-              <Link
-                href="/tienda"
-                style={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: 6,
-                  background: '#111827',
-                  color: '#ffffff',
-                  borderRadius: 8,
-                  padding: '10px 20px',
-                  fontSize: 13,
-                  fontWeight: 600,
-                  textDecoration: 'none',
-                  fontFamily: 'var(--font-plus-jakarta), sans-serif',
-                }}
-              >
-                Ver Tienda <ArrowRight size={13} strokeWidth={2.5} />
-              </Link>
-            </div>
           </div>
 
-          {/* Right: 2×3 grid */}
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 8 }}>
+          <Link
+            href="/tienda"
+            style={{
+              display: 'inline-flex', alignItems: 'center', gap: 6,
+              background: '#ffffff', color: '#111827', borderRadius: 8,
+              padding: '11px 20px', fontSize: 13, fontWeight: 700,
+              textDecoration: 'none', whiteSpace: 'nowrap', flexShrink: 0,
+              fontFamily: 'var(--font-plus-jakarta), sans-serif',
+            }}
+          >
+            Ver tienda <ArrowRight size={14} strokeWidth={2.5} />
+          </Link>
+        </div>
+      </div>
+
+      {/* Carrusel arrastrable — sangra hasta el borde derecho */}
+      <div style={{ maxWidth: 1200, margin: '0 auto', padding: '0 0 0 24px' }}>
+        <motion.div
+          ref={trackRef}
+          style={{ cursor: 'grab', overflow: 'hidden' }}
+          whileTap={{ cursor: 'grabbing' }}
+          onMouseEnter={measure}
+          onTouchStart={measure}
+        >
+          <motion.div
+            drag="x"
+            dragConstraints={{ left: -dragMax, right: 0 }}
+            dragElastic={0.08}
+            style={{ display: 'flex', gap: GAP, width: 'max-content', paddingRight: 24 }}
+          >
             {PRODUCTS.map((product) => (
               <ProductCard key={product.name} product={product} />
             ))}
-          </div>
+          </motion.div>
+        </motion.div>
 
+        {/* Hint de arrastre */}
+        <div style={{ maxWidth: 1200, margin: '0 auto', padding: '20px 24px 0', display: 'flex', alignItems: 'center', gap: 8 }}>
+          <ArrowLeft size={14} color="rgba(255,255,255,0.4)" />
+          <span style={{ fontSize: 12, color: 'rgba(255,255,255,0.4)', fontWeight: 500, letterSpacing: '0.04em' }}>
+            Arrastra para ver más
+          </span>
+          <ArrowRight size={14} color="rgba(255,255,255,0.4)" />
         </div>
-
       </div>
     </section>
   );

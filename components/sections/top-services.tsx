@@ -78,7 +78,7 @@ const CARDS: Record<FilterKey, ServiceCard[]> = {
     {
       title: 'Ozonización',
       description: 'Desinfección ambiental profunda mediante ozono para espacios libres de patógenos y malos olores.',
-      img: '/images/servicios/ozonizacion/1-hq.webp',
+      img: '/images/servicios/ozonizacion/1-wide-b.webp',
       href: '/servicios/ozonizacion',
     },
   ],
@@ -86,13 +86,13 @@ const CARDS: Record<FilterKey, ServiceCard[]> = {
     {
       title: 'APPCC — Implantación y Verificación',
       description: 'Implantación y gestión de sistemas de control de puntos críticos en la cadena alimentaria.',
-      img: '/images/servicios/appcc-implantacion-y-verificacion/1.webp',
+      img: '/images/servicios/appcc-implantacion-y-verificacion/1-hq.webp',
       href: '/servicios/appcc-implantacion-y-verificacion',
     },
     {
       title: 'Formación de Manipulador de Alimentos',
       description: 'Cursos homologados de higiene alimentaria para equipos de trabajo en hostelería e industria.',
-      img: '/images/servicios/formacion-de-manipulador-de-alimentos/2.webp',
+      img: '/images/servicios/formacion-de-manipulador-de-alimentos/1-hq.webp',
       href: '/servicios/formacion-de-manipulador-de-alimentos',
     },
     {
@@ -124,7 +124,7 @@ const CARDS: Record<FilterKey, ServiceCard[]> = {
     {
       title: 'Tienda de Productos Profesionales',
       description: 'Catálogo completo de maquinaria, accesorios y consumibles de limpieza profesional. Envío rápido.',
-      img: '/images/home/tienda.webp',
+      img: '/images/home/tienda.jpg',
       href: '/tienda',
     },
   ],
@@ -138,13 +138,13 @@ const CARDS: Record<FilterKey, ServiceCard[]> = {
     {
       title: 'Formación de Manipulador de Alimentos',
       description: 'Certificación oficial para el carné de manipulación de alimentos según Reglamento 852/2004.',
-      img: '/images/servicios/formacion-de-manipulador-de-alimentos/2.webp',
+      img: '/images/servicios/formacion-de-manipulador-de-alimentos/1-hq.webp',
       href: '/servicios/formacion-de-manipulador-de-alimentos',
     },
     {
       title: 'APPCC — Implantación y Verificación',
       description: 'Diseño y validación documental del sistema APPCC para cumplimiento normativo integral en tu empresa.',
-      img: '/images/servicios/appcc-implantacion-y-verificacion/1.webp',
+      img: '/images/servicios/appcc-implantacion-y-verificacion/1-hq.webp',
       href: '/servicios/appcc-implantacion-y-verificacion',
     },
     {
@@ -156,145 +156,17 @@ const CARDS: Record<FilterKey, ServiceCard[]> = {
   ],
 };
 
-/* ─── Service Card ───────────────────────────────────────────────────── */
-
-function Card({ card }: { card: ServiceCard }) {
-  return (
-    <Link href={card.href} style={{ textDecoration: 'none', display: 'block' }}>
-    <motion.div
-      whileHover="hover"
-      initial="rest"
-      animate="rest"
-      style={{ cursor: 'pointer' }}
-    >
-      {/* Image container with overflow hidden */}
-      <div
-        style={{
-          position: 'relative',
-          height: 260,
-          borderRadius: 12,
-          overflow: 'hidden',
-        }}
-      >
-        {/* Image — scales on hover */}
-        <motion.div
-          variants={{
-            rest: { scale: 1 },
-            hover: { scale: 1.04 },
-          }}
-          transition={{ duration: 0.3, ease: 'easeOut' }}
-          style={{ position: 'absolute', inset: 0 }}
-        >
-          <Image
-            src={card.img}
-            alt={card.title}
-            fill
-            sizes="(max-width: 768px) 90vw, 25vw"
-            className="object-cover object-center"
-            quality={90}
-          />
-        </motion.div>
-
-        {/* Dark overlay — expands from bottom on hover */}
-        <motion.div
-          variants={{
-            rest: { height: 90 },
-            hover: { height: '50%' },
-          }}
-          transition={{ duration: 0.3, ease: 'easeOut' }}
-          style={{
-            position: 'absolute',
-            bottom: 0,
-            left: 0,
-            right: 0,
-            background: 'rgba(0,0,0,0.55)',
-            backdropFilter: 'blur(2px)',
-            WebkitBackdropFilter: 'blur(2px)',
-            padding: '12px 14px',
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'flex-end',
-          }}
-        >
-          {/* Title row */}
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              gap: 8,
-            }}
-          >
-            <span
-              style={{
-                color: '#ffffff',
-                fontWeight: 700,
-                fontSize: 16,
-                fontFamily: 'var(--font-plus-jakarta), sans-serif',
-                lineHeight: 1.3,
-                flex: 1,
-              }}
-            >
-              {card.title}
-            </span>
-
-            {/* Arrow circle — rotates on hover */}
-            <motion.div
-              variants={{
-                rest: { rotate: 0 },
-                hover: { rotate: 45 },
-              }}
-              transition={{ duration: 0.3, ease: 'easeOut' }}
-              style={{
-                flexShrink: 0,
-                width: 28,
-                height: 28,
-                borderRadius: '50%',
-                background: '#ffffff',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}
-            >
-              <ArrowUpRight size={14} color="#111827" strokeWidth={2.5} />
-            </motion.div>
-          </div>
-
-          {/* Description — fades in on hover */}
-          <motion.p
-            variants={{
-              rest: { opacity: 0, y: 6 },
-              hover: { opacity: 1, y: 0 },
-            }}
-            transition={{ duration: 0.25, ease: 'easeOut', delay: 0.06 }}
-            style={{
-              color: 'rgba(255,255,255,0.85)',
-              fontSize: 13,
-              fontWeight: 400,
-              margin: '8px 0 0',
-              lineHeight: 1.5,
-              display: '-webkit-box',
-              WebkitLineClamp: 2,
-              WebkitBoxOrient: 'vertical',
-              overflow: 'hidden',
-            }}
-          >
-            {card.description}
-          </motion.p>
-        </motion.div>
-      </div>
-    </motion.div>
-    </Link>
-  );
-}
-
-/* ─── Section ────────────────────────────────────────────────────────── */
+/* ─── Section: showcase interactivo (lista + visual que cambia) ──────── */
 
 export function TopServices() {
   const [active, setActive] = useState<FilterKey>('Limpieza Especializada');
+  const [hovered, setHovered] = useState(0);
+
+  const list = CARDS[active];
+  const selected = list[Math.min(hovered, list.length - 1)];
 
   return (
-    <section style={{ background: '#ffffff', padding: '80px 24px' }}>
+    <section style={{ background: '#F7F8FB', padding: '88px 24px' }}>
       <div style={{ maxWidth: 1200, margin: '0 auto' }}>
 
         {/* ── Header ── */}
@@ -303,7 +175,7 @@ export function TopServices() {
             display: 'flex',
             justifyContent: 'space-between',
             alignItems: 'center',
-            marginBottom: 40,
+            marginBottom: 36,
             gap: 24,
             flexWrap: 'wrap',
           }}
@@ -328,7 +200,7 @@ export function TopServices() {
               return (
                 <button
                   key={f}
-                  onClick={() => setActive(f)}
+                  onClick={() => { setActive(f); setHovered(0); }}
                   style={{
                     border: '1.5px solid #E5E7EB',
                     borderRadius: 8,
@@ -336,9 +208,10 @@ export function TopServices() {
                     fontSize: 13,
                     fontWeight: 600,
                     cursor: 'pointer',
-                    transition: 'background 0.2s ease, color 0.2s ease',
+                    transition: 'background 0.2s ease, color 0.2s ease, border-color 0.2s ease',
                     background: isActive ? '#111827' : '#ffffff',
                     color: isActive ? '#ffffff' : '#6B7280',
+                    borderColor: isActive ? '#111827' : '#E5E7EB',
                   }}
                 >
                   {f}
@@ -348,34 +221,88 @@ export function TopServices() {
           </div>
         </div>
 
-        {/* ── Grid ── */}
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={active}
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -8 }}
-            transition={{ duration: 0.3, ease: 'easeOut' }}
-          >
-            <div style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(4, 1fr)',
-              gap: 20,
-            }}>
-              {CARDS[active].slice(0, 4).map((card) => (
-                <Card key={card.title} card={card} />
-              ))}
-            </div>
+        {/* ── Showcase split ── */}
+        <div
+          style={{
+            display: 'grid',
+            gridTemplateColumns: '0.85fr 1.15fr',
+            gap: 28,
+            alignItems: 'stretch',
+          }}
+        >
+          {/* Left: lista de servicios de la categoría activa */}
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={active}
+              initial={{ opacity: 0, x: -12 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -8 }}
+              transition={{ duration: 0.28, ease: 'easeOut' }}
+              style={{ display: 'flex', flexDirection: 'column', gap: 6 }}
+            >
+              {list.map((card, i) => {
+                const isOn = i === Math.min(hovered, list.length - 1);
+                return (
+                  <Link
+                    key={card.title}
+                    href={card.href}
+                    onMouseEnter={() => setHovered(i)}
+                    onFocus={() => setHovered(i)}
+                    style={{ textDecoration: 'none', display: 'block' }}
+                  >
+                    <div
+                      style={{
+                        position: 'relative',
+                        borderRadius: 10,
+                        padding: '18px 18px 18px 20px',
+                        background: isOn ? '#ffffff' : 'transparent',
+                        boxShadow: isOn ? '0 1px 2px rgba(16,24,40,0.04), 0 8px 22px rgba(16,24,40,0.07)' : 'none',
+                        transition: 'background 0.25s ease, box-shadow 0.25s ease',
+                        cursor: 'pointer',
+                      }}
+                    >
+                      {/* Barra de acento a la izquierda */}
+                      <motion.div
+                        animate={{ opacity: isOn ? 1 : 0, scaleY: isOn ? 1 : 0.3 }}
+                        transition={{ duration: 0.25, ease: 'easeOut' }}
+                        style={{
+                          position: 'absolute', left: 0, top: 14, bottom: 14, width: 3,
+                          borderRadius: 3, background: '#546AE7',
+                        }}
+                      />
+                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12 }}>
+                        <span
+                          style={{
+                            fontSize: 16,
+                            fontWeight: 700,
+                            color: isOn ? '#111827' : '#6B7280',
+                            lineHeight: 1.3,
+                            transition: 'color 0.25s ease',
+                          }}
+                        >
+                          {card.title}
+                        </span>
+                        <motion.div
+                          animate={{ opacity: isOn ? 1 : 0, x: isOn ? 0 : -6 }}
+                          transition={{ duration: 0.25, ease: 'easeOut' }}
+                          style={{ flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', width: 26, height: 26, borderRadius: 7, background: '#111827' }}
+                        >
+                          <ArrowUpRight size={14} color="#ffffff" strokeWidth={2.5} />
+                        </motion.div>
+                      </div>
+                    </div>
+                  </Link>
+                );
+              })}
 
-            {/* Ver más */}
-            <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: 28 }}>
+              {/* Ver todos */}
               <Link
                 href={VIEW_MORE[active]}
                 style={{
                   display: 'inline-flex', alignItems: 'center', gap: 6,
                   fontSize: 14, fontWeight: 700, color: '#111827',
-                  textDecoration: 'none', borderBottom: '2px solid #111827',
-                  paddingBottom: 2, transition: 'opacity 0.2s',
+                  textDecoration: 'none', marginTop: 10, marginLeft: 20,
+                  transition: 'opacity 0.2s',
                 }}
                 onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.opacity = '0.6')}
                 onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.opacity = '1')}
@@ -383,9 +310,80 @@ export function TopServices() {
                 Ver todos los servicios
                 <ArrowUpRight size={15} strokeWidth={2.5} />
               </Link>
+            </motion.div>
+          </AnimatePresence>
+
+          {/* Right: visual grande que cambia con crossfade */}
+          <Link href={selected.href} style={{ textDecoration: 'none', display: 'block' }}>
+            <div
+              style={{
+                position: 'relative',
+                borderRadius: 14,
+                overflow: 'hidden',
+                height: 460,
+                background: '#0F1623',
+              }}
+            >
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={active + selected.title}
+                  initial={{ opacity: 0, scale: 1.04 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.4, ease: 'easeOut' }}
+                  style={{ position: 'absolute', inset: 0 }}
+                >
+                  {/* Fondo desenfocado de relleno — cubre cualquier proporción */}
+                  <Image
+                    src={selected.img}
+                    alt=""
+                    fill
+                    sizes="55vw"
+                    aria-hidden
+                    className="object-cover object-center"
+                    style={{ filter: 'blur(28px) brightness(0.6)', transform: 'scale(1.12)' }}
+                    quality={40}
+                  />
+                  {/* Imagen completa encima — conserva el original sin recortar */}
+                  <Image
+                    src={selected.img}
+                    alt={selected.title}
+                    fill
+                    sizes="(max-width: 768px) 90vw, 55vw"
+                    className="object-contain object-center"
+                    quality={90}
+                  />
+                </motion.div>
+              </AnimatePresence>
+
+              {/* Gradiente inferior */}
+              <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(15,22,35,0.88) 0%, rgba(15,22,35,0.30) 45%, rgba(15,22,35,0) 70%)' }} />
+
+              {/* Texto */}
+              <div style={{ position: 'absolute', left: 0, right: 0, bottom: 0, padding: '32px 34px' }}>
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={active + selected.title + '-txt'}
+                    initial={{ opacity: 0, y: 14 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -8 }}
+                    transition={{ duration: 0.3, ease: 'easeOut' }}
+                  >
+                    <h3 style={{ fontSize: 26, fontWeight: 800, color: '#ffffff', letterSpacing: '-0.6px', lineHeight: 1.2, margin: '0 0 10px' }}>
+                      {selected.title}
+                    </h3>
+                    <p style={{ fontSize: 14.5, color: 'rgba(255,255,255,0.82)', lineHeight: 1.6, margin: '0 0 18px', maxWidth: 520 }}>
+                      {selected.description}
+                    </p>
+                    <span style={{ display: 'inline-flex', alignItems: 'center', gap: 7, background: '#ffffff', color: '#111827', fontSize: 13.5, fontWeight: 700, padding: '10px 18px', borderRadius: 8 }}>
+                      Ver servicio <ArrowUpRight size={15} strokeWidth={2.5} />
+                    </span>
+                  </motion.div>
+                </AnimatePresence>
+              </div>
             </div>
-          </motion.div>
-        </AnimatePresence>
+          </Link>
+        </div>
 
       </div>
     </section>
