@@ -127,7 +127,7 @@ export function Hero() {
   const showDropdown = open && query.trim().length > 0;
 
   return (
-    <section style={{ padding: '130px 24px 90px', position: 'relative', borderRadius: 16 }}>
+    <section style={{ padding: '80px 24px 72px', position: 'relative', borderRadius: 16 }}>
 
       {/* Imagen de fondo — clipeada solo dentro de su contenedor */}
       <div style={{ position: 'absolute', inset: 0, borderRadius: 16, overflow: 'hidden', zIndex: 0 }}>
@@ -170,9 +170,10 @@ export function Hero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.55, ease: 'easeOut', delay: 0.12 }}
           style={{
-            fontSize: 15,
-            color: '#1F2937',
-            lineHeight: 1.6,
+            fontSize: 16,
+            fontWeight: 700,
+            color: '#111827',
+            lineHeight: 1.55,
             maxWidth: 480,
             marginBottom: 40,
           }}
@@ -196,16 +197,8 @@ export function Hero() {
               transition: 'border-radius 0.15s',
             }}
           >
-            {/* Icono servicio */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexShrink: 0 }}>
-              <Sparkles size={15} color="#6B7280" />
-              <span style={{ fontSize: 13, fontWeight: 500, color: '#374151', whiteSpace: 'nowrap' }}>
-                Servicio
-              </span>
-            </div>
-
-            {/* Separator */}
-            <div style={{ width: 1, height: 20, background: '#e5e7eb', flexShrink: 0, margin: '0 14px' }} />
+            {/* Icono limpieza */}
+            <Sparkles size={16} color="#6B7280" style={{ flexShrink: 0, marginRight: 10 }} />
 
             {/* Input */}
             <input

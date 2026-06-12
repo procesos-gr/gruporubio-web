@@ -40,7 +40,7 @@ const CARDS: Record<FilterKey, ServiceCard[]> = {
     {
       title: 'Limpiezas Industriales',
       description: 'Limpieza especializada para entornos industriales y de alta exigencia con equipos de última generación.',
-      img: 'https://images.unsplash.com/photo-1565008447742-97f6f38c985c?w=800&h=520&fit=crop&auto=format',
+      img: '/images/home/limpiezas-industriales-home.webp',
       href: '/servicios/limpiezas-industriales',
     },
     {
@@ -52,7 +52,7 @@ const CARDS: Record<FilterKey, ServiceCard[]> = {
     {
       title: 'Tratamiento de Suelos',
       description: 'Mantenimiento, pulido y protección de todo tipo de superficies y pavimentos industriales.',
-      img: '/images/home/tratamiento-suelos.webp',
+      img: '/images/home/tratamiento-suelos-v2.webp',
       href: '/servicios',
     },
   ],
@@ -333,24 +333,13 @@ export function TopServices() {
                   transition={{ duration: 0.4, ease: 'easeOut' }}
                   style={{ position: 'absolute', inset: 0 }}
                 >
-                  {/* Fondo desenfocado de relleno — cubre cualquier proporción */}
-                  <Image
-                    src={selected.img}
-                    alt=""
-                    fill
-                    sizes="55vw"
-                    aria-hidden
-                    className="object-cover object-center"
-                    style={{ filter: 'blur(28px) brightness(0.6)', transform: 'scale(1.12)' }}
-                    quality={40}
-                  />
-                  {/* Imagen completa encima — conserva el original sin recortar */}
+                  {/* Imagen rellenando todo el panel (recorta lo que sobra) */}
                   <Image
                     src={selected.img}
                     alt={selected.title}
                     fill
                     sizes="(max-width: 768px) 90vw, 55vw"
-                    className="object-contain object-center"
+                    className="object-cover object-center"
                     quality={90}
                   />
                 </motion.div>

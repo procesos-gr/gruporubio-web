@@ -79,10 +79,10 @@ function GoogleG({ size = 22 }: { size?: number }) {
 }
 
 /* Estrella individual — se rellena animada al entrar en viewport */
-function AnimatedStar({ fillRatio, delay, play }: { fillRatio: number; delay: number; play: boolean }) {
+function AnimatedStar({ fillRatio, delay, play, size = 19 }: { fillRatio: number; delay: number; play: boolean; size?: number }) {
   const clipId = useRef(`star-clip-${Math.random().toString(36).slice(2)}`).current;
   return (
-    <svg width={15} height={15} viewBox="0 0 24 24" style={{ display: 'block' }}>
+    <svg width={size} height={size} viewBox="0 0 24 24" style={{ display: 'block' }}>
       <defs>
         <clipPath id={clipId}>
           <motion.rect
@@ -139,8 +139,8 @@ function ReviewsWidget() {
         boxSizing: 'border-box',
         display: 'flex',
         alignItems: 'center',
-        gap: 12,
-        padding: '0 16px',
+        gap: 14,
+        padding: '0 18px',
         overflow: 'hidden',
         textDecoration: 'none',
         position: 'relative',
@@ -148,18 +148,18 @@ function ReviewsWidget() {
     >
       {/* Logo Google */}
       <div style={{ flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-        <GoogleG size={26} />
+        <GoogleG size={34} />
       </div>
 
-      <div style={{ width: 1, height: 30, background: '#EEF1F6', flexShrink: 0 }} />
+      <div style={{ width: 1, height: 42, background: '#EEF1F6', flexShrink: 0 }} />
 
       {/* Score + estrellas + label */}
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 3, minWidth: 0, flex: 1 }}>
-        <div style={{ display: 'flex', alignItems: 'baseline', gap: 8 }}>
-          <span style={{ fontSize: 26, fontWeight: 800, color: '#111827', lineHeight: 1, letterSpacing: '-1px', fontVariantNumeric: 'tabular-nums', flexShrink: 0 }}>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 5, minWidth: 0, flex: 1 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+          <span style={{ fontSize: 34, fontWeight: 800, color: '#111827', lineHeight: 1, letterSpacing: '-1.5px', fontVariantNumeric: 'tabular-nums', flexShrink: 0 }}>
             {score.toFixed(1)}
           </span>
-          <div style={{ display: 'flex', gap: 1.5 }}>
+          <div style={{ display: 'flex', gap: 2.5 }}>
             {[0, 1, 2, 3, 4].map((i) => (
               <AnimatedStar
                 key={i}
@@ -170,22 +170,22 @@ function ReviewsWidget() {
             ))}
           </div>
         </div>
-        <span style={{ fontSize: 11, color: '#6B7280', fontWeight: 500, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-          Reseñas de Google · {REVIEW_COUNT}
+        <span style={{ fontSize: 12, color: '#6B7280', fontWeight: 500, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+          {REVIEW_COUNT} reseñas en Google
         </span>
       </div>
 
-      {/* Arrow — aparece al hover */}
+      {/* Arrow — siempre visible, se realza al hover */}
       <div
-        className="transition-all duration-300 ease-out opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0"
+        className="transition-all duration-300 ease-out group-hover:bg-[#EAEDF2] group-hover:translate-x-0.5"
         style={{
           flexShrink: 0,
-          width: 28, height: 28, borderRadius: 8,
+          width: 34, height: 34, borderRadius: 8,
           background: '#F3F4F6',
           display: 'flex', alignItems: 'center', justifyContent: 'center',
         }}
       >
-        <ArrowUpRight size={15} color="#111827" strokeWidth={2.5} />
+        <ArrowUpRight size={18} color="#111827" strokeWidth={2.5} />
       </div>
     </motion.a>
   );

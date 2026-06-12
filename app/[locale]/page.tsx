@@ -12,10 +12,22 @@ import Footer from "@/components/sections/Footer";
 
 export default function HomePage() {
   return (
-    <div className="w-full" style={{ background: '#FFFFFF', minHeight: '100vh' }}>
+    <div className="w-full" style={{ background: '#FFFFFF', minHeight: '100vh', position: 'relative' }}>
 
       {/* Navbar — fixed, positioned over the hero card (top/left/right: 16px matches card margin) */}
       <Navbar />
+
+      {/* Backdrop azul — cubre el tercio superior del hero; asoma por el padding (arriba + laterales) */}
+      <div
+        aria-hidden
+        style={{
+          position: 'absolute',
+          top: 0, left: 0, right: 0,
+          height: 166,
+          background: '#0F1623',
+          zIndex: 0,
+        }}
+      />
 
       {/* Section A-1: Hero card */}
       <div
@@ -23,6 +35,7 @@ export default function HomePage() {
           margin: 16,
           borderRadius: 16,
           position: 'relative',
+          zIndex: 1,
         }}
       >
 <Hero />

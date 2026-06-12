@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname, useRouter } from 'next/navigation';
-import { ChevronDown, ArrowRight, Store, Phone, MapPin, Truck } from 'lucide-react';
+import { ChevronDown, ArrowRight, Store, Truck } from 'lucide-react';
 import { SERVICES, CATEGORY_LABELS, ServiceCategory } from '@/lib/services-data';
 import { CartButton } from "@/components/tienda/CartButton"
 
@@ -86,63 +86,6 @@ const FEATURED: Record<ServiceCategory, string[]> = {
   ],
 };
 
-function TopBar({ scrolled }: { scrolled: boolean }) {
-  return (
-    <div
-      style={{
-        position: 'fixed',
-        top: scrolled ? -36 : 0, left: 0, right: 0,
-        height: 36,
-        background: '#FFFFFF',
-        borderBottom: '1px solid #F3F4F6',
-        transition: 'top 0.3s ease',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'flex-end',
-        padding: '0 32px',
-        zIndex: 51,
-        gap: 24,
-      }}
-    >
-      <a
-        href="tel:+34948825025"
-        style={{
-          display: 'flex', alignItems: 'center', gap: 6,
-          fontSize: 11.5, fontWeight: 500, color: '#6B7280',
-          textDecoration: 'none',
-          transition: 'color 0.15s',
-        }}
-        onMouseEnter={e => (e.currentTarget.style.color = '#111827')}
-        onMouseLeave={e => (e.currentTarget.style.color = '#6B7280')}
-      >
-        <Phone size={11} strokeWidth={2} />
-        948 82 50 25
-      </a>
-      <span style={{ width: 1, height: 14, background: '#E5E7EB' }} />
-      <span style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 11.5, color: '#9CA3AF' }}>
-        <MapPin size={11} strokeWidth={2} />
-        Tudela, Navarra
-      </span>
-      <span style={{ width: 1, height: 14, background: '#E5E7EB' }} />
-      <Link
-        href="/alquiler"
-        style={{
-          display: 'flex', alignItems: 'center', gap: 5,
-          fontSize: 11.5, fontWeight: 600,
-          color: '#111827',
-          textDecoration: 'none',
-          transition: 'color 0.15s',
-        }}
-        onMouseEnter={e => (e.currentTarget.style.color = '#374151')}
-        onMouseLeave={e => (e.currentTarget.style.color = '#111827')}
-      >
-        <Truck size={11} strokeWidth={2} />
-        Alquiler de maquinaria
-      </Link>
-    </div>
-  );
-}
-
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
@@ -193,7 +136,6 @@ export function Navbar() {
 
   return (
     <>
-      <TopBar scrolled={scrolled} />
       <style>{`
         .nav-btn-tienda {
           transition: all 0.25s ease;
@@ -218,7 +160,7 @@ export function Navbar() {
         ref={navRef}
         style={{
           position: 'fixed',
-          top: scrolled ? 16 : 52, left: 16, right: 16,
+          top: 16, left: 16, right: 16,
           height: 68,
           zIndex: 50,
           borderRadius: open ? '12px 12px 0 0' : 12,
