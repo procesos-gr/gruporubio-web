@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { sendLeadEmail, formatLead } from "@/lib/email";
+import { registrarSolicitudEnMedusa } from "@/lib/solicitudes";
 
 const BodySchema = z.object({
   origen: z.enum(["contacto", "presupuesto"]),
@@ -25,17 +26,28 @@ export async function POST(req: NextRequest) {
       ? `[Web] Solicitud de presupuesto — ${body.nombre}`
       : `[Web] Consulta de contacto — ${body.nombre}`;
 
-  const { ok } = await sendLeadEmail({
-    subject,
-    replyTo: body.email,
-    text: formatLead({
-      Nombre: body.nombre,
-      Email: body.email,
-      Teléfono: body.telefono,
-      ...body.extra,
-      Mensaje: body.mensaje,
+  const [{ ok }] = await Promise.all([
+    sendLeadEmail({
+      subject,
+      replyTo: body.email,
+      text: formatLead({
+        Nombre: body.nombre,
+        Email: body.email,
+        Teléfono: body.telefono,
+        ...body.extra,
+        Mensaje: body.mensaje,
+      }),
     }),
-  });
+    // Panel de Medusa (best-effort, no bloquea)
+    registrarSolicitudEnMedusa({
+      origen: body.origen,
+      nombre: body.nombre,
+      email: body.email,
+      telefono: body.telefono,
+      mensaje: body.mensaje,
+      detalles: body.extra,
+    }),
+  ]);
 
   if (!ok) {
     return NextResponse.json(
