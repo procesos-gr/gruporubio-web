@@ -11,7 +11,7 @@ interface ChatMessage {
 }
 
 const GREETING =
-  '¡Hola! Soy el asistente de Grupo Rubio. Puedo ayudarte con nuestros servicios de limpieza, control de plagas, alquiler de maquinaria o productos de la tienda. ¿Qué necesitas?';
+  '¡Hola! Soy Ignacio, el asistente virtual de Grupo Rubio. Puedo ayudarte con nuestros servicios de limpieza, control de plagas, alquiler de maquinaria o productos de la tienda. ¿Qué necesitas?';
 
 const SUGGESTIONS = [
   '¿Qué servicios ofrecéis?',
@@ -305,8 +305,8 @@ export function ChatWidget() {
                 <Sparkles size={18} color="#ffffff" />
               </div>
               <div style={{ minWidth: 0 }}>
-                <p style={{ margin: 0, fontSize: 14, fontWeight: 700, color: '#ffffff' }}>Asistente Grupo Rubio</p>
-                <p style={{ margin: 0, fontSize: 11.5, color: '#9CA3AF' }}>Responde al instante</p>
+                <p style={{ margin: 0, fontSize: 14, fontWeight: 700, color: '#ffffff' }}>Ignacio</p>
+                <p style={{ margin: 0, fontSize: 11.5, color: '#9CA3AF' }}>Asistente virtual de Grupo Rubio</p>
               </div>
             </div>
 
