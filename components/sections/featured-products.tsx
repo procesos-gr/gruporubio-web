@@ -225,9 +225,15 @@ export function FeaturedProducts() {
         <style>{`
           .fp-track { display: flex; gap: ${GAP}px; overflow-x: auto; padding-right: 24px; scrollbar-width: none; }
           .fp-track::-webkit-scrollbar { display: none; }
-          .fp-nav-btn { transition: background 0.2s ease, opacity 0.2s ease, transform 0.15s ease; }
-          .fp-nav-btn:hover:not(:disabled) { background: #ffffff !important; transform: scale(1.06); }
-          .fp-nav-btn:hover:not(:disabled) svg { stroke: #0F1623 !important; }
+          .fp-nav-btn { transition: opacity 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease; }
+          .fp-nav-btn:hover:not(:disabled) { transform: translateY(-50%) scale(1.08); box-shadow: 0 6px 20px rgba(0,0,0,0.35); }
+          /* Fuera de las tarjetas cuando hay sitio a los lados */
+          .fp-nav-prev { left: -64px; }
+          .fp-nav-next { right: -40px; }
+          @media (max-width: 1330px) {
+            .fp-nav-prev { left: 8px; }
+            .fp-nav-next { right: 8px; }
+          }
         `}</style>
 
         <div ref={scrollRef} className="fp-track" onScroll={update}>
@@ -238,12 +244,12 @@ export function FeaturedProducts() {
 
         {/* Botones laterales */}
         {([
-          { dir: -1 as const, side: { left: 8 }, enabled: canLeft, Icon: ChevronLeft, label: 'Anterior' },
-          { dir: 1 as const, side: { right: 8 }, enabled: canRight, Icon: ChevronRight, label: 'Siguiente' },
-        ]).map(({ dir, side, enabled, Icon, label }) => (
+          { dir: -1 as const, cls: 'fp-nav-prev', enabled: canLeft, Icon: ChevronLeft, label: 'Anterior' },
+          { dir: 1 as const, cls: 'fp-nav-next', enabled: canRight, Icon: ChevronRight, label: 'Siguiente' },
+        ]).map(({ dir, cls, enabled, Icon, label }) => (
           <button
             key={label}
-            className="fp-nav-btn"
+            className={`fp-nav-btn ${cls}`}
             onClick={() => scrollByDir(dir)}
             disabled={!enabled}
             aria-label={label}
@@ -251,23 +257,21 @@ export function FeaturedProducts() {
               position: 'absolute',
               top: '50%',
               transform: 'translateY(-50%)',
-              ...side,
               width: 44,
               height: 44,
               borderRadius: 8,
-              background: 'rgba(255,255,255,0.12)',
-              backdropFilter: 'blur(8px)',
-              WebkitBackdropFilter: 'blur(8px)',
-              border: '1px solid rgba(255,255,255,0.25)',
+              background: '#ffffff',
+              border: 'none',
+              boxShadow: '0 4px 14px rgba(0,0,0,0.25)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
               cursor: enabled ? 'pointer' : 'default',
-              opacity: enabled ? 1 : 0.25,
+              opacity: enabled ? 1 : 0.3,
               zIndex: 2,
             }}
           >
-            <Icon size={20} color="#ffffff" strokeWidth={2.5} />
+            <Icon size={20} color="#0F1623" strokeWidth={2.5} />
           </button>
         ))}
       </div>
