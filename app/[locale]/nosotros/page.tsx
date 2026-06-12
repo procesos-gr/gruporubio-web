@@ -46,8 +46,8 @@ const MILESTONES = [
 
 const TEAM = [
   { name: "Carlos Rubio Carrera",       role: "Dirección General" },
-  { name: "Iñaki Rubio Carrera",        role: "Dirección Técnica" },
-  { name: "José Javier Rubio Carrera",  role: "Dirección de Innovación" },
+  { name: "Iñaki Rubio Carrera",        role: "Responsable de Control de Plagas" },
+  { name: "José Javier Rubio Carrera",  role: "Responsable de Limpieza" },
 ];
 
 const DIVISIONS = [
@@ -246,7 +246,16 @@ export default function NosotrosPage() {
           </div>
 
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 24, alignItems: "start" }}>
-            <ImgPlaceholder height={340} label="Foto — Carlos, Iñaki y José Javier Rubio Carrera" />
+            <div style={{ position: "relative", height: 340, borderRadius: 8, overflow: "hidden" }}>
+              <Image
+                src="/images/nosotros/hermanos-rubio.webp"
+                alt="Carlos, Iñaki y José Javier Rubio Carrera"
+                fill
+                sizes="(max-width: 1024px) 90vw, 538px"
+                className="object-cover object-top"
+                quality={88}
+              />
+            </div>
             <div style={{ display: "flex", flexDirection: "column", gap: 16, paddingTop: 8 }}>
               {TEAM.map((member) => (
                 <div key={member.name} style={{ padding: "16px 20px", border: "1px solid #F3F4F6", borderRadius: 8 }}>
