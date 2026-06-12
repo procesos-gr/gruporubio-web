@@ -38,11 +38,11 @@ function ImgSlot({ ratio = "4/3" }: { ratio?: string }) {
   );
 }
 
-function ServiceImg({ src, alt, ratio }: { src?: string; alt: string; ratio: string }) {
+function ServiceImg({ src, alt, ratio, position }: { src?: string; alt: string; ratio: string; position?: string }) {
   if (!src) return <ImgSlot ratio={ratio} />;
   return (
     <div style={{ width: "100%", aspectRatio: ratio, borderRadius: 8, overflow: "hidden", position: "relative", flexShrink: 0 }}>
-      <Image src={src} alt={alt} fill className="object-cover" />
+      <Image src={src} alt={alt} fill className="object-cover" style={position ? { objectPosition: position } : undefined} />
     </div>
   );
 }
@@ -60,27 +60,42 @@ function IncludesList({ items }: { items: string[] }) {
   );
 }
 
+// Texto "Cómo funciona" reutilizable (a ancho completo cuando no hay 2ª imagen)
+const howText = (t: string, full = false) => (
+  <p style={{ fontSize: 15, color: "#4B5563", lineHeight: 1.8, margin: 0, maxWidth: full ? 760 : undefined }}>{t}</p>
+);
+
 // ── Layout A (índices 0, 3, 6…) ─────────────────────────────────────────────
 // Qué incluye: [lista | img portrait]   Cómo funciona: [img cuadrado | texto]
 function LayoutA({ service }: { service: ServiceData }) {
+  const showImg1 = !!service.image && !service.noImages;
+  const showImg2 = !service.noImages && !service.noImage2;
   return (
     <>
       <div style={{ marginBottom: 52 }}>
         <SectionTag text="Qué incluye" />
         <h2 style={h2}>Alcance del servicio</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-[1fr_220px] gap-6 items-start">
+        {showImg1 ? (
+          <div className="grid grid-cols-1 sm:grid-cols-[1fr_220px] gap-6 items-start">
+            <IncludesList items={service.includes} />
+            <ServiceImg src={service.image} alt={service.title} ratio="3/4" position={service.imagePos} />
+          </div>
+        ) : (
           <IncludesList items={service.includes} />
-          <ServiceImg src={service.image} alt={service.title} ratio="3/4" />
-        </div>
+        )}
       </div>
 
       <div style={{ marginBottom: 52 }}>
         <SectionTag text="Cómo funciona" />
         <h2 style={h2}>El proceso paso a paso</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-[260px_1fr] gap-6 items-start">
-          <ServiceImg src={service.image2 ?? service.image} alt={service.title} ratio="1/1" />
-          <p style={{ fontSize: 15, color: "#4B5563", lineHeight: 1.8, margin: 0 }}>{service.howItWorks}</p>
-        </div>
+        {showImg2 ? (
+          <div className="grid grid-cols-1 sm:grid-cols-[260px_1fr] gap-6 items-start">
+            <ServiceImg src={service.image2 ?? service.image} alt={service.title} ratio="1/1" />
+            {howText(service.howItWorks)}
+          </div>
+        ) : (
+          howText(service.howItWorks, true)
+        )}
       </div>
     </>
   );
@@ -89,24 +104,34 @@ function LayoutA({ service }: { service: ServiceData }) {
 // ── Layout B (índices 1, 4, 7…) ─────────────────────────────────────────────
 // Qué incluye: [img portrait | lista]   Cómo funciona: [texto | img cuadrado]
 function LayoutB({ service }: { service: ServiceData }) {
+  const showImg1 = !!service.image && !service.noImages;
+  const showImg2 = !service.noImages && !service.noImage2;
   return (
     <>
       <div style={{ marginBottom: 52 }}>
         <SectionTag text="Qué incluye" />
         <h2 style={h2}>Alcance del servicio</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-[200px_1fr] gap-6 items-start">
-          <ServiceImg src={service.image} alt={service.title} ratio="4/5" />
+        {showImg1 ? (
+          <div className="grid grid-cols-1 sm:grid-cols-[200px_1fr] gap-6 items-start">
+            <ServiceImg src={service.image} alt={service.title} ratio="4/5" position={service.imagePos} />
+            <IncludesList items={service.includes} />
+          </div>
+        ) : (
           <IncludesList items={service.includes} />
-        </div>
+        )}
       </div>
 
       <div style={{ marginBottom: 52 }}>
         <SectionTag text="Cómo funciona" />
         <h2 style={h2}>El proceso paso a paso</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-[1fr_260px] gap-6 items-start">
-          <p style={{ fontSize: 15, color: "#4B5563", lineHeight: 1.8, margin: 0 }}>{service.howItWorks}</p>
-          <ServiceImg src={service.image2 ?? service.image} alt={service.title} ratio="1/1" />
-        </div>
+        {showImg2 ? (
+          <div className="grid grid-cols-1 sm:grid-cols-[1fr_260px] gap-6 items-start">
+            {howText(service.howItWorks)}
+            <ServiceImg src={service.image2 ?? service.image} alt={service.title} ratio="1/1" />
+          </div>
+        ) : (
+          howText(service.howItWorks, true)
+        )}
       </div>
     </>
   );
@@ -116,14 +141,18 @@ function LayoutB({ service }: { service: ServiceData }) {
 // Qué incluye: img panorámica arriba + lista en 2 col abajo
 // Cómo funciona: texto a la izq + img 4:3 a la dcha (más ancha)
 function LayoutC({ service }: { service: ServiceData }) {
+  const showImg1 = !!service.image && !service.noImages;
+  const showImg2 = !service.noImages && !service.noImage2;
   return (
     <>
       <div style={{ marginBottom: 52 }}>
         <SectionTag text="Qué incluye" />
         <h2 style={h2}>Alcance del servicio</h2>
-        <div style={{ marginBottom: 20 }}>
-          <ServiceImg src={service.image} alt={service.title} ratio="16/7" />
-        </div>
+        {showImg1 && (
+          <div style={{ marginBottom: 20 }}>
+            <ServiceImg src={service.image} alt={service.title} ratio="16/7" position={service.imagePos} />
+          </div>
+        )}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-3">
           {service.includes.map((item, i) => (
             <div key={i} style={{ display: "flex", alignItems: "flex-start", gap: 10 }}>
@@ -137,10 +166,14 @@ function LayoutC({ service }: { service: ServiceData }) {
       <div style={{ marginBottom: 52 }}>
         <SectionTag text="Cómo funciona" />
         <h2 style={h2}>El proceso paso a paso</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-[1fr_300px] gap-6 items-start">
-          <p style={{ fontSize: 15, color: "#4B5563", lineHeight: 1.8, margin: 0 }}>{service.howItWorks}</p>
-          <ServiceImg src={service.image2 ?? service.image} alt={service.title} ratio="4/3" />
-        </div>
+        {showImg2 ? (
+          <div className="grid grid-cols-1 sm:grid-cols-[1fr_300px] gap-6 items-start">
+            {howText(service.howItWorks)}
+            <ServiceImg src={service.image2 ?? service.image} alt={service.title} ratio="4/3" />
+          </div>
+        ) : (
+          howText(service.howItWorks, true)
+        )}
       </div>
     </>
   );

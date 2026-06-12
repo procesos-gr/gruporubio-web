@@ -19,6 +19,8 @@ export interface ServiceData {
   pexelsQuery: string;
   image?: string;
   image2?: string;
+  imagePos?: string;   // object-position de la imagen 1 (encuadre)
+  noImage2?: boolean;  // si true, la sección "Cómo funciona" va a texto completo sin 2ª imagen
   relatedSlugs: string[];
 }
 
@@ -196,6 +198,7 @@ export const SERVICES: ServiceData[] = [
     pexelsQuery: "wasp nest removal pest control exterminator",
     image: "/images/servicios/retirada-de-nidos-de-avispas/1.webp",
     image2: "/images/servicios/retirada-de-nidos-de-avispas/2.webp",
+    imagePos: "center 22%",
     relatedSlugs: [
       "ddd-desratizacion-desinsectacion-desinfeccion",
       "eliminar-plagas-de-cucarachas",
@@ -542,7 +545,7 @@ export const SERVICES: ServiceData[] = [
     extraFact:
       "Anobium Punctatum es el agente detrás del 75% de los daños en maderas estructurales y ornamentales, devorando tanto coníferas blandas como frondosas duras.",
     pexelsQuery: "woodworm beetle wood damage antique furniture treatment",
-    image: "/images/servicios/desinsectacion-de-carcoma/1.webp",
+    image: "/images/servicios/desinsectacion-de-carcoma/1-hq.webp",
     image2: "/images/servicios/desinsectacion-de-carcoma/2.webp",
     relatedSlugs: [
       "tratamiento-anti-termitas",
@@ -713,6 +716,7 @@ export const SERVICES: ServiceData[] = [
       "Beber agua infectada no causa la enfermedad. El contagio se produce cuando la bacteria viaja en aerosol de una ducha o torre de enfriamiento e inhala directamente hasta los alvéolos pulmonares.",
     pexelsQuery: "water treatment legionella plumbing system hotel",
     image: "/images/servicios/tratamientos-de-legionela/1-hq.webp",
+    image2: "/images/servicios/tratamientos-de-legionela/2-hq.webp",
     relatedSlugs: [
       "ddd-desratizacion-desinsectacion-desinfeccion",
       "mantenimiento-y-conservacion",
@@ -799,7 +803,7 @@ export const SERVICES: ServiceData[] = [
     extraFact:
       "El mayor vector de alteración biológica en plantas de procesado es la falta de praxis higiénica personal. Esta capacitación formal es la primera línea defensiva contra brotes epidemiológicos.",
     pexelsQuery: "food safety training hygiene food handler certificate",
-    image: "/images/servicios/formacion-de-manipulador-de-alimentos/1.webp",
+    image: "/images/servicios/formacion-de-manipulador-de-alimentos/1-hq-v2.webp",
     image2: "/images/servicios/formacion-de-manipulador-de-alimentos/2.webp",
     relatedSlugs: [
       "appcc-implantacion-y-verificacion",
@@ -890,6 +894,7 @@ export const SERVICES: ServiceData[] = [
       "La proyección de hielo seco (Dry Ice) permite limpiar cuadros eléctricos conectados y motores en funcionamiento sin peligro de electrocución ni corrosión galvánica.",
     pexelsQuery: "Karcher pressure washer repair technical service professional",
     image: "/images/servicios/servicio-tecnico-oficial-karcher/1-hq.webp",
+    noImage2: true,
     relatedSlugs: [
       "alquiler-de-maquinaria",
       "reparaciones-y-mantenimientos",
@@ -919,6 +924,7 @@ export const SERVICES: ServiceData[] = [
       "Un aspirador con filtros rotos devuelve continuamente una nube letal de partículas finas (PM10 y sílice respirable) al entorno de trabajo, comprometiendo la salud del personal.",
     pexelsQuery: "machine repair workshop cleaning equipment maintenance",
     image: "/images/servicios/reparaciones-y-mantenimientos/1.webp",
+    noImages: true,
     relatedSlugs: [
       "servicio-tecnico-oficial-karcher",
       "alquiler-de-maquinaria",

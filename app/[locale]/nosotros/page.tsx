@@ -97,7 +97,7 @@ const DIVISIONS = [
     tag: "06",
     desc: "Formación reglada para manipuladores de alimentos, certificados de profesionalidad y cursos técnicos. Acreditados por el Consorcio Eder.",
     href: "/servicios#formacion",
-    img: "/images/servicios/formacion-de-manipulador-de-alimentos/1-hq.webp",
+    img: "/images/servicios/formacion-de-manipulador-de-alimentos/1-hq-v2.webp",
   },
 ];
 
@@ -346,7 +346,7 @@ export default function NosotrosPage() {
                 </p>
               </div>
               {current.img ? (
-                <div style={{ position: "relative", height: 200, borderRadius: 8, overflow: "hidden" }}>
+                <div style={{ position: "relative", width: "100%", aspectRatio: "16/9", borderRadius: 8, overflow: "hidden" }}>
                   <Image
                     src={current.img}
                     alt={current.title}
@@ -357,7 +357,7 @@ export default function NosotrosPage() {
                   />
                 </div>
               ) : (
-                <ImgPlaceholder height={200} label={`Imagen — ${current.title}`} />
+                <ImgPlaceholder height={220} label={`Imagen — ${current.title}`} />
               )}
               <div>
                 <Link

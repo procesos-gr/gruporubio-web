@@ -92,7 +92,7 @@ const CARDS: Record<FilterKey, ServiceCard[]> = {
     {
       title: 'Formación de Manipulador de Alimentos',
       description: 'Cursos homologados de higiene alimentaria para equipos de trabajo en hostelería e industria.',
-      img: '/images/servicios/formacion-de-manipulador-de-alimentos/1-hq.webp',
+      img: '/images/servicios/formacion-de-manipulador-de-alimentos/1-hq-v2.webp',
       href: '/servicios/formacion-de-manipulador-de-alimentos',
     },
     {
@@ -138,7 +138,7 @@ const CARDS: Record<FilterKey, ServiceCard[]> = {
     {
       title: 'Formación de Manipulador de Alimentos',
       description: 'Certificación oficial para el carné de manipulación de alimentos según Reglamento 852/2004.',
-      img: '/images/servicios/formacion-de-manipulador-de-alimentos/1-hq.webp',
+      img: '/images/servicios/formacion-de-manipulador-de-alimentos/1-hq-v2.webp',
       href: '/servicios/formacion-de-manipulador-de-alimentos',
     },
     {
