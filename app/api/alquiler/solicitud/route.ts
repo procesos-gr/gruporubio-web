@@ -12,7 +12,7 @@ export async function POST(req: NextRequest) {
     // TODO: connect email provider (Resend / nodemailer / etc.)
     // Example payload ready to send:
     const _payload = {
-      to: process.env.CONTACT_EMAIL ?? 'info@gruporubio.net',
+      to: process.env.CONTACT_EMAIL ?? 'info@gruporubio.es',
       subject: `Solicitud de alquiler: ${maquina}`,
       text: [
         `Máquina: ${maquina}`,

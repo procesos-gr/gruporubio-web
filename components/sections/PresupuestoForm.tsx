@@ -241,8 +241,8 @@ export function PresupuestoForm() {
                 </span>
               </div>
               {[
-                { icon: <Phone size={14} />, text: '+34 948 000 000' },
-                { icon: <Mail size={14} />, text: 'info@gruporubio.com' },
+                { icon: <Phone size={14} />, text: '948 82 50 25' },
+                { icon: <Mail size={14} />, text: 'info@gruporubio.es' },
                 { icon: <MapPin size={14} />, text: 'Tudela, Navarra' },
               ].map(({ icon, text }) => (
                 <div key={text} style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 12 }}>

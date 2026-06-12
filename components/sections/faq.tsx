@@ -10,7 +10,7 @@ const FAQS = [
   },
   {
     q: '¿Cómo solicito un presupuesto?',
-    a: 'Puedes contactarnos a través del formulario de nuestra web, por email a info@gruporubio.net o por teléfono al 948 000 000. Respondemos en menos de 24 horas laborables con un presupuesto personalizado y sin compromiso.',
+    a: 'Puedes contactarnos a través del formulario de nuestra web, por email a info@gruporubio.es o por teléfono al 948 82 50 25. Respondemos en menos de 24 horas laborables con un presupuesto personalizado y sin compromiso.',
   },
   {
     q: '¿Trabajáis con particulares y con empresas?',
