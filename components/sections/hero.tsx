@@ -22,8 +22,13 @@ interface DropdownPos {
   width: number;
 }
 
+// Normaliza para búsqueda: minúsculas + sin acentos/diéresis (kärcher → karcher)
+function norm(text: string) {
+  return text.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
+}
+
 function matchesQuery(text: string, words: string[]) {
-  const lower = text.toLowerCase();
+  const lower = norm(text);
   return words.every(w => lower.includes(w));
 }
 
@@ -39,7 +44,8 @@ function useSearch(query: string) {
     const serviceResults: SearchResult[] = SERVICES
       .filter(s =>
         matchesQuery(s.title, words) ||
-        matchesQuery(s.categoryLabel, words)
+        matchesQuery(s.categoryLabel, words) ||
+        matchesQuery(s.shortDesc, words)
       )
       .slice(0, 5)
       .map(s => ({
@@ -54,6 +60,7 @@ function useSearch(query: string) {
         m.disponible && (
           matchesQuery(m.titulo, words) ||
           matchesQuery(m.categoria, words) ||
+          matchesQuery(m.marca, words) ||
           matchesQuery(m.descripcionCorta, words)
         )
       )
@@ -69,14 +76,14 @@ function useSearch(query: string) {
     try {
       const client = getMedusa();
       const { products } = await client.store.product.list({ q, limit: 4 });
-      productResults = (products ?? []).map((p: { title: string; collection?: { title: string } }) => ({
+      productResults = (products ?? []).map((p: { title: string; handle?: string; collection?: { title: string } }) => ({
         type: 'product' as const,
         title: p.title,
         subtitle: p.collection?.title ?? 'Producto',
-        href: `/tienda`,
+        href: p.handle ? `/tienda/${p.handle}` : '/tienda',
       }));
     } catch {
-      // Medusa no disponible — solo servicios
+      // Medusa no disponible — solo servicios y maquinaria
     }
 
     setResults([...serviceResults, ...rentalResults, ...productResults].slice(0, 9));
