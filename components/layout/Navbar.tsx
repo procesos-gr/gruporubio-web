@@ -199,7 +199,7 @@ export function Navbar() {
           transition: 'background 0.3s ease, box-shadow 0.3s ease, border-radius 0.15s ease, top 0.3s ease',
         }}
       >
-        <div style={{ display: 'flex', alignItems: 'center', gap: 2, margin: '0 auto' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 2, margin: '0 auto', width: '100%' }}>
 
           {/* Logo */}
           <Link href="/" style={{ display: 'flex', alignItems: 'center', textDecoration: 'none', flexShrink: 0, marginRight: 36 }}>
