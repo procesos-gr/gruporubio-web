@@ -21,6 +21,7 @@ export interface ServiceData {
   image2?: string;
   imagePos?: string;   // object-position de la imagen 1 (encuadre)
   noImage2?: boolean;  // si true, la sección "Cómo funciona" va a texto completo sin 2ª imagen
+  noImages?: boolean;  // si true, la página del servicio no muestra ninguna imagen
   relatedSlugs: string[];
 }
 
