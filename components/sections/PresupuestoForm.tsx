@@ -150,13 +150,47 @@ export function PresupuestoForm() {
     }));
   };
 
+  const [error, setError] = useState<string | null>(null);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!form.nombre || !form.email || !form.telefono || form.services.length === 0) return;
     setSending(true);
-    await new Promise((r) => setTimeout(r, 1200));
-    setSending(false);
-    setSent(true);
+    setError(null);
+    try {
+      const serviceLabels = form.services
+        .map((id) => SERVICES.find((s) => s.id === id)?.label ?? id)
+        .join(', ');
+      const res = await fetch('/api/contacto', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          origen: 'presupuesto',
+          nombre: form.nombre,
+          email: form.email,
+          telefono: form.telefono,
+          mensaje: form.descripcion,
+          extra: {
+            'Empresa': form.empresa,
+            'Servicios': serviceLabels,
+            'Localidad': form.localidad,
+            'Urgencia': URGENCY.find((u) => u.value === form.urgencia)?.label ?? form.urgencia,
+            'Frecuencia': FREQUENCY.find((f) => f.value === form.frecuencia)?.label ?? form.frecuencia,
+            'Tamaño': COMPANY_SIZE.find((c) => c.value === form.tamanyo)?.label ?? form.tamanyo,
+            'Cómo nos conoció': form.como_conocio,
+          },
+        }),
+      });
+      if (!res.ok) {
+        const data = await res.json().catch(() => null);
+        throw new Error(data?.error ?? 'Error al enviar');
+      }
+      setSent(true);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'No se pudo enviar. Llámanos al 948 82 50 25.');
+    } finally {
+      setSending(false);
+    }
   };
 
   if (sent) {
@@ -416,6 +450,11 @@ export function PresupuestoForm() {
                     <Send size={16} />
                     {sending ? 'Enviando...' : 'Solicitar presupuesto gratuito'}
                   </button>
+                  {error && (
+                    <p style={{ fontSize: 13, color: '#DC2626', textAlign: 'center', marginTop: 12, fontWeight: 600 }}>
+                      {error}
+                    </p>
+                  )}
                   <p style={{ fontSize: 12, color: '#9CA3AF', textAlign: 'center', marginTop: 12 }}>
                     Sin compromiso. Responderemos en menos de 24h.
                   </p>

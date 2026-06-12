@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { sendLeadEmail, formatLead } from '@/lib/email'
 
 export async function POST(req: NextRequest) {
   try {
@@ -9,26 +10,25 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Faltan campos obligatorios' }, { status: 400 })
     }
 
-    // TODO: connect email provider (Resend / nodemailer / etc.)
-    // Example payload ready to send:
-    const _payload = {
-      to: process.env.CONTACT_EMAIL ?? 'info@gruporubio.es',
-      subject: `Solicitud de alquiler: ${maquina}`,
-      text: [
-        `Máquina: ${maquina}`,
-        `Nombre: ${nombre}`,
-        `Empresa: ${empresa || '—'}`,
-        `Email: ${email}`,
-        `Teléfono: ${telefono}`,
-        `Fecha inicio: ${fechaInicio}`,
-        `Fecha fin: ${fechaFin || '—'}`,
-        `Localidad: ${localidad}`,
-        `Comentarios: ${mensaje || '—'}`,
-      ].join('\n'),
+    const { ok } = await sendLeadEmail({
+      subject: `[Web] Solicitud de alquiler — ${maquina}`,
+      replyTo: String(email),
+      text: formatLead({
+        'Máquina': String(maquina),
+        'Nombre': String(nombre),
+        'Empresa': empresa ? String(empresa) : undefined,
+        'Email': String(email),
+        'Teléfono': String(telefono),
+        'Fecha inicio': String(fechaInicio),
+        'Fecha fin': fechaFin ? String(fechaFin) : undefined,
+        'Localidad': String(localidad),
+        'Comentarios': mensaje ? String(mensaje) : undefined,
+      }),
+    })
+
+    if (!ok) {
+      return NextResponse.json({ error: 'No se pudo enviar. Llámanos al 948 82 50 25.' }, { status: 502 })
     }
-
-    console.log('[alquiler/solicitud]', _payload)
-
     return NextResponse.json({ ok: true })
   } catch {
     return NextResponse.json({ error: 'Error interno' }, { status: 500 })

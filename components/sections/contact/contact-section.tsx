@@ -124,11 +124,39 @@ export function ContactSection() {
     }
     setLoading(true);
     try {
-      await new Promise((r) => setTimeout(r, 900));
+      const res = await fetch('/api/contacto', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          origen: 'contacto',
+          nombre: form.name,
+          email: form.email,
+          telefono: form.phone,
+          mensaje: form.message,
+          extra: {
+            'Tipo de consulta': LABELS[selected],
+            ...(selected === 'alquiler'
+              ? {
+                  'Máquina': form.maquina,
+                  'Fecha inicio': form.fechaInicio,
+                  'Fecha fin': form.fechaFin,
+                  'Localidad': form.localidad,
+                }
+              : {}),
+          },
+        }),
+      });
+      if (!res.ok) {
+        const data = await res.json().catch(() => null);
+        throw new Error(data?.error ?? 'No se pudo enviar el mensaje. Inténtalo de nuevo.');
+      }
       setSent(true);
       setToast({ type: 'success', message: 'Te contactamos en menos de 24 horas hábiles.' });
-    } catch {
-      setToast({ type: 'error', message: 'No se pudo enviar el mensaje. Inténtalo de nuevo.' });
+    } catch (err) {
+      setToast({
+        type: 'error',
+        message: err instanceof Error ? err.message : 'No se pudo enviar el mensaje. Inténtalo de nuevo.',
+      });
     } finally {
       setLoading(false);
     }
