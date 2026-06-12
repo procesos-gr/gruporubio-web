@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname, useRouter } from 'next/navigation';
-import { ChevronDown, ArrowRight, Store, Truck } from 'lucide-react';
+import { ChevronDown, ArrowRight, Store, Truck, Menu, X } from 'lucide-react';
 import { SERVICES, CATEGORY_LABELS, ServiceCategory } from '@/lib/services-data';
 import { CartButton } from "@/components/tienda/CartButton"
 
@@ -90,11 +90,35 @@ export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const [langOpen, setLangOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [mobileServicesOpen, setMobileServicesOpen] = useState(false);
   const pathname = usePathname();
   const router = useRouter();
   const navRef = useRef<HTMLElement>(null);
   const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const langTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  // Breakpoint móvil/tablet: por debajo no caben los links + CTAs del navbar
+  useEffect(() => {
+    const mq = window.matchMedia('(max-width: 1140px)');
+    const handler = () => setIsMobile(mq.matches);
+    handler();
+    mq.addEventListener('change', handler);
+    return () => mq.removeEventListener('change', handler);
+  }, []);
+
+  // Cerrar menú móvil al navegar
+  useEffect(() => {
+    setMobileOpen(false);
+    setMobileServicesOpen(false);
+  }, [pathname]);
+
+  // Bloquear scroll del body con el menú móvil abierto
+  useEffect(() => {
+    document.body.style.overflow = mobileOpen ? 'hidden' : '';
+    return () => { document.body.style.overflow = ''; };
+  }, [mobileOpen]);
 
   const currentLocale = LOCALES.find(l => pathname.startsWith(`/${l.code}`))?.code ?? 'es';
 
@@ -113,7 +137,7 @@ export function Navbar() {
     pathname.includes('/alquiler') ||
     pathname.includes('/presupuesto');
 
-  const showDark = scrolled || open;
+  const showDark = scrolled || open || mobileOpen;
 
   // Re-evaluate scroll state on every navigation (fixes back-button transparency bug)
   useEffect(() => {
@@ -163,15 +187,15 @@ export function Navbar() {
           top: 16, left: 16, right: 16,
           height: 68,
           zIndex: 50,
-          borderRadius: open ? '12px 12px 0 0' : 12,
+          borderRadius: (open || mobileOpen) ? '12px 12px 0 0' : 12,
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          padding: '0 24px',
-          background: (scrolled || open) ? 'rgba(255,255,255,0.96)' : 'transparent',
-          backdropFilter: (scrolled || open) ? 'blur(14px)' : 'none',
-          WebkitBackdropFilter: (scrolled || open) ? 'blur(14px)' : 'none',
-          boxShadow: (scrolled && !open) ? '0 2px 24px rgba(0,0,0,0.07)' : 'none',
+          padding: isMobile ? '0 16px' : '0 24px',
+          background: showDark ? 'rgba(255,255,255,0.96)' : 'transparent',
+          backdropFilter: showDark ? 'blur(14px)' : 'none',
+          WebkitBackdropFilter: showDark ? 'blur(14px)' : 'none',
+          boxShadow: (scrolled && !open && !mobileOpen) ? '0 2px 24px rgba(0,0,0,0.07)' : 'none',
           transition: 'background 0.3s ease, box-shadow 0.3s ease, border-radius 0.15s ease, top 0.3s ease',
         }}
       >
@@ -189,6 +213,7 @@ export function Navbar() {
             />
           </Link>
 
+          {!isMobile && (<>
           {/* Inicio */}
           <Link
             href="/"
@@ -384,10 +409,168 @@ export function Navbar() {
           <div style={{ color: linkColor }}>
             <CartButton />
           </div>
+          </>)}
+
+          {isMobile && (<>
+            <div style={{ flex: 1 }} />
+            <div style={{ color: linkColor }}>
+              <CartButton />
+            </div>
+            <button
+              onClick={() => setMobileOpen(o => !o)}
+              aria-label={mobileOpen ? 'Cerrar menú' : 'Abrir menú'}
+              style={{
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                width: 42, height: 42, marginLeft: 6,
+                background: 'none', border: 'none', cursor: 'pointer',
+                color: (!showDark && isOnDarkPage) ? '#ffffff' : '#111827',
+              }}
+            >
+              {mobileOpen ? <X size={24} /> : <Menu size={24} />}
+            </button>
+          </>)}
 
         </div>
 
+        {/* ── Menú móvil — panel desplegable ── */}
+        {isMobile && mobileOpen && (
+          <div
+            style={{
+              position: 'absolute',
+              top: '100%',
+              left: 0,
+              right: 0,
+              background: '#FFFFFF',
+              borderRadius: '0 0 12px 12px',
+              boxShadow: '0 24px 64px rgba(0,0,0,0.13)',
+              border: '1px solid #E5E7EB',
+              borderTop: 'none',
+              maxHeight: 'calc(100dvh - 110px)',
+              overflowY: 'auto',
+              padding: '8px 16px 20px',
+            }}
+          >
+            <Link href="/" style={mobileLinkStyle}>Inicio</Link>
+
+            {/* Servicios — acordeón */}
+            <button
+              onClick={() => setMobileServicesOpen(o => !o)}
+              style={{
+                ...mobileLinkStyle,
+                width: '100%', background: 'none', border: 'none', cursor: 'pointer',
+                display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+              }}
+            >
+              Servicios
+              <ChevronDown
+                size={16}
+                style={{
+                  color: '#9CA3AF',
+                  transform: mobileServicesOpen ? 'rotate(180deg)' : 'rotate(0deg)',
+                  transition: 'transform 0.2s ease',
+                }}
+              />
+            </button>
+            {mobileServicesOpen && (
+              <div style={{ padding: '0 0 8px 12px' }}>
+                {CATEGORY_ORDER.map((cat) => (
+                  <div key={cat} style={{ marginBottom: 10 }}>
+                    <p style={{
+                      fontSize: 10, fontWeight: 700, letterSpacing: '0.11em',
+                      textTransform: 'uppercase', color: '#9CA3AF', margin: '8px 0 4px',
+                    }}>
+                      {CATEGORY_LABELS[cat]}
+                    </p>
+                    {FEATURED[cat]
+                      .map((slug) => SERVICES.find((s) => s.slug === slug))
+                      .filter(Boolean)
+                      .map((s) => s && (
+                        <Link
+                          key={s.slug}
+                          href={`/servicios/${s.slug}`}
+                          style={{
+                            display: 'block', fontSize: 14, fontWeight: 500,
+                            color: '#374151', textDecoration: 'none',
+                            padding: '7px 8px', borderRadius: 6, lineHeight: 1.4,
+                          }}
+                        >
+                          {s.title}
+                        </Link>
+                      ))}
+                  </div>
+                ))}
+                <Link
+                  href="/servicios"
+                  style={{
+                    display: 'inline-flex', alignItems: 'center', gap: 6,
+                    fontSize: 13, fontWeight: 600, color: '#111827',
+                    textDecoration: 'none', padding: '4px 8px',
+                  }}
+                >
+                  Ver catálogo completo <ArrowRight size={13} />
+                </Link>
+              </div>
+            )}
+
+            <Link href="/alquiler" style={mobileLinkStyle}>Alquiler de maquinaria</Link>
+            <Link href="/nosotros" style={mobileLinkStyle}>Nosotros</Link>
+            <Link href="/contacto" style={mobileLinkStyle}>Contacto</Link>
+
+            {/* CTAs */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginTop: 14 }}>
+              <Link
+                href="/presupuesto"
+                style={{
+                  display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6,
+                  borderRadius: 8, background: '#111827', color: '#ffffff',
+                  fontSize: 14, fontWeight: 600, padding: '13px 20px', textDecoration: 'none',
+                }}
+              >
+                Solicitar presupuesto
+              </Link>
+              <Link
+                href="/tienda"
+                style={{
+                  display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 7,
+                  borderRadius: 8,
+                  background: 'linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%)',
+                  color: '#ffffff', fontSize: 14, fontWeight: 600,
+                  padding: '13px 20px', textDecoration: 'none',
+                }}
+              >
+                <Store size={15} /> Tienda
+              </Link>
+            </div>
+
+            {/* Idiomas */}
+            <div style={{ display: 'flex', gap: 8, marginTop: 16, justifyContent: 'center' }}>
+              {LOCALES.map((locale) => {
+                const isActive = locale.code === currentLocale;
+                return (
+                  <button
+                    key={locale.code}
+                    onClick={() => switchLocale(locale.code)}
+                    style={{
+                      display: 'flex', alignItems: 'center', gap: 7,
+                      padding: '8px 14px', borderRadius: 8,
+                      background: isActive ? '#F3F4F6' : 'transparent',
+                      border: '1px solid ' + (isActive ? '#E5E7EB' : 'transparent'),
+                      cursor: 'pointer', fontSize: 13,
+                      fontWeight: isActive ? 600 : 500,
+                      color: isActive ? '#111827' : '#6B7280',
+                    }}
+                  >
+                    {FLAG_MAP[locale.code]}
+                    {locale.code.toUpperCase()}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        )}
+
         {/* ── Mega-menu dropdown — absolute child of nav ── */}
+        {!isMobile && (
         <div
           onMouseEnter={onEnter}
           onMouseLeave={onLeave}
@@ -485,7 +668,18 @@ export function Navbar() {
             </Link>
           </div>
         </div>
+        )}
       </nav>
     </>
   );
 }
+
+const mobileLinkStyle: React.CSSProperties = {
+  display: 'block',
+  fontSize: 16,
+  fontWeight: 700,
+  color: '#111827',
+  textDecoration: 'none',
+  padding: '13px 8px',
+  borderBottom: '1px solid #F3F4F6',
+};
