@@ -80,8 +80,15 @@ export function ChatWidget() {
       if (!content || loading) return;
 
       const userMsg: ChatMessage = { role: 'user', content };
-      // historial acotado: últimas 11 + nueva (la API admite máx. 12)
-      const history = [...messages.slice(-11), userMsg];
+      // historial acotado: últimas 11 + nueva (la API admite máx. 12),
+      // sin mensajes vacíos (streams cortados) y con respuestas largas recortadas
+      const history = [
+        ...messages
+          .filter(m => m.content.trim().length > 0)
+          .map(m => ({ ...m, content: m.content.slice(0, 4000) }))
+          .slice(-11),
+        userMsg,
+      ];
       setMessages(prev => [...prev, userMsg]);
       setInput('');
       setLoading(true);

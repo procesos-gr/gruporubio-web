@@ -9,10 +9,12 @@ export const runtime = "nodejs";
 export const maxDuration = 30;
 
 // ── Validación del body ──────────────────────────────────────────────────────
-const MessageSchema = z.object({
-  role: z.enum(["user", "assistant"]),
-  content: z.string().min(1).max(800),
-});
+// El usuario está capado a 800 chars; las respuestas del bot pueden ser más
+// largas y viajan de vuelta en el historial → límite propio más amplio.
+const MessageSchema = z.discriminatedUnion("role", [
+  z.object({ role: z.literal("user"), content: z.string().min(1).max(800) }),
+  z.object({ role: z.literal("assistant"), content: z.string().min(1).max(4000) }),
+]);
 
 const BodySchema = z.object({
   messages: z.array(MessageSchema).min(1).max(12), // historial acotado
