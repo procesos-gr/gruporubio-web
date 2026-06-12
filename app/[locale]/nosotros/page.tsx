@@ -112,7 +112,7 @@ const RSC = [
     imgSrc: null,
   },
   {
-    title: "Contrato FCC · 24,5 M€",
+    title: "Contrato FCC",
     text: "Cogestión de limpieza viaria y recogida de residuos en 17 municipios navarros durante 10 años.",
     imgSrc: null,
   },
