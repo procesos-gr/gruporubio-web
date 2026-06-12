@@ -178,6 +178,11 @@ export function Navbar() {
         .nav-btn-tienda:hover { transform: translateY(-1px); box-shadow: 0 4px 16px rgba(37,99,235,0.40); }
         .nav-btn-cta:hover { opacity: 0.88; transform: translateY(-1px); }
         .nav-btn-cta { transition: opacity 0.2s ease, transform 0.2s ease; }
+        /* Solo en MÓVIL el contenedor ocupa todo el ancho (logo izq, carrito+menú dcha).
+           En tablet y portátil se queda centrado como siempre. */
+        @media (max-width: 640px) {
+          .nav-inner { width: 100%; }
+        }
       `}</style>
 
       <nav
@@ -199,7 +204,7 @@ export function Navbar() {
           transition: 'background 0.3s ease, box-shadow 0.3s ease, border-radius 0.15s ease, top 0.3s ease',
         }}
       >
-        <div style={{ display: 'flex', alignItems: 'center', gap: 2, margin: '0 auto', width: '100%' }}>
+        <div className="nav-inner" style={{ display: 'flex', alignItems: 'center', gap: 2, margin: '0 auto' }}>
 
           {/* Logo */}
           <Link href="/" style={{ display: 'flex', alignItems: 'center', textDecoration: 'none', flexShrink: 0, marginRight: 36 }}>
