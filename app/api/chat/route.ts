@@ -21,19 +21,35 @@ const BodySchema = z.object({
 // ── Tool: productos de la tienda (Medusa en vivo) ───────────────────────────
 const buscarProductos = tool({
   description:
-    "Busca productos de higiene y limpieza en la tienda online de Grupo Rubio. Úsala cuando el usuario pregunte por productos, precios de tienda o quiera comprar algo.",
+    "Busca productos de higiene y limpieza en la tienda online de Grupo Rubio. Úsala cuando el usuario pregunte por productos, precios de tienda o quiera comprar algo. Sin query devuelve el catálogo completo.",
   inputSchema: z.object({
-    query: z.string().describe("Término de búsqueda, p. ej. 'desengrasante' o 'papel'"),
+    query: z
+      .string()
+      .optional()
+      .describe("Término de búsqueda, p. ej. 'desengrasante'. Omitir para listar el catálogo completo."),
   }),
   execute: async ({ query }) => {
     try {
       const client = getMedusa();
-      const { products } = await client.store.product.list({ q: query, limit: 5 });
+      let { products } = await client.store.product.list(
+        query?.trim() ? { q: query, limit: 5 } : { limit: 8 }
+      );
+      let exactMatch = true;
+      // Sin resultados para esa búsqueda → devolver el catálogo actual para
+      // que el bot pueda ofrecer alternativas reales en vez de un "no hay".
+      if (!products?.length && query?.trim()) {
+        exactMatch = false;
+        ({ products } = await client.store.product.list({ limit: 8 }));
+      }
       if (!products?.length) {
-        return { found: false, message: "Sin resultados en la tienda para esa búsqueda." };
+        return { found: false, message: "La tienda no tiene productos publicados todavía." };
       }
       return {
         found: true,
+        exactMatch,
+        note: exactMatch
+          ? undefined
+          : "No hay resultados exactos para esa búsqueda; esto es el catálogo actual de la tienda por si sirve como alternativa.",
         products: products.map((p: { title: string; handle?: string; collection?: { title: string } }) => ({
           title: p.title,
           category: p.collection?.title ?? "Producto",
