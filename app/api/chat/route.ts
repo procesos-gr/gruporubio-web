@@ -1,4 +1,4 @@
-import { streamText, tool, stepCountIs } from "ai";
+import { streamText, tool, stepCountIs, smoothStream } from "ai";
 import { anthropic } from "@ai-sdk/anthropic";
 import { z } from "zod";
 import { buildSystemPrompt } from "@/lib/chatbot/knowledge";
@@ -97,6 +97,8 @@ export async function POST(req: Request) {
     stopWhen: stepCountIs(3), // máx. 2 rondas de tools + respuesta
     maxOutputTokens: 500,     // respuestas cortas, coste capado
     temperature: 0.4,
+    // Stream suave palabra a palabra — sin esto el texto llega a trompicones
+    experimental_transform: smoothStream({ delayInMs: 18, chunking: "word" }),
   });
 
   return result.toTextStreamResponse();

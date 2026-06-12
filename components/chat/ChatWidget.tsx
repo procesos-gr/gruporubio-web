@@ -55,14 +55,33 @@ function BotText({ text }: { text: string }) {
   );
 }
 
+const NUDGE_DELAY_MS = 18_000; // tiempo navegando antes de mostrar el popup
+const NUDGE_KEY = 'gr-chat-nudge-shown';
+
 export function ChatWidget() {
   const [open, setOpen] = useState(false);
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
+  const [nudge, setNudge] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const abortRef = useRef<AbortController | null>(null);
+
+  // Popup "¿Necesitas ayuda?" tras un rato navegando — una vez por sesión
+  useEffect(() => {
+    if (sessionStorage.getItem(NUDGE_KEY)) return;
+    const timer = setTimeout(() => {
+      sessionStorage.setItem(NUDGE_KEY, '1');
+      setNudge(true);
+    }, NUDGE_DELAY_MS);
+    return () => clearTimeout(timer);
+  }, []);
+
+  // Al abrir el chat, el popup desaparece
+  useEffect(() => {
+    if (open) setNudge(false);
+  }, [open]);
 
   useEffect(() => {
     if (scrollRef.current) {
@@ -146,6 +165,78 @@ export function ChatWidget() {
 
   return (
     <>
+      {/* Popup nube "¿Necesitas ayuda?" */}
+      <AnimatePresence>
+        {nudge && !open && (
+          <motion.div
+            initial={{ opacity: 0, y: 8, scale: 0.96 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 8, scale: 0.96 }}
+            transition={{ duration: 0.25, ease: 'easeOut' }}
+            style={{
+              position: 'fixed',
+              bottom: 94,
+              right: 24,
+              maxWidth: 250,
+              background: '#ffffff',
+              border: '1.5px solid #e5e7eb',
+              borderRadius: 12,
+              boxShadow: '0 8px 28px rgba(0,0,0,0.14)',
+              padding: '14px 16px',
+              zIndex: 9990,
+              cursor: 'pointer',
+            }}
+            onClick={() => setOpen(true)}
+          >
+            {/* Cerrar */}
+            <button
+              onClick={e => { e.stopPropagation(); setNudge(false); }}
+              aria-label="Cerrar aviso"
+              style={{
+                position: 'absolute',
+                top: -9,
+                right: -9,
+                width: 22,
+                height: 22,
+                borderRadius: '50%',
+                background: '#0F1623',
+                color: '#ffffff',
+                border: 'none',
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                padding: 0,
+              }}
+            >
+              <X size={12} />
+            </button>
+
+            <p style={{ margin: 0, fontSize: 13, fontWeight: 700, color: '#111827', lineHeight: 1.4 }}>
+              ¿Necesitas ayuda con algo? 👋
+            </p>
+            <p style={{ margin: '4px 0 0', fontSize: 12, color: '#6B7280', lineHeight: 1.45 }}>
+              Pregúntame por servicios, alquiler de maquinaria o productos.
+            </p>
+
+            {/* Pico de la nube */}
+            <div
+              style={{
+                position: 'absolute',
+                bottom: -7,
+                right: 22,
+                width: 12,
+                height: 12,
+                background: '#ffffff',
+                borderRight: '1.5px solid #e5e7eb',
+                borderBottom: '1.5px solid #e5e7eb',
+                transform: 'rotate(45deg)',
+              }}
+            />
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {/* Botón flotante */}
       <motion.button
         onClick={() => setOpen(o => !o)}
@@ -251,16 +342,20 @@ export function ChatWidget() {
                 </div>
               )}
 
-              {messages.map((m, i) => (
-                <Bubble key={i} role={m.role}>
-                  {m.role === 'assistant' ? <BotText text={m.content} /> : m.content}
-                </Bubble>
-              ))}
+              {messages
+                .filter(m => m.content.length > 0)
+                .map((m, i) => (
+                  <Bubble key={i} role={m.role}>
+                    {m.role === 'assistant' ? <BotText text={m.content} /> : m.content}
+                  </Bubble>
+                ))}
 
-              {/* Indicador escribiendo */}
-              {loading && messages[messages.length - 1]?.role === 'user' && (
+              {/* Indicador escribiendo — visible hasta que llega el primer texto */}
+              {loading && messages[messages.length - 1]?.content !== undefined &&
+                (messages[messages.length - 1].role === 'user' ||
+                  messages[messages.length - 1].content.length === 0) && (
                 <Bubble role="assistant">
-                  <span style={{ color: '#9CA3AF', fontSize: 13 }}>Escribiendo…</span>
+                  <TypingDots />
                 </Bubble>
               )}
             </div>
@@ -324,6 +419,22 @@ export function ChatWidget() {
         )}
       </AnimatePresence>
     </>
+  );
+}
+
+/** Tres puntitos animados estilo "está escribiendo" */
+function TypingDots() {
+  return (
+    <span style={{ display: 'inline-flex', gap: 4, alignItems: 'center', height: 16 }}>
+      {[0, 1, 2].map(i => (
+        <motion.span
+          key={i}
+          animate={{ opacity: [0.25, 1, 0.25], y: [0, -3, 0] }}
+          transition={{ duration: 1, repeat: Infinity, delay: i * 0.18, ease: 'easeInOut' }}
+          style={{ width: 6, height: 6, borderRadius: '50%', background: '#9CA3AF', display: 'inline-block' }}
+        />
+      ))}
+    </span>
   );
 }
 
