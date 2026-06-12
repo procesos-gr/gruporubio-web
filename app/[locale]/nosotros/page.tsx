@@ -155,13 +155,13 @@ export default function NosotrosPage() {
       {/* ── Cifras clave ── */}
       <div style={{ background: "#ffffff", borderBottom: "1px solid #F3F4F6" }}>
         <div style={{ maxWidth: 1100, margin: "0 auto", padding: "0 32px" }}>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)" }}>
+          <div className="grid grid-cols-2 lg:grid-cols-4">
             {STATS.map((s, i) => (
               <div
                 key={i}
+                className={i < STATS.length - 1 ? "lg:border-r lg:border-[#F3F4F6]" : ""}
                 style={{
                   padding: "40px 28px",
-                  borderRight: i < STATS.length - 1 ? "1px solid #F3F4F6" : "none",
                 }}
               >
                 <p style={{ fontSize: "clamp(32px, 3.5vw, 48px)", fontWeight: 800, color: "#111827", letterSpacing: "-2px", margin: "0 0 6px", lineHeight: 1 }}>

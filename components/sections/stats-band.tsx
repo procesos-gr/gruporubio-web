@@ -18,8 +18,15 @@ export function StatsBand() {
 
   return (
     <section style={{ background: '#ffffff', padding: '72px 24px' }}>
+      <style>{`
+        .stats-band-row { display: flex; align-items: center; justify-content: space-between; gap: 24px; }
+        @media (max-width: 760px) {
+          .stats-band-row { display: grid; grid-template-columns: 1fr 1fr; gap: 36px 16px; }
+          .stats-band-sep { display: none; }
+        }
+      `}</style>
       <div ref={ref} style={{ maxWidth: 1100, margin: '0 auto' }}>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 24 }}>
+        <div className="stats-band-row">
           {STATS.map((stat, i) => (
             <div key={stat.key} style={{ display: 'contents' }}>
               <motion.div
@@ -50,6 +57,7 @@ export function StatsBand() {
               </motion.div>
               {i < STATS.length - 1 && (
                 <motion.div
+                  className="stats-band-sep"
                   initial={{ opacity: 0, scaleY: 0 }}
                   animate={inView ? { opacity: 1, scaleY: 1 } : {}}
                   transition={{ duration: 0.4, delay: i * 0.1 + 0.2 }}
