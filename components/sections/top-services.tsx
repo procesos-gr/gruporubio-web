@@ -53,7 +53,7 @@ const CARDS: Record<FilterKey, ServiceCard[]> = {
       title: 'Tratamiento de Suelos',
       description: 'Mantenimiento, pulido y protección de todo tipo de superficies y pavimentos industriales.',
       img: '/images/home/tratamiento-suelos-v2.webp',
-      href: '/servicios',
+      href: '/servicios/tratamientos-de-suelos',
     },
   ],
   'Control de Plagas': [
