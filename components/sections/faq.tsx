@@ -39,7 +39,14 @@ export function FAQ() {
 
   return (
     <section style={{ background: '#ffffff', padding: '80px 24px' }}>
-      <div style={{ maxWidth: 1100, margin: '0 auto', display: 'grid', gridTemplateColumns: '1fr 1.6fr', gap: 80, alignItems: 'start' }}>
+      <style>{`
+        .faq-grid { display: grid; grid-template-columns: 1fr 1.6fr; gap: 80px; align-items: start; }
+        @media (max-width: 860px) {
+          .faq-grid { grid-template-columns: 1fr; gap: 32px; }
+          .faq-grid > div:first-child { position: static !important; }
+        }
+      `}</style>
+      <div className="faq-grid" style={{ maxWidth: 1100, margin: '0 auto' }}>
 
         {/* Left — título sticky */}
         <div style={{ position: 'sticky', top: 100 }}>

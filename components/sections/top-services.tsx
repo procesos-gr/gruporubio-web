@@ -222,14 +222,19 @@ export function TopServices() {
         </div>
 
         {/* ── Showcase split ── */}
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: '0.85fr 1.15fr',
-            gap: 28,
-            alignItems: 'stretch',
-          }}
-        >
+        <style>{`
+          .ts-showcase {
+            display: grid;
+            grid-template-columns: 0.85fr 1.15fr;
+            gap: 28px;
+            align-items: stretch;
+          }
+          @media (max-width: 860px) {
+            .ts-showcase { grid-template-columns: 1fr; gap: 18px; }
+            .ts-showcase .ts-img { min-height: 300px; }
+          }
+        `}</style>
+        <div className="ts-showcase">
           {/* Left: lista de servicios de la categoría activa */}
           <AnimatePresence mode="wait">
             <motion.div
@@ -316,11 +321,13 @@ export function TopServices() {
           {/* Right: visual grande que cambia con crossfade */}
           <Link href={selected.href} style={{ textDecoration: 'none', display: 'block' }}>
             <div
+              className="ts-img"
               style={{
                 position: 'relative',
                 borderRadius: 14,
                 overflow: 'hidden',
                 height: 460,
+                maxHeight: '60vh',
                 background: '#0F1623',
               }}
             >

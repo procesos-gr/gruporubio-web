@@ -4,7 +4,15 @@ import Link from 'next/link';
 export function CTABanner() {
   return (
     <div style={{ background: '#ffffff', padding: '0 0 80px' }}>
-      <div style={{ margin: '0 40px', position: 'relative' }}>
+      <style>{`
+        .cta-banner-wrap { margin: 0 40px; position: relative; }
+        .cta-banner-inner { padding: 60px 100px; }
+        @media (max-width: 760px) {
+          .cta-banner-wrap { margin: 0 16px; }
+          .cta-banner-inner { padding: 52px 28px; }
+        }
+      `}</style>
+      <div className="cta-banner-wrap">
 
         <svg
           viewBox="0 0 1000 280"
@@ -25,10 +33,10 @@ export function CTABanner() {
         </svg>
 
         <div
+          className="cta-banner-inner"
           style={{
             position: 'relative',
             zIndex: 1,
-            padding: '60px 100px',
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',

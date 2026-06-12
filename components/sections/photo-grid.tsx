@@ -136,11 +136,12 @@ function ReviewsWidget() {
         border: '1px solid #EEF1F6',
         boxShadow: '0 1px 2px rgba(16,24,40,0.04), 0 6px 16px rgba(16,24,40,0.06)',
         height: '100%',
+        minHeight: 86,
         boxSizing: 'border-box',
         display: 'flex',
         alignItems: 'center',
         gap: 14,
-        padding: '0 18px',
+        padding: '14px 18px',
         overflow: 'hidden',
         textDecoration: 'none',
         position: 'relative',
@@ -193,20 +194,36 @@ function ReviewsWidget() {
 
 export function PhotoGrid() {
   return (
-    <div
-      style={{
-        display: 'grid',
-        gridTemplateColumns: '44% 24% 1fr',
-        gridTemplateRows: '77% 23%',
-        gap: 8,
-        height: 420,
-      }}
-    >
+    <div className="pg-grid">
+      <style>{`
+        .pg-grid {
+          display: grid;
+          grid-template-columns: 44% 24% 1fr;
+          grid-template-rows: 77% 23%;
+          gap: 8px;
+          height: 420px;
+        }
+        .pg-limpieza { grid-column: 1; grid-row: 1 / 3; }
+        .pg-plagas   { grid-column: 2; grid-row: 1; }
+        .pg-reviews  { grid-column: 2; grid-row: 2; }
+        .pg-tienda   { grid-column: 3; grid-row: 1 / 3; }
+        @media (max-width: 860px) {
+          .pg-grid {
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: 260px 210px auto;
+            height: auto;
+          }
+          .pg-limpieza { grid-column: 1 / 3; grid-row: 1; }
+          .pg-plagas   { grid-column: 1; grid-row: 2; }
+          .pg-tienda   { grid-column: 2; grid-row: 2; }
+          .pg-reviews  { grid-column: 1 / 3; grid-row: 3; }
+        }
+      `}</style>
       {/* Limpieza — col 1, full height */}
       <Link href="/servicios#limpieza" style={{ display: 'contents' }}>
         <div
-          className="group cursor-pointer"
-          style={{ position: 'relative', borderRadius: CARD_RADIUS, overflow: 'hidden', gridColumn: 1, gridRow: '1 / 3' }}
+          className="group cursor-pointer pg-limpieza"
+          style={{ position: 'relative', borderRadius: CARD_RADIUS, overflow: 'hidden' }}
         >
           <Image
             src="/images/home/limpieza-profesional-fullbody.webp"
@@ -223,8 +240,8 @@ export function PhotoGrid() {
       {/* Control de Plagas — col 2, row 1 */}
       <Link href="/servicios#plagas" style={{ display: 'contents' }}>
         <div
-          className="group cursor-pointer"
-          style={{ position: 'relative', borderRadius: CARD_RADIUS, overflow: 'hidden', gridColumn: 2, gridRow: 1 }}
+          className="group cursor-pointer pg-plagas"
+          style={{ position: 'relative', borderRadius: CARD_RADIUS, overflow: 'hidden' }}
         >
           <Image
             src="/images/home/control-de-plagas.webp"
@@ -239,15 +256,15 @@ export function PhotoGrid() {
       </Link>
 
       {/* Reviews widget — col 2, row 2 */}
-      <div style={{ gridColumn: 2, gridRow: 2 }}>
+      <div className="pg-reviews">
         <ReviewsWidget />
       </div>
 
       {/* Tienda — col 3, full height */}
       <Link href="/tienda" style={{ display: 'contents' }}>
         <div
-          className="group cursor-pointer"
-          style={{ position: 'relative', borderRadius: CARD_RADIUS, overflow: 'hidden', gridColumn: 3, gridRow: '1 / 3' }}
+          className="group cursor-pointer pg-tienda"
+          style={{ position: 'relative', borderRadius: CARD_RADIUS, overflow: 'hidden' }}
         >
           <Image
             src="/images/home/tienda.jpg"
