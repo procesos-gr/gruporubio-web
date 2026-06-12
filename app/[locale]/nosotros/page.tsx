@@ -73,7 +73,7 @@ const DIVISIONS = [
     tag: "03",
     desc: "Patente propia de hardware urbano inteligente para el control automatizado de plagas en Smart Cities. Presentado en Ayuntalia 2025. Primer sistema de este tipo en Europa.",
     href: "/servicios",
-    img: null,
+    img: "/images/nosotros/xanael-innovacion.webp",
   },
   {
     id: "appcc",
