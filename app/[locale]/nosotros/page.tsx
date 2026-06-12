@@ -251,7 +251,7 @@ export default function NosotrosPage() {
             </p>
           </div>
 
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 24, alignItems: "start" }}>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
             <div style={{ position: "relative", height: 340, borderRadius: 8, overflow: "hidden" }}>
               <Image
                 src="/images/nosotros/hermanos-rubio-stand.webp"
@@ -293,10 +293,10 @@ export default function NosotrosPage() {
           </div>
 
           {/* Tabs + panel */}
-          <div style={{ display: "grid", gridTemplateColumns: "260px 1fr", gap: 2, border: "1px solid #F3F4F6", borderRadius: 8, overflow: "hidden" }}>
+          <div className="grid grid-cols-1 md:grid-cols-[260px_1fr]" style={{ gap: 2, border: "1px solid #F3F4F6", borderRadius: 8, overflow: "hidden" }}>
 
             {/* Lista de divisiones */}
-            <div style={{ borderRight: "1px solid #F3F4F6" }}>
+            <div className="md:border-r md:border-[#F3F4F6]">
               {DIVISIONS.map((d) => {
                 const isActive = d.id === activeDiv;
                 return (
@@ -390,7 +390,7 @@ export default function NosotrosPage() {
             </p>
           </div>
 
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 16 }}>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {RSC.map((item, i) => (
               <div
                 key={i}
