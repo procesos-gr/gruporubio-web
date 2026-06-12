@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
 import { Providers } from "@/components/providers";
 import { Toaster } from "@/components/ui/Toast";
+import { ChatWidget } from "@/components/chat/ChatWidget";
 import "../globals.css";
 
 const plusJakartaSans = Plus_Jakarta_Sans({
@@ -37,6 +38,7 @@ export default async function LocaleLayout({
               {children}
             </main>
             <Toaster />
+            <ChatWidget />
           </Providers>
         </NextIntlClientProvider>
       </body>
