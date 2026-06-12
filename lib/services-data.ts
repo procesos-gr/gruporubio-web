@@ -953,6 +953,8 @@ export const SERVICES: ServiceData[] = [
     extraFact:
       "La formación propia permite someter a nuestros operativos a programas de reciclaje técnico exigente, garantizando que las operaciones con maquinaria pesada o biocidas mantengan índices de siniestralidad excepcionalmente reducidos.",
     pexelsQuery: "professional training course certification hygiene safety",
+    image: "/images/servicios/formacion-de-manipulador-de-alimentos/1-hq-v2.webp",
+    noImage2: true,
     relatedSlugs: [
       "formacion-de-manipulador-de-alimentos",
       "appcc-implantacion-y-verificacion",
