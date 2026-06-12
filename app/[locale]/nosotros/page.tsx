@@ -99,22 +99,22 @@ const RSC = [
   {
     title: "COVID-19 · 2020",
     text: "Desinfección gratuita de ambulancias, vehículos de bomberos y patrullas policiales durante el estado de alarma.",
-    img: true,
+    imgSrc: "/images/nosotros/rsc-covid.webp",
   },
   {
     title: "SDR Arenas · Baloncesto base",
     text: "Patrocinador principal del club desde categorías Mini hasta Senior bajo el nombre Grupo Rubio GIMA Arenas.",
-    img: true,
+    imgSrc: "/images/nosotros/rsc-arenas.webp",
   },
   {
     title: "Formación y empleo comarcal",
     text: "Cientos de personas formadas cada año en la Ribera de Navarra. Centro acreditado por el Consorcio Eder.",
-    img: false,
+    imgSrc: null,
   },
   {
     title: "Contrato FCC · 24,5 M€",
     text: "Cogestión de limpieza viaria y recogida de residuos en 17 municipios navarros durante 10 años.",
-    img: false,
+    imgSrc: null,
   },
 ];
 
@@ -248,11 +248,12 @@ export default function NosotrosPage() {
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 24, alignItems: "start" }}>
             <div style={{ position: "relative", height: 340, borderRadius: 8, overflow: "hidden" }}>
               <Image
-                src="/images/nosotros/hermanos-rubio.webp"
-                alt="Carlos, Iñaki y José Javier Rubio Carrera"
+                src="/images/nosotros/hermanos-rubio-stand.webp"
+                alt="Carlos, Iñaki y José Javier Rubio Carrera en el stand de Xanael"
                 fill
                 sizes="(max-width: 1024px) 90vw, 538px"
-                className="object-cover object-top"
+                className="object-cover"
+                style={{ objectPosition: "50% 62%" }}
                 quality={88}
               />
             </div>
@@ -381,8 +382,17 @@ export default function NosotrosPage() {
                   overflow: "hidden",
                 }}
               >
-                {item.img && (
-                  <ImgPlaceholder height={180} label={`Foto — ${item.title}`} />
+                {item.imgSrc && (
+                  <div style={{ position: "relative", height: 180 }}>
+                    <Image
+                      src={item.imgSrc}
+                      alt={item.title}
+                      fill
+                      sizes="(max-width: 1024px) 90vw, 538px"
+                      className="object-cover object-center"
+                      quality={85}
+                    />
+                  </div>
                 )}
                 <div style={{ padding: "20px 24px" }}>
                   <p style={{ fontSize: 14, fontWeight: 700, color: "#111827", margin: "0 0 6px" }}>
