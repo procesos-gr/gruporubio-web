@@ -29,15 +29,24 @@ export default function HomePage() {
         }}
       />
 
-      {/* Section A-1: Hero card */}
+      {/* Section A-1: Hero card — en móvil ocupa todo el ancho (sin padding lateral ni superior) */}
       <div
+        className="hero-card"
         style={{
-          margin: 16,
-          borderRadius: 16,
           position: 'relative',
           zIndex: 1,
         }}
       >
+        <style>{`
+          .hero-card { margin: 16px; border-radius: 16px; }
+          @media (max-width: 640px) {
+            .hero-card { margin: 0; border-radius: 0; }
+            .hero-card section,
+            .hero-card section > div:first-child { border-radius: 0 !important; }
+            /* el navbar fijo (16+68px) queda encima: bajar el contenido */
+            .hero-card section { padding-top: 112px !important; }
+          }
+        `}</style>
 <Hero />
       </div>
 
