@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { Navbar } from "@/components/layout/Navbar";
 import Footer from "@/components/sections/Footer";
 import { ArrowRight, Phone, Image as ImageIcon } from "lucide-react";
@@ -188,7 +189,16 @@ export default function NosotrosPage() {
               <p style={{ fontSize: 14, color: "#6B7280", lineHeight: 1.7, marginBottom: 28 }}>
                 Lo que nació como «Limpiezas Rubio» en Tudela se ha convertido en un conglomerado de servicios que opera en Navarra, Aragón, La Rioja y más allá. La transición generacional liderada por Carlos, Iñaki y José Javier Rubio Carrera ha impulsado la digitalización, la innovación tecnológica y la expansión a nuevos sectores.
               </p>
-              <ImgPlaceholder height={260} label="Foto instalaciones / equipo" />
+              <div style={{ position: "relative", height: 260, borderRadius: 8, overflow: "hidden" }}>
+                <Image
+                  src="/images/nosotros/instalaciones-grupo-rubio.webp"
+                  alt="Instalaciones de Grupo Rubio en el Polígono de Ultrapuertos, Tudela"
+                  fill
+                  sizes="(max-width: 1024px) 90vw, 510px"
+                  className="object-cover object-center"
+                  quality={88}
+                />
+              </div>
             </div>
 
             {/* Columna derecha: timeline */}
