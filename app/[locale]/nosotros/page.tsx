@@ -383,7 +383,7 @@ export default function NosotrosPage() {
                 }}
               >
                 {item.imgSrc && (
-                  <div style={{ position: "relative", height: 180 }}>
+                  <div style={{ position: "relative", height: 240 }}>
                     <Image
                       src={item.imgSrc}
                       alt={item.title}
