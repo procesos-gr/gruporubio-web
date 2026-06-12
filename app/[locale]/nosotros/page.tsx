@@ -57,6 +57,7 @@ const DIVISIONS = [
     tag: "01",
     desc: "Desde limpieza de oficinas y comunidades hasta limpiezas industriales, en altura, post-siniestro y tratamiento de suelos. Maquinaria propia de última generación.",
     href: "/servicios#limpieza",
+    img: "/images/home/limpiezas-industriales-home.webp",
   },
   {
     id: "plagas",
@@ -64,6 +65,7 @@ const DIVISIONS = [
     tag: "02",
     desc: "Desratización, desinsectación y desinfección certificada. Especialistas en termitas, legionela, aves y procesionaria. Homologados por el Gobierno de Navarra.",
     href: "/servicios#plagas",
+    img: "/images/home/ddd.jpg",
   },
   {
     id: "xanael",
@@ -71,6 +73,7 @@ const DIVISIONS = [
     tag: "03",
     desc: "Patente propia de hardware urbano inteligente para el control automatizado de plagas en Smart Cities. Presentado en Ayuntalia 2025. Primer sistema de este tipo en Europa.",
     href: "/servicios",
+    img: null,
   },
   {
     id: "appcc",
@@ -78,6 +81,7 @@ const DIVISIONS = [
     tag: "04",
     desc: "Implantación y verificación de sistemas APPCC, auditorías sanitarias y formación de manipuladores para la industria agroalimentaria del Valle del Ebro.",
     href: "/servicios#alimentaria",
+    img: "/images/servicios/appcc-implantacion-y-verificacion/1-hq.webp",
   },
   {
     id: "karcher",
@@ -85,6 +89,7 @@ const DIVISIONS = [
     tag: "05",
     desc: "Venta de química profesional, celulosa, EPIs y maquinaria. Servicio Técnico Oficial Kärcher para toda la región. Alquiler de equipos industriales.",
     href: "/servicios#maquinaria",
+    img: "/images/servicios/servicio-tecnico-oficial-karcher/1-hq.webp",
   },
   {
     id: "formacion",
@@ -92,6 +97,7 @@ const DIVISIONS = [
     tag: "06",
     desc: "Formación reglada para manipuladores de alimentos, certificados de profesionalidad y cursos técnicos. Acreditados por el Consorcio Eder.",
     href: "/servicios#formacion",
+    img: "/images/servicios/formacion-de-manipulador-de-alimentos/1-hq.webp",
   },
 ];
 
@@ -339,7 +345,20 @@ export default function NosotrosPage() {
                   {current.desc}
                 </p>
               </div>
-              <ImgPlaceholder height={200} label={`Imagen — ${current.title}`} />
+              {current.img ? (
+                <div style={{ position: "relative", height: 200, borderRadius: 8, overflow: "hidden" }}>
+                  <Image
+                    src={current.img}
+                    alt={current.title}
+                    fill
+                    sizes="(max-width: 1024px) 90vw, 760px"
+                    className="object-cover object-center"
+                    quality={86}
+                  />
+                </div>
+              ) : (
+                <ImgPlaceholder height={200} label={`Imagen — ${current.title}`} />
+              )}
               <div>
                 <Link
                   href={current.href}
