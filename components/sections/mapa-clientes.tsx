@@ -13,7 +13,7 @@ const ETIQUETAS = ['0', '1-4', '5-19', '20-99', '100+'];
 const ESPACIADO = 11; // px entre celdas
 const LADO = 8.5; // tamaño de cada cuadradito
 const CODIGOS_PROVINCIA = ['31', '26', '50']; // Navarra, La Rioja, Zaragoza
-const ALTURA_MAPA = 520;
+const ALTURA_MAPA = 410;
 
 const INFO_CARDS = [
   { icon: Users, value: '+1.500', label: 'Clientes activos en cartera' },
