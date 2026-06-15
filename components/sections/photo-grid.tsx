@@ -229,6 +229,7 @@ export function PhotoGrid() {
             src="/images/home/limpieza-profesional-fullbody.webp"
             alt="Limpieza profesional en oficinas y espacios comerciales"
             fill
+            priority
             quality={90}
             className="object-cover object-center transition-transform duration-500 ease-out group-hover:scale-[1.04]"
             sizes="(max-width: 768px) 90vw, 44vw"
@@ -247,6 +248,7 @@ export function PhotoGrid() {
             src="/images/home/control-de-plagas.webp"
             alt="Control de plagas y tratamientos DDD"
             fill
+            priority
             quality={90}
             className="object-cover object-center transition-transform duration-500 ease-out group-hover:scale-[1.04]"
             sizes="(max-width: 768px) 90vw, 24vw"
@@ -270,6 +272,7 @@ export function PhotoGrid() {
             src="/images/home/tienda.jpg"
             alt="Nuestra tienda de productos de higiene y limpieza"
             fill
+            priority
             quality={90}
             className="object-cover object-center transition-transform duration-500 ease-out group-hover:scale-[1.04]"
             sizes="(max-width: 768px) 90vw, 32vw"

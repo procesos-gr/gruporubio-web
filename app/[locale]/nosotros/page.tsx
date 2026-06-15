@@ -200,6 +200,7 @@ export default function NosotrosPage() {
                   src="/images/nosotros/instalaciones-grupo-rubio.webp"
                   alt="Instalaciones de Grupo Rubio en el Polígono de Ultrapuertos, Tudela"
                   fill
+                  priority
                   sizes="(max-width: 1024px) 90vw, 510px"
                   className="object-cover object-center"
                   quality={88}

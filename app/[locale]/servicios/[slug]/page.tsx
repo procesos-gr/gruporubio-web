@@ -38,11 +38,11 @@ function ImgSlot({ ratio = "4/3" }: { ratio?: string }) {
   );
 }
 
-function ServiceImg({ src, alt, ratio, position }: { src?: string; alt: string; ratio: string; position?: string }) {
+function ServiceImg({ src, alt, ratio, position, priority }: { src?: string; alt: string; ratio: string; position?: string; priority?: boolean }) {
   if (!src) return <ImgSlot ratio={ratio} />;
   return (
     <div style={{ width: "100%", aspectRatio: ratio, borderRadius: 8, overflow: "hidden", position: "relative", flexShrink: 0 }}>
-      <Image src={src} alt={alt} fill className="object-cover" style={position ? { objectPosition: position } : undefined} />
+      <Image src={src} alt={alt} fill priority={priority} className="object-cover" style={position ? { objectPosition: position } : undefined} />
     </div>
   );
 }
@@ -78,7 +78,7 @@ function LayoutA({ service }: { service: ServiceData }) {
         {showImg1 ? (
           <div className="grid grid-cols-1 sm:grid-cols-[1fr_220px] gap-6 items-start">
             <IncludesList items={service.includes} />
-            <ServiceImg src={service.image} alt={service.title} ratio="3/4" position={service.imagePos} />
+            <ServiceImg src={service.image} alt={service.title} ratio="3/4" position={service.imagePos} priority />
           </div>
         ) : (
           <IncludesList items={service.includes} />
@@ -113,7 +113,7 @@ function LayoutB({ service }: { service: ServiceData }) {
         <h2 style={h2}>Alcance del servicio</h2>
         {showImg1 ? (
           <div className="grid grid-cols-1 sm:grid-cols-[200px_1fr] gap-6 items-start">
-            <ServiceImg src={service.image} alt={service.title} ratio="4/5" position={service.imagePos} />
+            <ServiceImg src={service.image} alt={service.title} ratio="4/5" position={service.imagePos} priority />
             <IncludesList items={service.includes} />
           </div>
         ) : (
@@ -150,7 +150,7 @@ function LayoutC({ service }: { service: ServiceData }) {
         <h2 style={h2}>Alcance del servicio</h2>
         {showImg1 && (
           <div style={{ marginBottom: 20 }}>
-            <ServiceImg src={service.image} alt={service.title} ratio="16/7" position={service.imagePos} />
+            <ServiceImg src={service.image} alt={service.title} ratio="16/7" position={service.imagePos} priority />
           </div>
         )}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-3">
