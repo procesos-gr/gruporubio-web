@@ -155,8 +155,8 @@ export function Navbar() {
     closeTimer.current = setTimeout(() => setOpen(false), 120);
   };
 
-  const linkColor = (!showDark && isOnDarkPage) ? 'rgba(255,255,255,0.88)' : '#374151';
-  const chevronColor = (!showDark && isOnDarkPage) ? 'rgba(255,255,255,0.45)' : '#9CA3AF';
+  const linkColor = (!showDark && isOnDarkPage) ? 'rgba(255,255,255,0.88)' : '#111827';
+  const chevronColor = (!showDark && isOnDarkPage) ? 'rgba(255,255,255,0.45)' : '#6B7280';
 
   return (
     <>
