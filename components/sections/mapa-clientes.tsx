@@ -14,7 +14,7 @@ const TOOLTIP_SERVICIOS = [
   },
   {
     bg: '#EF4444',
-    path: `<path d="M12 20c-3.3 0-6-2.7-6-6v-3a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v3c0 3.3-2.7 6-6 6z"/><path d="M12 20v-9"/><path d="M9 7a3 3 0 1 1 6 0"/>`,
+    path: `<path d="M12 20c-3.3 0-6-2.7-6-6v-3a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v3c0 3.3-2.7 6-6 6z"/><path d="M12 20v-9"/><path d="M9 7a3 3 0 1 1 6 0"/><path d="M6 13H3"/><path d="M18 13h3"/><path d="M5.5 9.5C4.5 8.5 3.5 7 3.5 5"/><path d="M18.5 9.5c1-1 2-2.5 2-4.5"/><path d="M5 17.5C4 18.5 3 20 3 21"/><path d="M19 17.5c1 1 2 2.5 2 3.5"/>`,
   },
   {
     bg: '#22C55E',
@@ -310,17 +310,17 @@ export function MapaClientes() {
           </div>
 
           {/* Leyenda */}
-          <div style={{ marginTop: 16, display: 'flex', gap: 24, flexWrap: 'wrap', alignItems: 'flex-start' }}>
+          <div style={{ marginTop: 20, display: 'flex', gap: 28, flexWrap: 'wrap', alignItems: 'flex-start' }}>
             {/* Densidad */}
             <div>
-              <span style={{ fontSize: 10, color: '#9CA3AF', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.06em', display: 'block', marginBottom: 6 }}>
+              <span style={{ fontSize: 11, color: '#9CA3AF', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.06em', display: 'block', marginBottom: 8 }}>
                 Densidad de clientes
               </span>
-              <div style={{ display: 'flex', gap: 4, alignItems: 'flex-end' }}>
+              <div style={{ display: 'flex', gap: 5, alignItems: 'flex-end' }}>
                 {PALETA.map((color, i) => (
-                  <div key={i} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 3 }}>
-                    <span style={{ width: 22, height: 10, borderRadius: 2, background: color, display: 'block' }} />
-                    <span style={{ fontSize: 9, color: '#9CA3AF', lineHeight: 1 }}>{ETIQUETAS[i]}</span>
+                  <div key={i} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4 }}>
+                    <span style={{ width: 28, height: 13, borderRadius: 3, background: color, display: 'block' }} />
+                    <span style={{ fontSize: 10, color: '#9CA3AF', lineHeight: 1 }}>{ETIQUETAS[i]}</span>
                   </div>
                 ))}
               </div>
@@ -328,16 +328,16 @@ export function MapaClientes() {
 
             {/* Servicios */}
             <div>
-              <span style={{ fontSize: 10, color: '#9CA3AF', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.06em', display: 'block', marginBottom: 6 }}>
+              <span style={{ fontSize: 11, color: '#9CA3AF', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.06em', display: 'block', marginBottom: 8 }}>
                 Servicios presentes
               </span>
-              <div style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
+              <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
                 {(['Limpieza', 'Plagas', 'Tienda'] as const).map((label, i) => (
-                  <div key={label} style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
-                    <span style={{ width: 18, height: 18, borderRadius: '50%', background: TOOLTIP_SERVICIOS[i].bg, display: 'inline-flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, overflow: 'hidden' }}>
-                      <svg viewBox="0 0 24 24" width="10" height="10" fill="none" stroke="#fff" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round" style={{ overflow: 'hidden' }} dangerouslySetInnerHTML={{ __html: TOOLTIP_SERVICIOS[i].path }} />
+                  <div key={label} style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                    <span style={{ width: 22, height: 22, borderRadius: '50%', background: TOOLTIP_SERVICIOS[i].bg, display: 'inline-flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, overflow: 'hidden' }}>
+                      <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="#fff" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round" style={{ overflow: 'hidden' }} dangerouslySetInnerHTML={{ __html: TOOLTIP_SERVICIOS[i].path }} />
                     </span>
-                    <span style={{ fontSize: 11, color: '#6B7280' }}>{label}</span>
+                    <span style={{ fontSize: 12, color: '#6B7280' }}>{label}</span>
                   </div>
                 ))}
               </div>
