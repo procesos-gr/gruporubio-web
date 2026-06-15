@@ -7,7 +7,7 @@ import { Users, MapPin, Building2, ShieldCheck } from 'lucide-react';
 import { CLIENTES_MUNICIPIO } from '@/lib/clientes-municipio';
 
 // --- Constantes fácilmente ajustables ---
-const PALETA = ['#c7c2b6', '#a39c8c', '#766c5c', '#3a3328', '#0F1623'];
+const PALETA = ['#c3d3ee', '#9bb8e6', '#6f97da', '#3a64c4', '#1A56DB'];
 const TRAMOS = [1, 5, 20, 100];
 const ETIQUETAS = ['0', '1-4', '5-19', '20-99', '100+'];
 const ESPACIADO = 11; // px entre celdas
