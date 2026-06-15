@@ -6,6 +6,31 @@ import * as topojson from 'topojson-client';
 import { Sparkles, Bug, ShoppingBag, Wrench } from 'lucide-react';
 import { CLIENTES_MUNICIPIO } from '@/lib/clientes-municipio';
 
+// --- Badges de servicios para el tooltip (SVG inline, sin React) ---
+const TOOLTIP_SERVICIOS = [
+  {
+    bg: '#3B82F6',
+    path: `<path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"/>`,
+  },
+  {
+    bg: '#EF4444',
+    path: `<path d="M12 20c-3.3 0-6-2.7-6-6v-3a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v3c0 3.3-2.7 6-6 6z"/><path d="M12 20v-9"/><path d="M6.53 9C4.6 8.8 3 7.1 3 5"/><path d="M6 13H2"/><path d="M20.97 5c0 2.1-1.6 3.8-3.5 4"/><path d="M22 13h-4"/>`,
+  },
+  {
+    bg: '#22C55E',
+    path: `<path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/>`,
+  },
+];
+
+function serviciosBadges(municId: number): string {
+  const n = municId % 7;
+  const indices = n === 0 ? [0] : n === 1 ? [0, 1] : [0, 1, 2];
+  return indices.map(i => {
+    const s = TOOLTIP_SERVICIOS[i];
+    return `<span style="width:20px;height:20px;border-radius:50%;background:${s.bg};display:inline-flex;align-items:center;justify-content:center;flex-shrink:0"><svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">${s.path}</svg></span>`;
+  }).join('');
+}
+
 // --- Constantes fácilmente ajustables ---
 const PALETA = ['#1e293b', '#2952a3', '#1d4ed8', '#2563eb', '#3b82f6'];
 const TRAMOS = [1, 5, 20, 100];
@@ -193,10 +218,12 @@ export function MapaClientes() {
             .on('mousemove', (event: MouseEvent, d) => {
               if (!d.munic || d.munic.clientes === 0) { tooltip.style('opacity', 0); return; }
               const rect = node.getBoundingClientRect();
+              const name = (d.munic.feature.properties as { name: string }).name;
+              const badges = serviciosBadges(Number(d.munic.feature.id));
               tooltip.style('opacity', 1)
                 .style('left', `${event.clientX - rect.left}px`)
                 .style('top', `${event.clientY - rect.top}px`)
-                .html(`<b>${(d.munic.feature.properties as { name: string }).name}</b><div class="mc-zona">${d.munic.clientes} cliente${d.munic.clientes === 1 ? '' : 's'}</div>`);
+                .html(`<b>${name}</b><div class="mc-badges">${badges}</div>`);
             })
             .on('mouseleave', () => tooltip.style('opacity', 0));
         }
@@ -228,12 +255,13 @@ export function MapaClientes() {
         .mc-tooltip {
           position: absolute; pointer-events: none;
           background: rgba(17,24,39,.94); color: #fff;
-          padding: 6px 12px; border-radius: 8px; font-size: 13px;
+          padding: 8px 12px; border-radius: 8px; font-size: 13px;
           opacity: 0; transition: opacity .15s; transform: translate(-50%, -130%);
           box-shadow: 0 6px 16px rgba(0,0,0,.2); white-space: nowrap; z-index: 2;
+          text-align: center;
         }
-        .mc-tooltip b { font-weight: 700; }
-        .mc-tooltip .mc-zona { color: #D1D5DB; font-size: 11px; }
+        .mc-tooltip b { font-weight: 700; display: block; margin-bottom: 6px; }
+        .mc-tooltip .mc-badges { display: flex; gap: 5px; justify-content: center; }
         .mc-leyenda {
           position: absolute; bottom: 16px; left: 16px; z-index: 1;
           background: rgba(255,255,255,.94);
