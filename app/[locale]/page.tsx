@@ -17,18 +17,6 @@ export default function HomePage() {
       {/* Navbar — fixed, positioned over the hero card (top/left/right: 16px matches card margin) */}
       <Navbar />
 
-      {/* Backdrop azul — cubre el tercio superior del hero; asoma por el padding (arriba + laterales) */}
-      <div
-        aria-hidden
-        style={{
-          position: 'absolute',
-          top: 0, left: 0, right: 0,
-          height: 166,
-          background: '#0F1623',
-          zIndex: 0,
-        }}
-      />
-
       {/* Section A-1: Hero card — en móvil ocupa todo el ancho (sin padding lateral ni superior) */}
       <div
         className="hero-card"
