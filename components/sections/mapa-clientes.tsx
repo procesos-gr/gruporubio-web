@@ -13,7 +13,7 @@ const ETIQUETAS = ['0', '1-4', '5-19', '20-99', '100+'];
 const ESPACIADO = 11; // px entre celdas
 const LADO = 8.5; // tamaño de cada cuadradito
 const CODIGOS_PROVINCIA = ['31', '26', '50']; // Navarra, La Rioja, Zaragoza
-const ALTURA_MAPA = 410;
+const MARGEN = 40; // px de margen alrededor del mapa
 
 const INFO_CARDS = [
   { icon: Users, value: '+1.500', label: 'Clientes activos en cartera' },
@@ -73,12 +73,23 @@ export function MapaClientes() {
           const node = svg.node();
           if (!node) return;
           const { width } = node.getBoundingClientRect();
-          const height = ALTURA_MAPA;
-          svg.attr('viewBox', `0 0 ${width} ${height}`);
+
+          // Calcular el alto correcto desde la geografía real (igual que el HTML original)
+          const projTemp = d3.geoMercator().fitWidth(
+            width - MARGEN * 2,
+            { type: 'FeatureCollection', features: provincias } as GeoJSON.FeatureCollection
+          );
+          const [[, py0], [, py1]] = d3.geoPath(projTemp).bounds(
+            { type: 'FeatureCollection', features: provincias } as GeoJSON.FeatureCollection
+          );
+          const height = Math.ceil(py1 - py0) + MARGEN * 2;
+
+          svg.attr('viewBox', `0 0 ${width} ${height}`)
+             .attr('height', height);
           svg.selectAll('*').remove();
 
           const projection = d3.geoMercator().fitExtent(
-            [[40, 30], [width - 40, height - 30]],
+            [[MARGEN, MARGEN], [width - MARGEN, height - MARGEN]],
             { type: 'FeatureCollection', features: provincias } as GeoJSON.FeatureCollection
           );
 
@@ -237,7 +248,7 @@ export function MapaClientes() {
           </p>
 
           <div style={{ position: 'relative' }}>
-            <svg ref={svgRef} style={{ width: '100%', height: ALTURA_MAPA, display: 'block' }} />
+            <svg ref={svgRef} style={{ width: '100%', display: 'block' }} />
             <div ref={tooltipRef} className="mc-tooltip" />
 
             {!loading && !error && (
