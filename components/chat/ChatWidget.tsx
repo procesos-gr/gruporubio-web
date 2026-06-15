@@ -187,19 +187,6 @@ export function ChatWidget() {
 
   return (
     <>
-      {/* Pulse ring detrás del botón flotante (solo cuando cerrado) */}
-      {!open && (
-        <motion.span
-          animate={{ scale: [1, 1.55], opacity: [0.5, 0] }}
-          transition={{ duration: 1.8, repeat: Infinity, ease: 'easeOut' }}
-          style={{
-            position: 'fixed', bottom: 24, right: 24,
-            width: 56, height: 56, borderRadius: 8,
-            background: '#1e40af', zIndex: 9989, pointerEvents: 'none',
-          }}
-        />
-      )}
-
       {/* Popup nube "¿Necesitas ayuda?" */}
       <AnimatePresence>
         {nudge && !open && (
