@@ -13,7 +13,7 @@ const ETIQUETAS = ['0', '1-4', '5-19', '20-99', '100+'];
 const ESPACIADO = 11; // px entre celdas
 const LADO = 8.5; // tamaño de cada cuadradito
 const CODIGOS_PROVINCIA = ['31', '26', '50']; // Navarra, La Rioja, Zaragoza
-const MARGEN = 40; // px de margen alrededor del mapa
+const MARGEN = 20; // px de margen alrededor del mapa
 
 const INFO_CARDS = [
   {
@@ -245,7 +245,7 @@ export function MapaClientes() {
         .mc-leyenda-bloque { display: flex; flex-direction: column; align-items: center; gap: 4px; font-size: 11px; color: #9CA3AF; }
         .mc-leyenda-bloque span:first-child { width: 26px; height: 12px; border-radius: 2px; display: block; }
 
-        .mc-grid { display: grid; grid-template-columns: 1.3fr 1fr; gap: 56px; align-items: center; max-width: 1100px; margin: 0 auto; }
+        .mc-grid { display: grid; grid-template-columns: 1.6fr 1fr; gap: 48px; align-items: center; max-width: 1200px; margin: 0 auto; }
         .mc-info-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
         @media (max-width: 900px) {
           .mc-grid { grid-template-columns: 1fr; gap: 40px; }
