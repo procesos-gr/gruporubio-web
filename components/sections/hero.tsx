@@ -16,12 +16,6 @@ interface SearchResult {
   href: string;
 }
 
-interface DropdownPos {
-  top: number;
-  left: number;
-  width: number;
-}
-
 // Normaliza para búsqueda: minúsculas + sin acentos/diéresis (kärcher → karcher)
 function norm(text: string) {
   return text.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
@@ -100,26 +94,8 @@ function useSearch(query: string) {
 export function Hero() {
   const [query, setQuery] = useState('');
   const [open, setOpen] = useState(false);
-  const [dropPos, setDropPos] = useState<DropdownPos | null>(null);
   const { results } = useSearch(query);
   const barRef = useRef<HTMLDivElement>(null);
-
-  const updatePos = useCallback(() => {
-    if (!barRef.current) return;
-    const rect = barRef.current.getBoundingClientRect();
-    setDropPos({ top: rect.bottom + 1, left: rect.left, width: rect.width });
-  }, []);
-
-  useEffect(() => {
-    if (!open) return;
-    updatePos();
-    window.addEventListener('scroll', updatePos, { passive: true });
-    window.addEventListener('resize', updatePos);
-    return () => {
-      window.removeEventListener('scroll', updatePos);
-      window.removeEventListener('resize', updatePos);
-    };
-  }, [open, updatePos]);
 
   useEffect(() => {
     function handleClick(e: MouseEvent) {
@@ -190,7 +166,7 @@ export function Hero() {
         </motion.p>
 
         {/* Search bar */}
-        <div ref={barRef} style={{ width: '100%', maxWidth: 560 }}>
+        <div ref={barRef} style={{ width: '100%', maxWidth: 560, position: 'relative' }}>
           <div
             style={{
               width: '100%',
@@ -212,7 +188,7 @@ export function Hero() {
               type="text"
               value={query}
               onChange={e => { setQuery(e.target.value); setOpen(true); }}
-              onFocus={() => { setOpen(true); updatePos(); }}
+              onFocus={() => setOpen(true)}
               placeholder="Busca servicios, alquiler de maquinaria..."
               style={{
                 flex: 1,
@@ -250,19 +226,20 @@ export function Hero() {
           </div>
         </div>
 
-        {/* Dropdown — fuera del overflow clip, posición fixed */}
+        {/* Dropdown — posición absoluta, anclado a la barra de búsqueda */}
         <AnimatePresence>
-          {showDropdown && dropPos && (
+          {showDropdown && (
             <motion.div
               initial={{ opacity: 0, y: -4 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -4 }}
               transition={{ duration: 0.15, ease: 'easeOut' }}
               style={{
-                position: 'fixed',
-                top: dropPos.top,
-                left: dropPos.left,
-                width: dropPos.width,
+                position: 'absolute',
+                top: '100%',
+                left: 0,
+                width: '100%',
+                marginTop: 1,
                 background: '#ffffff',
                 border: '1.5px solid #e5e7eb',
                 borderTop: 'none',
