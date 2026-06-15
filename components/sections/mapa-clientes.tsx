@@ -98,6 +98,7 @@ export function MapaClientes() {
           const node = svg.node();
           if (!node) return;
           const { width } = node.getBoundingClientRect();
+          if (width <= 0) return;
 
           // Calcular el alto correcto desde la geografía real (igual que el HTML original)
           const projTemp = d3.geoMercator().fitWidth(

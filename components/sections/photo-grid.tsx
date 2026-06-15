@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useId, useRef, useState } from 'react';
 import { motion, useInView, animate } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -77,7 +77,8 @@ function GoogleG({ size = 22 }: { size?: number }) {
 
 /* Estrella individual — se rellena animada al entrar en viewport */
 function AnimatedStar({ fillRatio, delay, play, size = 19 }: { fillRatio: number; delay: number; play: boolean; size?: number }) {
-  const clipId = useRef(`star-clip-${Math.random().toString(36).slice(2)}`).current;
+  const uid = useId();
+  const clipId = `star-clip-${uid.replace(/:/g, '')}`;
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" style={{ display: 'block' }}>
       <defs>
