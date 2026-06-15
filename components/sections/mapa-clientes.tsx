@@ -139,20 +139,24 @@ export function MapaClientes() {
             for (let iy = 0; iy < rows; iy++) {
               const idx = provIndice[ix * rows + iy];
               if (idx === -1) continue;
-              // Solo se dibuja si los 4 vecinos directos son de la misma provincia (hueco en fronteras)
-              const vecinos = [
-                ix > 0 ? provIndice[(ix - 1) * rows + iy] : idx,
-                ix < cols - 1 ? provIndice[(ix + 1) * rows + iy] : idx,
-                iy > 0 ? provIndice[ix * rows + (iy - 1)] : idx,
-                iy < rows - 1 ? provIndice[ix * rows + (iy + 1)] : idx,
-              ];
-              if (vecinos.every(v => v === idx)) {
-                puntosGrid.push({ x: ix * ESPAC, y: iy * ESPAC, munic: municIndice[ix * rows + iy] });
-              }
+              puntosGrid.push({ x: ix * ESPAC, y: iy * ESPAC, munic: municIndice[ix * rows + iy] });
             }
           }
 
+          // Recorta la cuadrícula exactamente al contorno real de las provincias,
+          // para que ningún cuadradito sobresalga del límite
+          const path = d3.geoPath(projection);
+          const clipId = `mc-clip-${Math.random().toString(36).slice(2)}`;
+          svg.append('defs')
+            .append('clipPath')
+            .attr('id', clipId)
+            .selectAll('path')
+            .data(provincias)
+            .join('path')
+            .attr('d', path);
+
           svg.append('g')
+            .attr('clip-path', `url(#${clipId})`)
             .selectAll('rect')
             .data(puntosGrid)
             .join('rect')
@@ -174,7 +178,6 @@ export function MapaClientes() {
             .on('mouseleave', () => tooltip.style('opacity', 0));
 
           // Contornos de provincia, por encima de la cuadrícula
-          const path = d3.geoPath(projection);
           svg.append('g')
             .selectAll('path')
             .data(provincias)
