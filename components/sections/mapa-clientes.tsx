@@ -332,14 +332,10 @@ export function MapaClientes() {
                 Servicios presentes
               </span>
               <div style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
-                {([
-                  { bg: '#3B82F6', label: 'Limpieza', Icon: Sparkles },
-                  { bg: '#EF4444', label: 'Plagas', Icon: Bug },
-                  { bg: '#22C55E', label: 'Tienda', Icon: ShoppingBag },
-                ] as const).map(({ bg, label, Icon }) => (
+                {(['Limpieza', 'Plagas', 'Tienda'] as const).map((label, i) => (
                   <div key={label} style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
-                    <span style={{ width: 18, height: 18, borderRadius: '50%', background: bg, display: 'inline-flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                      <Icon size={10} color="#fff" strokeWidth={2.5} />
+                    <span style={{ width: 18, height: 18, borderRadius: '50%', background: TOOLTIP_SERVICIOS[i].bg, display: 'inline-flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, overflow: 'hidden' }}>
+                      <svg viewBox="0 0 24 24" width="10" height="10" fill="none" stroke="#fff" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round" style={{ overflow: 'hidden' }} dangerouslySetInnerHTML={{ __html: TOOLTIP_SERVICIOS[i].path }} />
                     </span>
                     <span style={{ fontSize: 11, color: '#6B7280' }}>{label}</span>
                   </div>
