@@ -110,12 +110,12 @@ export function Hero() {
   const showDropdown = open && query.trim().length > 0;
 
   return (
-    <section style={{ padding: '80px 24px 72px', position: 'relative', borderRadius: 16 }}>
+    <section style={{ padding: '120px 24px 110px', position: 'relative', borderRadius: 16 }}>
 
       {/* Imagen de fondo — clipeada solo dentro de su contenedor */}
       <div style={{ position: 'absolute', inset: 0, borderRadius: 16, overflow: 'hidden', zIndex: 0 }}>
         <Image
-          src="/images/hero/hero-banner.webp"
+          src="/images/hero/hero-banner-v3.png"
           alt=""
           fill
           priority
