@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import * as d3 from 'd3';
 import * as topojson from 'topojson-client';
-import { Users, MapPin, Building2, ShieldCheck } from 'lucide-react';
+import { Sparkles, Bug, ShoppingBag, Wrench } from 'lucide-react';
 import { CLIENTES_MUNICIPIO } from '@/lib/clientes-municipio';
 
 // --- Constantes fácilmente ajustables ---
@@ -16,10 +16,26 @@ const CODIGOS_PROVINCIA = ['31', '26', '50']; // Navarra, La Rioja, Zaragoza
 const MARGEN = 40; // px de margen alrededor del mapa
 
 const INFO_CARDS = [
-  { icon: Users, value: '+1.500', label: 'Clientes activos en cartera' },
-  { icon: MapPin, value: '+170', label: 'Municipios con cobertura' },
-  { icon: Building2, value: '3', label: 'Provincias: Navarra, La Rioja y Zaragoza' },
-  { icon: ShieldCheck, value: '+20', label: 'Años de experiencia en el sector' },
+  {
+    icon: Sparkles,
+    title: 'Limpieza profesional',
+    desc: 'Industrial, de obra, fachadas, parkings, siniestros y altura. Maquinaria propia Kärcher.',
+  },
+  {
+    icon: Bug,
+    title: 'Control de plagas',
+    desc: 'DDD integral: desratización, desinsectación, desinfección, termitas, aves y legionela.',
+  },
+  {
+    icon: ShoppingBag,
+    title: 'Venta de productos',
+    desc: 'Productos de higiene y limpieza profesional para empresas, hostelería e industria.',
+  },
+  {
+    icon: Wrench,
+    title: 'Maquinaria y formación',
+    desc: 'Alquiler y servicio técnico oficial Kärcher. Centro de formación propio en Tudela.',
+  },
 ];
 
 interface MunicipioInfo {
@@ -282,14 +298,14 @@ export function MapaClientes() {
         {/* Columna derecha: información de apoyo */}
         <div>
           <div className="mc-info-cards">
-            {INFO_CARDS.map(({ icon: Icon, value, label }) => (
+            {INFO_CARDS.map(({ icon: Icon, title, desc }) => (
               <div
-                key={label}
+                key={title}
                 style={{
                   background: '#ffffff',
                   border: '1px solid #EEF1F6',
                   borderRadius: 8,
-                  padding: '24px 20px',
+                  padding: '20px',
                   display: 'flex',
                   flexDirection: 'column',
                   gap: 10,
@@ -298,16 +314,16 @@ export function MapaClientes() {
               >
                 <div style={{
                   width: 38, height: 38, borderRadius: 8,
-                  background: '#F3F4F6',
+                  background: '#EEF4FF',
                   display: 'flex', alignItems: 'center', justifyContent: 'center',
                 }}>
-                  <Icon size={18} color="#374151" strokeWidth={2} />
+                  <Icon size={18} color="#1A56DB" strokeWidth={2} />
                 </div>
-                <span style={{ fontSize: 28, fontWeight: 800, color: '#111827', letterSpacing: '-1px', lineHeight: 1 }}>
-                  {value}
+                <span style={{ fontSize: 15, fontWeight: 700, color: '#111827', lineHeight: 1.3 }}>
+                  {title}
                 </span>
-                <span style={{ fontSize: 13, color: '#6B7280', lineHeight: 1.4 }}>
-                  {label}
+                <span style={{ fontSize: 13, color: '#6B7280', lineHeight: 1.5 }}>
+                  {desc}
                 </span>
               </div>
             ))}
