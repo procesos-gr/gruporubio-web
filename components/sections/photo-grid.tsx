@@ -146,14 +146,14 @@ function ReviewsWidget() {
     >
       {/* Logo Google */}
       <div style={{ flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-        <GoogleG size={44} />
+        <GoogleG size={38} />
       </div>
 
-      <div style={{ width: 1, height: 48, background: '#EEF1F6', flexShrink: 0 }} />
+      <div style={{ width: 1, height: 44, background: '#EEF1F6', flexShrink: 0 }} />
 
       {/* Score + estrellas */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: 14, minWidth: 0, flex: 1 }}>
-        <span style={{ fontSize: 44, fontWeight: 800, color: '#111827', lineHeight: 1, letterSpacing: '-1.5px', fontVariantNumeric: 'tabular-nums', flexShrink: 0 }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 12, minWidth: 0, flex: 1 }}>
+        <span style={{ fontSize: 36, fontWeight: 800, color: '#111827', lineHeight: 1, letterSpacing: '-1.5px', fontVariantNumeric: 'tabular-nums', flexShrink: 0 }}>
           {score.toFixed(1)}
         </span>
         <div style={{ display: 'flex', gap: 4 }}>
@@ -162,7 +162,7 @@ function ReviewsWidget() {
               key={i}
               play={inView}
               delay={0.15 + i * 0.08}
-              size={26}
+              size={22}
               fillRatio={Math.max(0, Math.min(1, RATING - i))}
             />
           ))}
