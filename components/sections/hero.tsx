@@ -224,10 +224,9 @@ export function Hero() {
               Buscar
             </button>
           </div>
-        </div>
 
-        {/* Dropdown — posición absoluta, anclado a la barra de búsqueda */}
-        <AnimatePresence>
+          {/* Dropdown — posición absoluta, anclado a la barra de búsqueda */}
+          <AnimatePresence>
           {showDropdown && (
             <motion.div
               initial={{ opacity: 0, y: -4 }}
@@ -332,7 +331,8 @@ export function Hero() {
               )}
             </motion.div>
           )}
-        </AnimatePresence>
+          </AnimatePresence>
+        </div>
 
       </div>
     </section>
