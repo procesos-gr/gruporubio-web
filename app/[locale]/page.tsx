@@ -1,5 +1,20 @@
+import type { Metadata } from "next";
 import { Navbar } from "@/components/layout/Navbar";
 import { Hero } from "@/components/sections/hero";
+
+export const metadata: Metadata = {
+  title: "Grupo Rubio — Limpieza Profesional y Control de Plagas en Navarra",
+  description: "Más de 55 años de experiencia en servicios integrales de limpieza, control de plagas DDD e higiene industrial. Presupuesto sin compromiso en 24h. Tudela, Navarra.",
+  keywords: "limpieza profesional Navarra, control de plagas Tudela, DDD Navarra, empresa limpieza industrial, desratización desinsectación",
+  openGraph: {
+    title: "Grupo Rubio — Servicios Higiénicos Integrales",
+    description: "Limpieza profesional, control de plagas DDD e higiene industrial en Navarra, Aragón y La Rioja. Empresa familiar desde 1970.",
+    url: "https://gruporubio.es",
+    siteName: "Grupo Rubio",
+    locale: "es_ES",
+    type: "website",
+  },
+};
 import { PhotoGrid } from "@/components/sections/photo-grid";
 import { TrustLogos } from "@/components/sections/trust-logos";
 import { StatsBand } from "@/components/sections/stats-band";
