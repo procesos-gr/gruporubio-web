@@ -42,3 +42,6 @@ excalidraw.log
 next-env.d.ts
 
 /app/generated/prisma
+
+# logs del chatbot
+/data/chat-logs*.jsonl

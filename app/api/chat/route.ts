@@ -3,6 +3,7 @@ import { anthropic } from "@ai-sdk/anthropic";
 import { z } from "zod";
 import { buildSystemPrompt } from "@/lib/chatbot/knowledge";
 import { checkRateLimit } from "@/lib/chatbot/rate-limit";
+import { logChatEvent } from "@/lib/chatbot/logger";
 import { getMedusa } from "@/lib/medusa";
 
 export const runtime = "nodejs";
@@ -89,17 +90,31 @@ export async function POST(req: Request) {
     return Response.json({ error: "Petición inválida" }, { status: 400 });
   }
 
-  const result = streamText({
-    model: anthropic("claude-haiku-4-5"),
-    system: buildSystemPrompt(),
-    messages,
-    tools: { buscarProductos },
-    stopWhen: stepCountIs(3), // máx. 2 rondas de tools + respuesta
-    maxOutputTokens: 500,     // respuestas cortas, coste capado
-    temperature: 0.4,
-    // Stream suave palabra a palabra — sin esto el texto llega a trompicones
-    experimental_transform: smoothStream({ delayInMs: 18, chunking: "word" }),
-  });
+  const lastUserMessage = messages[messages.length - 1]?.content ?? "";
+
+  let result;
+  try {
+    result = streamText({
+      model: anthropic("claude-haiku-4-5"),
+      system: buildSystemPrompt(),
+      messages,
+      tools: { buscarProductos },
+      stopWhen: stepCountIs(3), // máx. 2 rondas de tools + respuesta
+      maxOutputTokens: 700,     // respuestas cortas, margen para no cortar enlaces markdown
+      temperature: 0.4,
+      // Stream suave palabra a palabra — sin esto el texto llega a trompicones
+      experimental_transform: smoothStream({ delayInMs: 18, chunking: "word" }),
+      onError: ({ error }) => {
+        logChatEvent({ ip, type: "error", userMessage: lastUserMessage, error: String(error) });
+      },
+      onFinish: ({ text }) => {
+        logChatEvent({ ip, type: "conversation", userMessage: lastUserMessage, botMessage: text });
+      },
+    });
+  } catch (error) {
+    logChatEvent({ ip, type: "error", userMessage: lastUserMessage, error: String(error) });
+    return Response.json({ error: "Ahora mismo no puedo responder. Llámanos al 948 82 50 25 y te atendemos encantados." }, { status: 503 });
+  }
 
   return result.toTextStreamResponse();
 }

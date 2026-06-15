@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect, useCallback, Fragment } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { MessageCircle, X, Send, Sparkles } from 'lucide-react';
+import { MessageCircle, X, Send, Sparkles, ThumbsUp, ThumbsDown } from 'lucide-react';
 import Link from 'next/link';
 
 interface ChatMessage {
@@ -64,6 +64,7 @@ export function ChatWidget() {
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
   const [nudge, setNudge] = useState(false);
+  const [feedback, setFeedback] = useState<Record<number, 'up' | 'down'>>({});
   const scrollRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const abortRef = useRef<AbortController | null>(null);
@@ -149,6 +150,18 @@ export function ChatWidget() {
             return next;
           });
         }
+
+        // El stream terminó sin texto (fallo del modelo a mitad de respuesta)
+        if (!acc.trim()) {
+          setMessages(prev => {
+            const next = [...prev];
+            next[next.length - 1] = {
+              role: 'assistant',
+              content: 'Ahora mismo no puedo responder. Llámanos al 948 82 50 25 o inténtalo de nuevo en un momento.',
+            };
+            return next;
+          });
+        }
       } catch (err) {
         if ((err as Error).name !== 'AbortError') {
           setMessages(prev => [
@@ -162,6 +175,15 @@ export function ChatWidget() {
     },
     [messages, loading]
   );
+
+  const sendFeedback = useCallback((index: number, botMessage: string, rating: 'up' | 'down') => {
+    setFeedback(prev => ({ ...prev, [index]: rating }));
+    fetch('/api/chat/feedback', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ botMessage, rating }),
+    }).catch(() => {});
+  }, []);
 
   return (
     <>
@@ -344,11 +366,23 @@ export function ChatWidget() {
 
               {messages
                 .filter(m => m.content.length > 0)
-                .map((m, i) => (
-                  <Bubble key={i} role={m.role}>
-                    {m.role === 'assistant' ? <BotText text={m.content} /> : m.content}
-                  </Bubble>
-                ))}
+                .map((m, i, arr) => {
+                  const isLast = i === arr.length - 1;
+                  const finished = m.role === 'assistant' && !(isLast && loading);
+                  return (
+                    <Fragment key={i}>
+                      <Bubble role={m.role}>
+                        {m.role === 'assistant' ? <BotText text={m.content} /> : m.content}
+                      </Bubble>
+                      {finished && (
+                        <FeedbackButtons
+                          rating={feedback[i]}
+                          onRate={r => sendFeedback(i, m.content, r)}
+                        />
+                      )}
+                    </Fragment>
+                  );
+                })}
 
               {/* Indicador escribiendo — visible hasta que llega el primer texto */}
               {loading && messages[messages.length - 1]?.content !== undefined &&
@@ -435,6 +469,41 @@ function TypingDots() {
         />
       ))}
     </span>
+  );
+}
+
+/** Botones ¿Te ha servido la respuesta? — feedback discreto bajo cada mensaje del bot */
+function FeedbackButtons({ rating, onRate }: { rating?: 'up' | 'down'; onRate: (r: 'up' | 'down') => void }) {
+  if (rating) {
+    return (
+      <div style={{ display: 'flex', justifyContent: 'flex-start', marginTop: -4, marginBottom: 10, paddingLeft: 4 }}>
+        <span style={{ fontSize: 11, color: '#9CA3AF' }}>
+          {rating === 'up' ? 'Gracias por tu valoración 🙂' : 'Gracias, lo tendremos en cuenta'}
+        </span>
+      </div>
+    );
+  }
+  return (
+    <div style={{ display: 'flex', justifyContent: 'flex-start', gap: 4, marginTop: -4, marginBottom: 10, paddingLeft: 4 }}>
+      <button
+        onClick={() => onRate('up')}
+        aria-label="Respuesta útil"
+        style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 4, color: '#9CA3AF', display: 'flex' }}
+        onMouseEnter={e => (e.currentTarget.style.color = '#16a34a')}
+        onMouseLeave={e => (e.currentTarget.style.color = '#9CA3AF')}
+      >
+        <ThumbsUp size={13} />
+      </button>
+      <button
+        onClick={() => onRate('down')}
+        aria-label="Respuesta no útil"
+        style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 4, color: '#9CA3AF', display: 'flex' }}
+        onMouseEnter={e => (e.currentTarget.style.color = '#DC2626')}
+        onMouseLeave={e => (e.currentTarget.style.color = '#9CA3AF')}
+      >
+        <ThumbsDown size={13} />
+      </button>
+    </div>
   );
 }
 
