@@ -7,6 +7,7 @@ import { TopServices } from "@/components/sections/top-services";
 import { FeaturedProducts } from "@/components/sections/featured-products";
 import { CTABanner } from "@/components/sections/cta-banner";
 import { ReviewsCarousel } from "@/components/sections/reviews-carousel";
+import { MapaClientes } from "@/components/sections/mapa-clientes";
 import { FAQ } from "@/components/sections/faq";
 import Footer from "@/components/sections/Footer";
 
@@ -51,6 +52,7 @@ export default function HomePage() {
       <CTABanner />
       <FeaturedProducts />
       <ReviewsCarousel />
+      <MapaClientes />
       <FAQ />
       <Footer />
 
