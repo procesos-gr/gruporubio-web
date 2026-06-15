@@ -209,7 +209,7 @@ export function ChatWidget() {
               style={{
                 position: 'absolute', top: -9, right: -9,
                 width: 20, height: 20, borderRadius: '50%',
-                background: '#1e40af', color: '#ffffff',
+                background: '#1e3a8a', color: '#ffffff',
                 border: 'none', cursor: 'pointer',
                 display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 0,
               }}
@@ -240,8 +240,8 @@ export function ChatWidget() {
         aria-label={open ? 'Cerrar chat' : 'Abrir chat'}
         style={{
           position: 'fixed', bottom: 24, right: 24,
-          width: 68, height: 68, borderRadius: 8,
-          background: '#1e40af',
+          width: 68, height: 68, borderRadius: '50%',
+          background: '#1e3a8a',
           color: '#ffffff', border: '2px solid rgba(255,255,255,0.18)', cursor: 'pointer',
           display: 'flex', alignItems: 'center', justifyContent: 'center',
           boxShadow: '0 4px 20px rgba(30,64,175,0.5)',
@@ -277,7 +277,7 @@ export function ChatWidget() {
           >
             {/* Header color sólido */}
             <div style={{
-              background: '#1e40af',
+              background: '#1e3a8a',
               padding: '18px 20px',
               display: 'flex', alignItems: 'center', gap: 14,
               flexShrink: 0,
@@ -295,7 +295,7 @@ export function ChatWidget() {
                 <span style={{
                   position: 'absolute', bottom: 1, right: 1,
                   width: 11, height: 11, borderRadius: '50%',
-                  background: '#22c55e', border: '2px solid #1e40af',
+                  background: '#22c55e', border: '2px solid #1e3a8a',
                 }} />
               </div>
 
@@ -338,7 +338,7 @@ export function ChatWidget() {
                       key={s}
                       onClick={() => send(s)}
                       style={{
-                        fontSize: 12, fontWeight: 600, color: '#1e40af',
+                        fontSize: 12, fontWeight: 600, color: '#1e3a8a',
                         background: '#EFF6FF', border: '1.5px solid #BFDBFE',
                         borderRadius: 6, padding: '7px 13px',
                         cursor: 'pointer', whiteSpace: 'nowrap', flexShrink: 0,
@@ -405,7 +405,7 @@ export function ChatWidget() {
                   outline: 'none', color: '#111827',
                   background: '#F8FAFC',
                 }}
-                className="placeholder:text-[#9CA3AF] focus:border-[#1e40af] focus:bg-white"
+                className="placeholder:text-[#9CA3AF] focus:border-[#1e3a8a] focus:bg-white"
               />
               <button
                 type="submit"
@@ -413,7 +413,7 @@ export function ChatWidget() {
                 aria-label="Enviar"
                 style={{
                   width: 42, height: 42, borderRadius: 6, flexShrink: 0,
-                  background: loading || !input.trim() ? '#e5e7eb' : '#1e40af',
+                  background: loading || !input.trim() ? '#e5e7eb' : '#1e3a8a',
                   color: loading || !input.trim() ? '#9CA3AF' : '#ffffff',
                   border: 'none',
                   cursor: loading || !input.trim() ? 'default' : 'pointer',
@@ -490,7 +490,7 @@ function Bubble({ role, children }: { role: 'user' | 'assistant'; children: Reac
       {!isUser && (
         <div style={{
           width: 26, height: 26, borderRadius: '50%', flexShrink: 0,
-          background: '#1e40af',
+          background: '#1e3a8a',
           display: 'flex', alignItems: 'center', justifyContent: 'center',
         }}>
           <span style={{ fontSize: 11, fontWeight: 800, color: '#ffffff' }}>I</span>
@@ -503,7 +503,7 @@ function Bubble({ role, children }: { role: 'user' | 'assistant'; children: Reac
           borderRadius: isUser ? '8px 8px 2px 8px' : '8px 8px 8px 2px',
           fontSize: 13,
           lineHeight: 1.55,
-          background: isUser ? '#1e40af' : '#ffffff',
+          background: isUser ? '#1e3a8a' : '#ffffff',
           color: isUser ? '#ffffff' : '#111827',
           border: isUser ? 'none' : '1px solid #e9edf2',
           boxShadow: isUser ? 'none' : '0 1px 4px rgba(0,0,0,0.06)',
