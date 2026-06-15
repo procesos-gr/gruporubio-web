@@ -8,6 +8,7 @@ import { CLIENTES_MUNICIPIO } from '@/lib/clientes-municipio';
 
 // --- Constantes fácilmente ajustables ---
 const PALETA = ['#aec3ea', '#85a4dd', '#5c80cd', '#3458bd', '#1A56DB'];
+const COLOR_BORDE_PROVINCIA = '#6B7E9E';
 const TRAMOS = [1, 5, 20, 100];
 const ETIQUETAS = ['0', '1-4', '5-19', '20-99', '100+'];
 const ESPACIADO = 11; // px entre celdas
@@ -175,6 +176,18 @@ export function MapaClientes() {
                 .html(`<b>${(d.munic.feature.properties as { name: string }).name}</b><div class="mc-zona">${d.munic.clientes} cliente${d.munic.clientes === 1 ? '' : 's'}</div>`);
             })
             .on('mouseleave', () => tooltip.style('opacity', 0));
+
+          // Contornos de provincia, por encima de la cuadrícula
+          svg.append('g')
+            .selectAll('path')
+            .data(provincias)
+            .join('path')
+            .attr('d', path)
+            .attr('fill', 'none')
+            .attr('stroke', COLOR_BORDE_PROVINCIA)
+            .attr('stroke-width', 1.5)
+            .attr('stroke-linejoin', 'round')
+            .style('pointer-events', 'none');
         }
 
         dibujar();
