@@ -7,7 +7,7 @@ import { Sparkles, Bug, ShoppingBag, Wrench } from 'lucide-react';
 import { CLIENTES_MUNICIPIO } from '@/lib/clientes-municipio';
 
 // --- Constantes fácilmente ajustables ---
-const PALETA = ['#cbd5e1', '#94a3b8', '#3b82f6', '#1d4ed8', '#1A56DB'];
+const PALETA = ['#1e293b', '#1e3a8a', '#1d4ed8', '#3b82f6', '#93c5fd'];
 const TRAMOS = [1, 5, 20, 100];
 const ETIQUETAS = ['0', '1-4', '5-19', '20-99', '100+'];
 const ESPACIADO = 11; // px entre celdas
@@ -267,19 +267,6 @@ export function MapaClientes() {
             <svg ref={svgRef} style={{ width: '100%', display: 'block' }} />
             <div ref={tooltipRef} className="mc-tooltip" />
 
-            {!loading && !error && (
-              <div className="mc-leyenda">
-                Nº de clientes por municipio
-                <div className="mc-leyenda-escala">
-                  {PALETA.map((c, i) => (
-                    <div key={c} className="mc-leyenda-bloque">
-                      <span style={{ background: c }} />
-                      <span>{ETIQUETAS[i]}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
 
             {loading && (
               <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#9CA3AF', fontSize: 14 }}>
