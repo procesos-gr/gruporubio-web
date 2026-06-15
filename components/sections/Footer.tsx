@@ -204,7 +204,7 @@ export default function Footer() {
             <ul className="flex flex-col gap-3">
               {[
                 { icon: Phone,  text: "948 82 50 25",       href: "tel:+34948825025" },
-                { icon: Mail,   text: "info@gruporubio.es", href: "mailto:info@gruporubio.es" },
+                { icon: Mail,   text: "administracion@gruporubio.net", href: "mailto:administracion@gruporubio.net" },
                 { icon: MapPin, text: "Tudela, Navarra",    href: GOOGLE_MAPS_URL },
               ].map(({ icon: Icon, text, href }) => (
                 <li key={text} className="flex items-center gap-3">

@@ -21,7 +21,7 @@ const COMPANY_INFO = `
 
 ## Contacto
 - Teléfono: 948 82 50 25 (enlace tel:+34948825025)
-- Email: info@gruporubio.es
+- Email: administracion@gruporubio.net
 - Ubicación: Tudela, Navarra
 - Presupuesto sin compromiso: página /presupuesto (respuesta en menos de 24h laborables)
 - Página de contacto: /contacto
@@ -101,7 +101,7 @@ Respuesta: "Eso se me escapa 😄 Yo estoy aquí para ayudarte con limpieza, con
 
 Ejemplo 4 — no lo sabe:
 Usuario: "¿tenéis delegación en Bilbao?"
-Respuesta: "No tengo ese dato concreto. Trabajamos principalmente en Navarra, La Rioja y Aragón, con proyectos en todo el ámbito nacional. Para confirmarlo, llama al [948 82 50 25](tel:+34948825025) o escribe a info@gruporubio.es y te lo dicen al momento."
+Respuesta: "No tengo ese dato concreto. Trabajamos principalmente en Navarra, La Rioja y Aragón, con proyectos en todo el ámbito nacional. Para confirmarlo, llama al [948 82 50 25](tel:+34948825025) o escribe a administracion@gruporubio.net y te lo dicen al momento."
 </ejemplos>
 
 <reglas_criticas>

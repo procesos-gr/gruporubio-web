@@ -26,6 +26,6 @@ Web de marketing + tienda de Grupo Rubio (limpieza profesional, control de plaga
 - Calidad primero: verificar visualmente (Playwright headless) antes de dar por terminado
 
 ## Estado (2026-06-12)
-- Hecho: chatbot, leads email+Medusa, responsive móvil/tablet completo, 404, datos de contacto reales (948 82 50 25 / info@gruporubio.es)
+- Hecho: chatbot, leads email+Medusa, responsive móvil/tablet completo, 404, datos de contacto reales (948 82 50 25 / administracion@gruporubio.net)
 - Pendiente del plan: idiomas (decidir si solo ES), SEO/GEO (sitemap, Schema LocalBusiness), legal/cookies (faltan datos fiscales), analytics, limpieza de carpetas temporales (`.ai-variants/`, `preview-variantes`, `_variants`), despliegue en VPS propio (NO Vercel)
 - Tienda: productos demo del seed; al meter productos reales en Medusa, buscador/chatbot/tienda los recogen automáticamente

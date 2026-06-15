@@ -433,13 +433,13 @@ export function ContactSection() {
                   </div>
                 </a>
 
-                <a href="mailto:info@gruporubio.es" style={{ display: 'flex', alignItems: 'center', gap: 14, textDecoration: 'none' }}>
+                <a href="mailto:administracion@gruporubio.net" style={{ display: 'flex', alignItems: 'center', gap: 14, textDecoration: 'none' }}>
                   <div style={{ width: 40, height: 40, borderRadius: 8, background: 'rgba(255,255,255,0.08)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
                     <Mail size={17} style={{ color: '#D1D5DB' }} />
                   </div>
                   <div>
                     <p style={{ fontSize: 11, color: '#6B7280', margin: '0 0 2px', fontWeight: 600, letterSpacing: '0.06em', textTransform: 'uppercase' }}>Email</p>
-                    <p style={{ fontSize: 15, color: '#F9FAFB', margin: 0, fontWeight: 600 }}>info@gruporubio.es</p>
+                    <p style={{ fontSize: 15, color: '#F9FAFB', margin: 0, fontWeight: 600 }}>administracion@gruporubio.net</p>
                   </div>
                 </a>
 

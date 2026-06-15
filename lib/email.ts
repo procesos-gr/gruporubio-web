@@ -9,7 +9,7 @@ import nodemailer from "nodemailer";
  *   SMTP_PORT=465            (465 = SSL, 587 = STARTTLS)
  *   SMTP_USER=web@gruporubio.es
  *   SMTP_PASS=********
- *   CONTACT_EMAIL=info@gruporubio.es   (destinatario de los leads)
+ *   CONTACT_EMAIL=administracion@gruporubio.net   (destinatario de los leads)
  *
  * Sin SMTP configurado, el lead se vuelca al log del servidor para no
  * perderlo silenciosamente, y se devuelve ok=false.
@@ -39,7 +39,7 @@ function getTransporter(): nodemailer.Transporter | null {
 }
 
 export async function sendLeadEmail(lead: LeadEmail): Promise<{ ok: boolean }> {
-  const to = process.env.CONTACT_EMAIL ?? "info@gruporubio.es";
+  const to = process.env.CONTACT_EMAIL ?? "administracion@gruporubio.net";
   const transporter = getTransporter();
 
   if (!transporter) {

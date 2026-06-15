@@ -277,7 +277,7 @@ export function PresupuestoForm() {
               </div>
               {[
                 { icon: <Phone size={14} />, text: '948 82 50 25', href: 'tel:+34948825025' },
-                { icon: <Mail size={14} />, text: 'info@gruporubio.es', href: 'mailto:info@gruporubio.es' },
+                { icon: <Mail size={14} />, text: 'administracion@gruporubio.net', href: 'mailto:administracion@gruporubio.net' },
                 { icon: <MapPin size={14} />, text: 'Tudela, Navarra', href: GOOGLE_MAPS_URL },
               ].map(({ icon, text, href }) => (
                 <a
