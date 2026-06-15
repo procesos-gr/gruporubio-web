@@ -240,7 +240,7 @@ export function ChatWidget() {
         aria-label={open ? 'Cerrar chat' : 'Abrir chat'}
         style={{
           position: 'fixed', bottom: 24, right: 24,
-          width: 56, height: 56, borderRadius: 8,
+          width: 68, height: 68, borderRadius: 8,
           background: '#1e40af',
           color: '#ffffff', border: '2px solid rgba(255,255,255,0.18)', cursor: 'pointer',
           display: 'flex', alignItems: 'center', justifyContent: 'center',
@@ -250,8 +250,8 @@ export function ChatWidget() {
       >
         <AnimatePresence mode="wait">
           {open
-            ? <motion.span key="x" initial={{ rotate: -90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: 90, opacity: 0 }} transition={{ duration: 0.15 }}><X size={22} /></motion.span>
-            : <motion.span key="msg" initial={{ rotate: 90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: -90, opacity: 0 }} transition={{ duration: 0.15 }}><MessageCircle size={22} /></motion.span>
+            ? <motion.span key="x" initial={{ rotate: -90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: 90, opacity: 0 }} transition={{ duration: 0.15 }}><X size={26} /></motion.span>
+            : <motion.span key="msg" initial={{ rotate: 90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: -90, opacity: 0 }} transition={{ duration: 0.15 }}><MessageCircle size={26} /></motion.span>
           }
         </AnimatePresence>
       </motion.button>
@@ -265,7 +265,7 @@ export function ChatWidget() {
             exit={{ opacity: 0, y: 20, scale: 0.97 }}
             transition={{ duration: 0.2, ease: 'easeOut' }}
             style={{
-              position: 'fixed', bottom: 92, right: 24,
+              position: 'fixed', bottom: 104, right: 24,
               width: 'min(390px, calc(100vw - 32px))',
               height: 'min(570px, calc(100vh - 130px))',
               background: '#ffffff', borderRadius: 8,
