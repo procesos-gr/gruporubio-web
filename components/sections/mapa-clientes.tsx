@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import * as d3 from 'd3';
 import * as topojson from 'topojson-client';
+import { Users, MapPin, Building2, ShieldCheck } from 'lucide-react';
 import { CLIENTES_MUNICIPIO } from '@/lib/clientes-municipio';
 
 // --- Constantes fácilmente ajustables ---
@@ -13,6 +14,13 @@ const ESPACIADO = 11; // px entre celdas
 const LADO = 8.5; // tamaño de cada cuadradito
 const CODIGOS_PROVINCIA = ['31', '26', '50']; // Navarra, La Rioja, Zaragoza
 const ALTURA_MAPA = 520;
+
+const INFO_CARDS = [
+  { icon: Users, value: '+1.500', label: 'Clientes activos en cartera' },
+  { icon: MapPin, value: '+170', label: 'Municipios con cobertura' },
+  { icon: Building2, value: '3', label: 'Provincias: Navarra, La Rioja y Zaragoza' },
+  { icon: ShieldCheck, value: '+20', label: 'Años de experiencia en el sector' },
+];
 
 interface MunicipioInfo {
   feature: GeoJSON.Feature;
@@ -187,67 +195,112 @@ export function MapaClientes() {
   }, []);
 
   return (
-    <section style={{ padding: '64px 24px', maxWidth: 1100, margin: '0 auto' }}>
-      <div style={{ textAlign: 'center', marginBottom: 40 }}>
-        <h2 style={{ fontSize: 'clamp(26px, 3vw, 36px)', fontWeight: 800, color: '#111827', letterSpacing: '-1.5px', lineHeight: 1.1, margin: 0 }}>
-          Nuestra cartera de clientes
-        </h2>
-        <p style={{ fontSize: 15, color: '#6B7280', marginTop: 12, maxWidth: 520, marginLeft: 'auto', marginRight: 'auto' }}>
-          Más de 1.500 clientes activos en Navarra, La Rioja y Zaragoza
-        </p>
-      </div>
+    <section style={{ background: '#F9FAFB', padding: '80px 24px' }}>
+      <style>{`
+        .mc-tooltip {
+          position: absolute; pointer-events: none;
+          background: rgba(17,24,39,.94); color: #fff;
+          padding: 6px 12px; border-radius: 8px; font-size: 13px;
+          opacity: 0; transition: opacity .15s; transform: translate(-50%, -130%);
+          box-shadow: 0 6px 16px rgba(0,0,0,.2); white-space: nowrap; z-index: 2;
+        }
+        .mc-tooltip b { font-weight: 700; }
+        .mc-tooltip .mc-zona { color: #D1D5DB; font-size: 11px; }
+        .mc-leyenda {
+          position: absolute; bottom: 16px; left: 16px; z-index: 1;
+          background: rgba(255,255,255,.94);
+          padding: 10px 14px; border-radius: 8px;
+          box-shadow: 0 4px 14px rgba(0,0,0,.06); font-size: 12px; color: #6B7280;
+          border: 1px solid #EEF1F6;
+        }
+        .mc-leyenda-escala { display: flex; gap: 4px; margin-top: 6px; }
+        .mc-leyenda-bloque { display: flex; flex-direction: column; align-items: center; gap: 4px; font-size: 11px; color: #9CA3AF; }
+        .mc-leyenda-bloque span:first-child { width: 26px; height: 12px; border-radius: 2px; display: block; }
 
-      <div style={{ position: 'relative', borderRadius: 8, overflow: 'hidden', background: '#FAFAF8', border: '1px solid #EEF1F6' }}>
-        <style>{`
-          .mc-tooltip {
-            position: absolute; pointer-events: none;
-            background: rgba(17,24,39,.94); color: #fff;
-            padding: 6px 12px; border-radius: 8px; font-size: 13px;
-            opacity: 0; transition: opacity .15s; transform: translate(-50%, -130%);
-            box-shadow: 0 6px 16px rgba(0,0,0,.2); white-space: nowrap; z-index: 2;
-          }
-          .mc-tooltip b { font-weight: 700; }
-          .mc-tooltip .mc-zona { color: #D1D5DB; font-size: 11px; }
-          .mc-leyenda {
-            position: absolute; bottom: 16px; left: 16px; z-index: 1;
-            background: rgba(255,255,255,.94);
-            padding: 10px 14px; border-radius: 8px;
-            box-shadow: 0 4px 14px rgba(0,0,0,.06); font-size: 12px; color: #6B7280;
-            border: 1px solid #EEF1F6;
-          }
-          .mc-leyenda-escala { display: flex; gap: 4px; margin-top: 6px; }
-          .mc-leyenda-bloque { display: flex; flex-direction: column; align-items: center; gap: 4px; font-size: 11px; color: #9CA3AF; }
-          .mc-leyenda-bloque span:first-child { width: 26px; height: 12px; border-radius: 2px; display: block; }
-        `}</style>
+        .mc-grid { display: grid; grid-template-columns: 1.3fr 1fr; gap: 56px; align-items: center; max-width: 1100px; margin: 0 auto; }
+        .mc-info-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+        @media (max-width: 900px) {
+          .mc-grid { grid-template-columns: 1fr; gap: 40px; }
+          .mc-info-cards { grid-template-columns: 1fr 1fr; }
+        }
+      `}</style>
 
-        <svg ref={svgRef} style={{ width: '100%', height: ALTURA_MAPA, display: 'block' }} />
-        <div ref={tooltipRef} className="mc-tooltip" />
+      <div className="mc-grid">
+        {/* Columna izquierda: texto + mapa */}
+        <div>
+          <h2 style={{ fontSize: 'clamp(26px, 3vw, 36px)', fontWeight: 800, color: '#111827', letterSpacing: '-1.5px', lineHeight: 1.1, margin: 0 }}>
+            Nuestra cartera de clientes
+          </h2>
+          <p style={{ fontSize: 15, color: '#6B7280', marginTop: 12, marginBottom: 32, maxWidth: 440 }}>
+            Más de 1.500 clientes activos en Navarra, La Rioja y Zaragoza
+          </p>
 
-        {!loading && !error && (
-          <div className="mc-leyenda">
-            Nº de clientes por municipio
-            <div className="mc-leyenda-escala">
-              {PALETA.map((c, i) => (
-                <div key={c} className="mc-leyenda-bloque">
-                  <span style={{ background: c }} />
-                  <span>{ETIQUETAS[i]}</span>
+          <div style={{ position: 'relative' }}>
+            <svg ref={svgRef} style={{ width: '100%', height: ALTURA_MAPA, display: 'block' }} />
+            <div ref={tooltipRef} className="mc-tooltip" />
+
+            {!loading && !error && (
+              <div className="mc-leyenda">
+                Nº de clientes por municipio
+                <div className="mc-leyenda-escala">
+                  {PALETA.map((c, i) => (
+                    <div key={c} className="mc-leyenda-bloque">
+                      <span style={{ background: c }} />
+                      <span>{ETIQUETAS[i]}</span>
+                    </div>
+                  ))}
                 </div>
-              ))}
-            </div>
-          </div>
-        )}
+              </div>
+            )}
 
-        {loading && (
-          <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#9CA3AF', fontSize: 14 }}>
-            Cargando mapa…
-          </div>
-        )}
+            {loading && (
+              <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#9CA3AF', fontSize: 14 }}>
+                Cargando mapa…
+              </div>
+            )}
 
-        {error && (
-          <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#9CA3AF', fontSize: 14 }}>
-            No se pudo cargar el mapa.
+            {error && (
+              <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#9CA3AF', fontSize: 14 }}>
+                No se pudo cargar el mapa.
+              </div>
+            )}
           </div>
-        )}
+        </div>
+
+        {/* Columna derecha: información de apoyo */}
+        <div>
+          <div className="mc-info-cards">
+            {INFO_CARDS.map(({ icon: Icon, value, label }) => (
+              <div
+                key={label}
+                style={{
+                  background: '#ffffff',
+                  border: '1px solid #EEF1F6',
+                  borderRadius: 8,
+                  padding: '24px 20px',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: 10,
+                  boxShadow: '0 1px 2px rgba(16,24,40,0.04)',
+                }}
+              >
+                <div style={{
+                  width: 38, height: 38, borderRadius: 8,
+                  background: '#F3F4F6',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                }}>
+                  <Icon size={18} color="#374151" strokeWidth={2} />
+                </div>
+                <span style={{ fontSize: 28, fontWeight: 800, color: '#111827', letterSpacing: '-1px', lineHeight: 1 }}>
+                  {value}
+                </span>
+                <span style={{ fontSize: 13, color: '#6B7280', lineHeight: 1.4 }}>
+                  {label}
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
     </section>
   );
