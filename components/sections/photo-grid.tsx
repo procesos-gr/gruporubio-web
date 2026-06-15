@@ -5,14 +5,13 @@ import { motion, useInView, animate } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowUpRight } from 'lucide-react';
+import { GOOGLE_MAPS_URL } from '@/lib/company-info';
 
 const CARD_RADIUS = 12;
 
-/* URL de las reseñas de Google — sustituir por el enlace con place_id real */
-const GOOGLE_REVIEWS_URL =
-  'https://www.google.com/search?q=Grupo+Rubio+limpiezas+rese%C3%B1as';
+const GOOGLE_REVIEWS_URL = GOOGLE_MAPS_URL;
 const RATING = 4.2;
-const REVIEW_COUNT = 184;
+const REVIEW_COUNT = 51;
 
 /* Centered overlay label + arrow — appears on hover */
 function CardOverlay({ title, large = false }: { title: string; large?: boolean }) {
