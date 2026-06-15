@@ -187,6 +187,19 @@ export function ChatWidget() {
 
   return (
     <>
+      {/* Pulse ring detrás del botón flotante (solo cuando cerrado) */}
+      {!open && (
+        <motion.span
+          animate={{ scale: [1, 1.55], opacity: [0.5, 0] }}
+          transition={{ duration: 1.8, repeat: Infinity, ease: 'easeOut' }}
+          style={{
+            position: 'fixed', bottom: 24, right: 24,
+            width: 56, height: 56, borderRadius: 12,
+            background: '#1d4ed8', zIndex: 9989, pointerEvents: 'none',
+          }}
+        />
+      )}
+
       {/* Popup nube "¿Necesitas ayuda?" */}
       <AnimatePresence>
         {nudge && !open && (
@@ -196,65 +209,38 @@ export function ChatWidget() {
             exit={{ opacity: 0, y: 8, scale: 0.96 }}
             transition={{ duration: 0.25, ease: 'easeOut' }}
             style={{
-              position: 'fixed',
-              bottom: 94,
-              right: 24,
-              maxWidth: 250,
-              background: '#ffffff',
-              border: '1.5px solid #e5e7eb',
-              borderRadius: 12,
-              boxShadow: '0 8px 28px rgba(0,0,0,0.14)',
-              padding: '14px 16px',
-              zIndex: 9990,
-              cursor: 'pointer',
+              position: 'fixed', bottom: 94, right: 24, maxWidth: 260,
+              background: '#ffffff', border: '1.5px solid #e5e7eb',
+              borderRadius: 12, boxShadow: '0 8px 28px rgba(0,0,0,0.14)',
+              padding: '14px 16px', zIndex: 9990, cursor: 'pointer',
             }}
             onClick={() => setOpen(true)}
           >
-            {/* Cerrar */}
             <button
               onClick={e => { e.stopPropagation(); setNudge(false); }}
               aria-label="Cerrar aviso"
               style={{
-                position: 'absolute',
-                top: -9,
-                right: -9,
-                width: 22,
-                height: 22,
-                borderRadius: '50%',
-                background: '#0F1623',
-                color: '#ffffff',
-                border: 'none',
-                cursor: 'pointer',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                padding: 0,
+                position: 'absolute', top: -9, right: -9,
+                width: 22, height: 22, borderRadius: '50%',
+                background: '#1d4ed8', color: '#ffffff',
+                border: 'none', cursor: 'pointer',
+                display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 0,
               }}
             >
               <X size={12} />
             </button>
-
             <p style={{ margin: 0, fontSize: 13, fontWeight: 700, color: '#111827', lineHeight: 1.4 }}>
               ¿Necesitas ayuda con algo? 👋
             </p>
             <p style={{ margin: '4px 0 0', fontSize: 12, color: '#6B7280', lineHeight: 1.45 }}>
               Pregúntame por servicios, alquiler de maquinaria o productos.
             </p>
-
-            {/* Pico de la nube */}
-            <div
-              style={{
-                position: 'absolute',
-                bottom: -7,
-                right: 22,
-                width: 12,
-                height: 12,
-                background: '#ffffff',
-                borderRight: '1.5px solid #e5e7eb',
-                borderBottom: '1.5px solid #e5e7eb',
-                transform: 'rotate(45deg)',
-              }}
-            />
+            <div style={{
+              position: 'absolute', bottom: -7, right: 22,
+              width: 12, height: 12, background: '#ffffff',
+              borderRight: '1.5px solid #e5e7eb', borderBottom: '1.5px solid #e5e7eb',
+              transform: 'rotate(45deg)',
+            }} />
           </motion.div>
         )}
       </AnimatePresence>
@@ -266,97 +252,114 @@ export function ChatWidget() {
         whileTap={{ scale: 0.95 }}
         aria-label={open ? 'Cerrar chat' : 'Abrir chat'}
         style={{
-          position: 'fixed',
-          bottom: 24,
-          right: 24,
-          width: 56,
-          height: 56,
-          borderRadius: 12,
-          background: '#546AE7',
-          color: '#ffffff',
-          border: 'none',
-          cursor: 'pointer',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          boxShadow: '0 4px 20px rgba(84,106,231,0.4)',
+          position: 'fixed', bottom: 24, right: 24,
+          width: 56, height: 56, borderRadius: 12,
+          background: 'linear-gradient(135deg, #1d4ed8 0%, #1e293b 100%)',
+          color: '#ffffff', border: 'none', cursor: 'pointer',
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          boxShadow: '0 4px 20px rgba(29,78,216,0.45)',
           zIndex: 9990,
         }}
       >
-        {open ? <X size={24} /> : <MessageCircle size={24} />}
+        <AnimatePresence mode="wait">
+          {open
+            ? <motion.span key="x" initial={{ rotate: -90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: 90, opacity: 0 }} transition={{ duration: 0.15 }}><X size={22} /></motion.span>
+            : <motion.span key="msg" initial={{ rotate: 90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: -90, opacity: 0 }} transition={{ duration: 0.15 }}><MessageCircle size={22} /></motion.span>
+          }
+        </AnimatePresence>
       </motion.button>
 
       {/* Panel */}
       <AnimatePresence>
         {open && (
           <motion.div
-            initial={{ opacity: 0, y: 16, scale: 0.98 }}
+            initial={{ opacity: 0, y: 20, scale: 0.97 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 16, scale: 0.98 }}
-            transition={{ duration: 0.18, ease: 'easeOut' }}
+            exit={{ opacity: 0, y: 20, scale: 0.97 }}
+            transition={{ duration: 0.2, ease: 'easeOut' }}
             style={{
-              position: 'fixed',
-              bottom: 92,
-              right: 24,
-              width: 'min(380px, calc(100vw - 32px))',
-              height: 'min(560px, calc(100vh - 130px))',
-              background: '#ffffff',
-              borderRadius: 14,
-              border: '1.5px solid #e5e7eb',
-              boxShadow: '0 12px 40px rgba(0,0,0,0.16)',
-              display: 'flex',
-              flexDirection: 'column',
-              overflow: 'hidden',
-              zIndex: 9991,
+              position: 'fixed', bottom: 92, right: 24,
+              width: 'min(390px, calc(100vw - 32px))',
+              height: 'min(570px, calc(100vh - 130px))',
+              background: '#ffffff', borderRadius: 16,
+              border: '1px solid #e5e7eb',
+              boxShadow: '0 16px 48px rgba(0,0,0,0.18)',
+              display: 'flex', flexDirection: 'column',
+              overflow: 'hidden', zIndex: 9991,
             }}
           >
-            {/* Header */}
-            <div style={{ background: '#0F1623', padding: '16px 20px', display: 'flex', alignItems: 'center', gap: 12 }}>
-              <div
+            {/* Header con gradiente */}
+            <div style={{
+              background: 'linear-gradient(135deg, #1d4ed8 0%, #1e293b 100%)',
+              padding: '18px 20px',
+              display: 'flex', alignItems: 'center', gap: 14,
+              flexShrink: 0,
+            }}>
+              {/* Avatar Ignacio */}
+              <div style={{ position: 'relative', flexShrink: 0 }}>
+                <div style={{
+                  width: 44, height: 44, borderRadius: '50%',
+                  background: 'rgba(255,255,255,0.15)',
+                  border: '2px solid rgba(255,255,255,0.35)',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                }}>
+                  <span style={{ fontSize: 17, fontWeight: 800, color: '#ffffff', letterSpacing: '-0.5px' }}>I</span>
+                </div>
+                {/* Punto verde "en línea" */}
+                <span style={{
+                  position: 'absolute', bottom: 1, right: 1,
+                  width: 11, height: 11, borderRadius: '50%',
+                  background: '#22c55e', border: '2px solid #1e3a6e',
+                }} />
+              </div>
+
+              <div style={{ minWidth: 0, flex: 1 }}>
+                <p style={{ margin: 0, fontSize: 15, fontWeight: 700, color: '#ffffff', letterSpacing: '-0.3px' }}>Ignacio</p>
+                <p style={{ margin: '2px 0 0', fontSize: 11.5, color: 'rgba(255,255,255,0.65)' }}>
+                  Asistente de Grupo Rubio · En línea
+                </p>
+              </div>
+
+              <button
+                onClick={() => setOpen(false)}
+                aria-label="Cerrar chat"
                 style={{
-                  width: 38,
-                  height: 38,
-                  borderRadius: 10,
-                  background: 'rgba(255,255,255,0.10)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  flexShrink: 0,
+                  background: 'rgba(255,255,255,0.12)', border: 'none',
+                  borderRadius: 8, width: 32, height: 32,
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  cursor: 'pointer', color: '#ffffff', flexShrink: 0,
                 }}
               >
-                <Sparkles size={18} color="#ffffff" />
-              </div>
-              <div style={{ minWidth: 0 }}>
-                <p style={{ margin: 0, fontSize: 14, fontWeight: 700, color: '#ffffff' }}>Ignacio</p>
-                <p style={{ margin: 0, fontSize: 11.5, color: '#9CA3AF' }}>Asistente virtual de Grupo Rubio</p>
-              </div>
+                <X size={16} />
+              </button>
             </div>
 
             {/* Mensajes */}
-            <div ref={scrollRef} style={{ flex: 1, overflowY: 'auto', padding: '16px 16px 8px', background: '#F9FAFB' }}>
-              {/* Saludo */}
+            <div ref={scrollRef} style={{ flex: 1, overflowY: 'auto', padding: '16px 14px 8px', background: '#F8FAFC' }}>
               <Bubble role="assistant">
                 <BotText text={GREETING} />
               </Bubble>
 
-              {/* Sugerencias iniciales */}
+              {/* Sugerencias — chips horizontales con scroll */}
               {messages.length === 0 && (
-                <div style={{ display: 'flex', flexDirection: 'column', gap: 6, marginTop: 10, alignItems: 'flex-start' }}>
+                <div style={{
+                  display: 'flex', gap: 7, marginTop: 10, marginBottom: 4,
+                  overflowX: 'auto', paddingBottom: 4,
+                  scrollbarWidth: 'none',
+                }}>
                   {SUGGESTIONS.map(s => (
                     <button
                       key={s}
                       onClick={() => send(s)}
                       style={{
-                        fontSize: 12.5,
-                        fontWeight: 600,
-                        color: '#0F1623',
-                        background: '#ffffff',
-                        border: '1.5px solid #e5e7eb',
-                        borderRadius: 8,
-                        padding: '8px 12px',
-                        cursor: 'pointer',
-                        textAlign: 'left',
+                        fontSize: 12, fontWeight: 600, color: '#1d4ed8',
+                        background: '#EFF6FF', border: '1.5px solid #BFDBFE',
+                        borderRadius: 20, padding: '7px 13px',
+                        cursor: 'pointer', whiteSpace: 'nowrap', flexShrink: 0,
+                        transition: 'background 0.15s',
                       }}
+                      onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = '#DBEAFE'; }}
+                      onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = '#EFF6FF'; }}
                     >
                       {s}
                     </button>
@@ -384,7 +387,6 @@ export function ChatWidget() {
                   );
                 })}
 
-              {/* Indicador escribiendo — visible hasta que llega el primer texto */}
               {loading && messages[messages.length - 1]?.content !== undefined &&
                 (messages[messages.length - 1].role === 'user' ||
                   messages[messages.length - 1].content.length === 0) && (
@@ -396,15 +398,10 @@ export function ChatWidget() {
 
             {/* Input */}
             <form
-              onSubmit={e => {
-                e.preventDefault();
-                send(input);
-              }}
+              onSubmit={e => { e.preventDefault(); send(input); }}
               style={{
-                display: 'flex',
-                gap: 8,
-                padding: 12,
-                borderTop: '1.5px solid #e5e7eb',
+                display: 'flex', gap: 8, padding: '12px 12px 14px',
+                borderTop: '1px solid #f1f5f9',
                 background: '#ffffff',
               }}
             >
@@ -416,34 +413,28 @@ export function ChatWidget() {
                 onChange={e => setInput(e.target.value)}
                 placeholder="Escribe tu consulta..."
                 style={{
-                  flex: 1,
-                  minWidth: 0,
-                  border: '1.5px solid #e5e7eb',
-                  borderRadius: 8,
-                  padding: '10px 14px',
-                  fontSize: 13,
-                  outline: 'none',
-                  color: '#111827',
+                  flex: 1, minWidth: 0,
+                  border: '1.5px solid #e5e7eb', borderRadius: 10,
+                  padding: '10px 14px', fontSize: 13,
+                  outline: 'none', color: '#111827',
+                  background: '#F8FAFC',
                 }}
-                className="placeholder:text-[#9CA3AF] focus:border-[#0F1623]"
+                className="placeholder:text-[#9CA3AF] focus:border-[#1d4ed8] focus:bg-white"
               />
               <button
                 type="submit"
                 disabled={loading || !input.trim()}
                 aria-label="Enviar"
                 style={{
-                  width: 42,
-                  height: 42,
-                  borderRadius: 8,
-                  background: loading || !input.trim() ? '#9CA3AF' : '#0F1623',
-                  color: '#ffffff',
+                  width: 42, height: 42, borderRadius: 10, flexShrink: 0,
+                  background: loading || !input.trim()
+                    ? '#e5e7eb'
+                    : 'linear-gradient(135deg, #1d4ed8 0%, #1e293b 100%)',
+                  color: loading || !input.trim() ? '#9CA3AF' : '#ffffff',
                   border: 'none',
                   cursor: loading || !input.trim() ? 'default' : 'pointer',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  flexShrink: 0,
-                  transition: 'background 0.15s',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  transition: 'all 0.15s',
                 }}
               >
                 <Send size={16} />
@@ -510,17 +501,30 @@ function FeedbackButtons({ rating, onRate }: { rating?: 'up' | 'down'; onRate: (
 function Bubble({ role, children }: { role: 'user' | 'assistant'; children: React.ReactNode }) {
   const isUser = role === 'user';
   return (
-    <div style={{ display: 'flex', justifyContent: isUser ? 'flex-end' : 'flex-start', marginBottom: 8 }}>
+    <div style={{ display: 'flex', justifyContent: isUser ? 'flex-end' : 'flex-start', alignItems: 'flex-end', gap: 8, marginBottom: 8 }}>
+      {/* Micro-avatar Ignacio solo en mensajes del bot */}
+      {!isUser && (
+        <div style={{
+          width: 26, height: 26, borderRadius: '50%', flexShrink: 0,
+          background: 'linear-gradient(135deg, #1d4ed8 0%, #1e293b 100%)',
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+        }}>
+          <span style={{ fontSize: 11, fontWeight: 800, color: '#ffffff' }}>I</span>
+        </div>
+      )}
       <div
         style={{
-          maxWidth: '82%',
+          maxWidth: '78%',
           padding: '10px 14px',
-          borderRadius: 12,
+          borderRadius: isUser ? '12px 12px 4px 12px' : '12px 12px 12px 4px',
           fontSize: 13,
           lineHeight: 1.55,
-          background: isUser ? '#0F1623' : '#ffffff',
+          background: isUser
+            ? 'linear-gradient(135deg, #1d4ed8 0%, #1e293b 100%)'
+            : '#ffffff',
           color: isUser ? '#ffffff' : '#111827',
-          border: isUser ? 'none' : '1.5px solid #e5e7eb',
+          border: isUser ? 'none' : '1px solid #e9edf2',
+          boxShadow: isUser ? 'none' : '0 1px 4px rgba(0,0,0,0.06)',
           wordBreak: 'break-word',
         }}
       >
