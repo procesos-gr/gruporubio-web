@@ -448,7 +448,7 @@ export function ContactSection() {
                   </div>
                   <div>
                     <p style={{ fontSize: 11, color: '#6B7280', margin: '0 0 2px', fontWeight: 600, letterSpacing: '0.06em', textTransform: 'uppercase' }}>Oficina</p>
-                    <p style={{ fontSize: 14, color: '#D1D5DB', margin: 0, lineHeight: 1.55 }}>Navarra · Aragón · La Rioja</p>
+                    <p style={{ fontSize: 14, color: '#D1D5DB', margin: 0, lineHeight: 1.55 }}>Tudela, Navarra</p>
                   </div>
                 </div>
 
