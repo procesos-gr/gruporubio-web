@@ -272,14 +272,14 @@ export function ChatWidget() {
           width: 56,
           height: 56,
           borderRadius: 12,
-          background: '#0F1623',
+          background: '#546AE7',
           color: '#ffffff',
           border: 'none',
           cursor: 'pointer',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          boxShadow: '0 4px 20px rgba(15,22,35,0.35)',
+          boxShadow: '0 4px 20px rgba(84,106,231,0.4)',
           zIndex: 9990,
         }}
       >
