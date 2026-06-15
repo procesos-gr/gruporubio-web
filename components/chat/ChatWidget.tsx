@@ -196,7 +196,7 @@ export function ChatWidget() {
             exit={{ opacity: 0, y: 8, scale: 0.96 }}
             transition={{ duration: 0.25, ease: 'easeOut' }}
             style={{
-              position: 'fixed', bottom: 94, right: 24, maxWidth: 260,
+              position: 'fixed', bottom: 108, right: 24, maxWidth: 260,
               background: '#ffffff', border: '1.5px solid #e5e7eb',
               borderRadius: 6, boxShadow: '0 8px 28px rgba(0,0,0,0.14)',
               padding: '14px 16px', zIndex: 9990, cursor: 'pointer',
