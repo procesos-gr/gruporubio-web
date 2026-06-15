@@ -205,7 +205,7 @@ export function ReviewsCarousel() {
         {/* CTA */}
         <div style={{ textAlign: 'center', marginTop: 32 }}>
           <a
-            href="https://www.google.com/maps/search/Grupo+Rubio+Navarra/"
+            href="https://share.google/qdexM9ds0kH99Z42q"
             target="_blank"
             rel="noopener noreferrer"
             style={{ fontSize: 13, color: '#6B7280', textDecoration: 'none', fontWeight: 500 }}
