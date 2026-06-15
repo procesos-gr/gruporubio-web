@@ -1,7 +1,6 @@
 "use client";
 
-import { Phone, MapPin, Mail, ArrowUpRight } from "lucide-react";
-import { usePathname } from "next/navigation";
+import { Phone, MapPin, Mail } from "lucide-react";
 import { GOOGLE_MAPS_URL } from "@/lib/company-info";
 
 function LinkedinIcon({ size = 16 }: { size?: number }) {
@@ -55,9 +54,6 @@ const legalLinks = [
 ];
 
 export default function Footer() {
-  const pathname = usePathname();
-  const isPresupuesto = pathname?.includes("/presupuesto");
-
   return (
     <footer
       style={{ backgroundColor: "#1F2937", fontFamily: "'Plus Jakarta Sans', sans-serif" }}
@@ -68,41 +64,21 @@ export default function Footer() {
         className="max-w-7xl mx-auto px-6 pt-16 pb-14"
         style={{ borderBottom: "1px solid #374151" }}
       >
-        <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-8">
-
-          {/* Tagline */}
-          <div className="flex flex-col gap-4 max-w-xl">
-            <p style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: "#6B7280" }}>
-              Grupo Rubio · Desde 1970
-            </p>
-            <h2
-              style={{
-                fontSize: "clamp(28px, 3.5vw, 44px)",
-                fontWeight: 800,
-                color: "#F9FAFB",
-                lineHeight: 1.12,
-                letterSpacing: "-1.5px",
-              }}
-            >
-              Lo que no se ve<br />también importa.
-            </h2>
-          </div>
-
-          {/* CTA */}
-          <div className="flex flex-col sm:flex-row gap-3 lg:items-end">
-            <a
-              href={isPresupuesto ? "/contacto" : "/presupuesto"}
-              style={{
-                display: "inline-flex", alignItems: "center", gap: 8,
-                background: "#ffffff", color: "#111827",
-                fontSize: 14, fontWeight: 700, padding: "13px 24px",
-                borderRadius: 8, textDecoration: "none", whiteSpace: "nowrap",
-              }}
-            >
-              {isPresupuesto ? "Contactar" : "Solicitar presupuesto"} <ArrowUpRight size={15} />
-            </a>
-          </div>
-
+        <div className="flex flex-col gap-4 max-w-xl">
+          <p style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: "#6B7280" }}>
+            Grupo Rubio · Desde 1970
+          </p>
+          <h2
+            style={{
+              fontSize: "clamp(28px, 3.5vw, 44px)",
+              fontWeight: 800,
+              color: "#F9FAFB",
+              lineHeight: 1.12,
+              letterSpacing: "-1.5px",
+            }}
+          >
+            Lo que no se ve<br />también importa.
+          </h2>
         </div>
       </div>
 
