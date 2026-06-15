@@ -205,7 +205,7 @@ export function ReviewsCarousel() {
         {/* CTA */}
         <div style={{ textAlign: 'center', marginTop: 32 }}>
           <a
-            href="https://www.google.com/maps/search/?api=1&query=Grupo+Rubio+Tudela"
+            href="https://www.google.com/maps?cid=1770850957228213492"
             target="_blank"
             rel="noopener noreferrer"
             style={{ fontSize: 13, color: '#6B7280', textDecoration: 'none', fontWeight: 500 }}
