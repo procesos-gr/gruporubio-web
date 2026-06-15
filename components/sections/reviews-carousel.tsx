@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Star, ChevronLeft, ChevronRight } from 'lucide-react';
+import { GOOGLE_REVIEWS_URL } from '@/lib/company-info';
 
 const REVIEWS = [
   {
@@ -205,7 +206,7 @@ export function ReviewsCarousel() {
         {/* CTA */}
         <div style={{ textAlign: 'center', marginTop: 32 }}>
           <a
-            href="https://www.google.com/maps?cid=1770850957228213492"
+            href={GOOGLE_REVIEWS_URL}
             target="_blank"
             rel="noopener noreferrer"
             style={{ fontSize: 13, color: '#6B7280', textDecoration: 'none', fontWeight: 500 }}

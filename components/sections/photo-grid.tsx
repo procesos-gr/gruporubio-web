@@ -5,12 +5,11 @@ import { motion, useInView, animate } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowUpRight } from 'lucide-react';
-import { GOOGLE_MAPS_URL } from '@/lib/company-info';
+import { GOOGLE_REVIEWS_URL } from '@/lib/company-info';
 
 const CARD_RADIUS = 12;
 
-const GOOGLE_REVIEWS_URL = GOOGLE_MAPS_URL;
-const RATING = 4.2;
+const RATING = 4.1;
 const REVIEW_COUNT = 51;
 
 /* Centered overlay label + arrow — appears on hover */
