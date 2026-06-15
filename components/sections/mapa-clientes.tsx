@@ -271,10 +271,10 @@ export function MapaClientes() {
               <div className="mc-leyenda">
                 Nº de clientes por municipio
                 <div className="mc-leyenda-escala">
-                  {PALETA.map((c, i) => (
+                  {[...PALETA].reverse().map((c, i) => (
                     <div key={c} className="mc-leyenda-bloque">
                       <span style={{ background: c }} />
-                      <span>{ETIQUETAS[i]}</span>
+                      <span>{[...ETIQUETAS].reverse()[i]}</span>
                     </div>
                   ))}
                 </div>
