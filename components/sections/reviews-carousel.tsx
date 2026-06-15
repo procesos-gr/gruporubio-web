@@ -85,7 +85,7 @@ export function ReviewsCarousel() {
         {/* Header */}
         <div style={{ textAlign: 'center', marginBottom: 48 }}>
           <h2 style={{ fontSize: 'clamp(26px, 3vw, 36px)', fontWeight: 800, color: '#111827', letterSpacing: '-1.5px', lineHeight: 1.1, margin: 0 }}>
-            Clientes que confían en nosotros
+            Lo que dicen de nosotros
           </h2>
         </div>
 

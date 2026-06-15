@@ -257,7 +257,7 @@ export function MapaClientes() {
         {/* Columna izquierda: texto + mapa */}
         <div>
           <h2 style={{ fontSize: 'clamp(26px, 3vw, 36px)', fontWeight: 800, color: '#111827', letterSpacing: '-1.5px', lineHeight: 1.1, margin: 0 }}>
-            Nuestra cartera de clientes
+            Dónde trabajamos
           </h2>
           <p style={{ fontSize: 15, color: '#6B7280', marginTop: 12, marginBottom: 32, maxWidth: 440 }}>
             Más de 1.500 clientes activos en Navarra, La Rioja y Zaragoza
