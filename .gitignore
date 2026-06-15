@@ -45,3 +45,8 @@ next-env.d.ts
 
 # logs del chatbot
 /data/chat-logs*.jsonl
+
+# Carpetas temporales de trabajo con IA
+.ai-variants/
+preview-variantes/
+_variants/
