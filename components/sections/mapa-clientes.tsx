@@ -7,7 +7,7 @@ import { Sparkles, Bug, ShoppingBag, Wrench } from 'lucide-react';
 import { CLIENTES_MUNICIPIO } from '@/lib/clientes-municipio';
 
 // --- Constantes fácilmente ajustables ---
-const PALETA = ['#1e293b', '#1e3a8a', '#1d4ed8', '#3b82f6', '#93c5fd'];
+const PALETA = ['#1e293b', '#1e3a8a', '#1d4ed8', '#2563eb', '#3b82f6'];
 const TRAMOS = [1, 5, 20, 100];
 const ETIQUETAS = ['0', '1-4', '5-19', '20-99', '100+'];
 const ESPACIADO = 11; // px entre celdas
