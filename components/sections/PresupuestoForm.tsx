@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { Send, CheckCircle, Clock, Phone, Mail, MapPin, ChevronDown } from 'lucide-react';
+import { GOOGLE_MAPS_URL } from '@/lib/company-info';
 
 const SERVICES = [
   { id: 'limpieza', label: 'Limpieza Especializada' },
@@ -275,14 +276,20 @@ export function PresupuestoForm() {
                 </span>
               </div>
               {[
-                { icon: <Phone size={14} />, text: '948 82 50 25' },
-                { icon: <Mail size={14} />, text: 'info@gruporubio.es' },
-                { icon: <MapPin size={14} />, text: 'Tudela, Navarra' },
-              ].map(({ icon, text }) => (
-                <div key={text} style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 12 }}>
+                { icon: <Phone size={14} />, text: '948 82 50 25', href: 'tel:+34948825025' },
+                { icon: <Mail size={14} />, text: 'info@gruporubio.es', href: 'mailto:info@gruporubio.es' },
+                { icon: <MapPin size={14} />, text: 'Tudela, Navarra', href: GOOGLE_MAPS_URL },
+              ].map(({ icon, text, href }) => (
+                <a
+                  key={text}
+                  href={href}
+                  target={href.startsWith('http') ? '_blank' : undefined}
+                  rel={href.startsWith('http') ? 'noopener noreferrer' : undefined}
+                  style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 12, textDecoration: 'none' }}
+                >
                   <span style={{ color: '#6B7280' }}>{icon}</span>
                   <span style={{ fontSize: 13, color: '#D1D5DB', fontWeight: 500 }}>{text}</span>
-                </div>
+                </a>
               ))}
             </div>
 

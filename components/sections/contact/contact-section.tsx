@@ -6,6 +6,7 @@ import {
   Phone, Mail, MapPin, Clock, CheckCircle2, AlertCircle, X, Send, ChevronRight,
   PackageOpen, CalendarDays,
 } from 'lucide-react';
+import { GOOGLE_MAPS_URL } from '@/lib/company-info';
 
 type ContactType = 'general' | 'soporte' | 'urgencia' | 'comercial' | 'alquiler';
 
@@ -442,7 +443,7 @@ export function ContactSection() {
                   </div>
                 </a>
 
-                <div style={{ display: 'flex', alignItems: 'flex-start', gap: 14 }}>
+                <a href={GOOGLE_MAPS_URL} target="_blank" rel="noopener noreferrer" style={{ display: 'flex', alignItems: 'flex-start', gap: 14, textDecoration: 'none' }}>
                   <div style={{ width: 40, height: 40, borderRadius: 8, background: 'rgba(255,255,255,0.08)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
                     <MapPin size={17} style={{ color: '#D1D5DB' }} />
                   </div>
@@ -450,7 +451,7 @@ export function ContactSection() {
                     <p style={{ fontSize: 11, color: '#6B7280', margin: '0 0 2px', fontWeight: 600, letterSpacing: '0.06em', textTransform: 'uppercase' }}>Oficina</p>
                     <p style={{ fontSize: 14, color: '#D1D5DB', margin: 0, lineHeight: 1.55 }}>Tudela, Navarra</p>
                   </div>
-                </div>
+                </a>
 
                 <div style={{ display: 'flex', alignItems: 'flex-start', gap: 14 }}>
                   <div style={{ width: 40, height: 40, borderRadius: 8, background: 'rgba(255,255,255,0.08)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>

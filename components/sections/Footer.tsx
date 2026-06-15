@@ -2,6 +2,7 @@
 
 import { Phone, MapPin, Mail, ArrowUpRight } from "lucide-react";
 import { usePathname } from "next/navigation";
+import { GOOGLE_MAPS_URL } from "@/lib/company-info";
 
 function LinkedinIcon({ size = 16 }: { size?: number }) {
   return (
@@ -204,7 +205,7 @@ export default function Footer() {
               {[
                 { icon: Phone,  text: "948 82 50 25",       href: "tel:+34948825025" },
                 { icon: Mail,   text: "info@gruporubio.es", href: "mailto:info@gruporubio.es" },
-                { icon: MapPin, text: "Tudela, Navarra",    href: null },
+                { icon: MapPin, text: "Tudela, Navarra",    href: GOOGLE_MAPS_URL },
               ].map(({ icon: Icon, text, href }) => (
                 <li key={text} className="flex items-center gap-3">
                   <div
@@ -218,6 +219,8 @@ export default function Footer() {
                   </div>
                   {href ? (
                     <a href={href} className="text-sm" style={{ color: "#9CA3AF", textDecoration: "none" }}
+                      target={href.startsWith("http") ? "_blank" : undefined}
+                      rel={href.startsWith("http") ? "noopener noreferrer" : undefined}
                       onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.color = "#F9FAFB")}
                       onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.color = "#9CA3AF")}
                     >{text}</a>
