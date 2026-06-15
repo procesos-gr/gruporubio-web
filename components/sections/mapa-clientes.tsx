@@ -7,7 +7,7 @@ import { Sparkles, Bug, ShoppingBag, Wrench } from 'lucide-react';
 import { CLIENTES_MUNICIPIO } from '@/lib/clientes-municipio';
 
 // --- Constantes fácilmente ajustables ---
-const PALETA = ['#dce8f8', '#93b8e8', '#4a86d0', '#1a56db', '#0f2d6e'];
+const PALETA = ['#1e3358', '#2a5298', '#4a86d0', '#93c5fd', '#e0f2fe'];
 const TRAMOS = [1, 5, 20, 100];
 const ETIQUETAS = ['0', '1-4', '5-19', '20-99', '100+'];
 const ESPACIADO = 11; // px entre celdas
@@ -223,23 +223,23 @@ export function MapaClientes() {
   }, []);
 
   return (
-    <section style={{ background: '#F9FAFB', padding: '80px 24px' }}>
+    <section style={{ background: '#0f172a', padding: '80px 24px' }}>
       <style>{`
         .mc-tooltip {
           position: absolute; pointer-events: none;
-          background: rgba(17,24,39,.94); color: #fff;
+          background: rgba(255,255,255,.95); color: #111827;
           padding: 6px 12px; border-radius: 8px; font-size: 13px;
           opacity: 0; transition: opacity .15s; transform: translate(-50%, -130%);
-          box-shadow: 0 6px 16px rgba(0,0,0,.2); white-space: nowrap; z-index: 2;
+          box-shadow: 0 6px 16px rgba(0,0,0,.3); white-space: nowrap; z-index: 2;
         }
         .mc-tooltip b { font-weight: 700; }
-        .mc-tooltip .mc-zona { color: #D1D5DB; font-size: 11px; }
+        .mc-tooltip .mc-zona { color: #6B7280; font-size: 11px; }
         .mc-leyenda {
           position: absolute; bottom: 16px; left: 16px; z-index: 1;
-          background: rgba(255,255,255,.94);
+          background: rgba(255,255,255,.08);
           padding: 10px 14px; border-radius: 8px;
-          box-shadow: 0 4px 14px rgba(0,0,0,.06); font-size: 12px; color: #6B7280;
-          border: 1px solid #EEF1F6;
+          font-size: 12px; color: #94a3b8;
+          border: 1px solid rgba(255,255,255,.1);
         }
         .mc-leyenda-escala { display: flex; gap: 4px; margin-top: 6px; }
         .mc-leyenda-bloque { display: flex; flex-direction: column; align-items: center; gap: 4px; font-size: 11px; color: #9CA3AF; }
@@ -256,10 +256,10 @@ export function MapaClientes() {
       <div className="mc-grid">
         {/* Columna izquierda: texto + mapa */}
         <div>
-          <h2 style={{ fontSize: 'clamp(26px, 3vw, 36px)', fontWeight: 800, color: '#111827', letterSpacing: '-1.5px', lineHeight: 1.1, margin: 0 }}>
+          <h2 style={{ fontSize: 'clamp(26px, 3vw, 36px)', fontWeight: 800, color: '#f1f5f9', letterSpacing: '-1.5px', lineHeight: 1.1, margin: 0 }}>
             Dónde trabajamos
           </h2>
-          <p style={{ fontSize: 15, color: '#6B7280', marginTop: 12, marginBottom: 32, maxWidth: 440 }}>
+          <p style={{ fontSize: 15, color: '#94a3b8', marginTop: 12, marginBottom: 32, maxWidth: 440 }}>
             Más de 1.500 clientes activos en Navarra, La Rioja y Zaragoza
           </p>
 
@@ -302,27 +302,26 @@ export function MapaClientes() {
               <div
                 key={title}
                 style={{
-                  background: '#ffffff',
-                  border: '1px solid #EEF1F6',
+                  background: 'rgba(255,255,255,0.06)',
+                  border: '1px solid rgba(255,255,255,0.1)',
                   borderRadius: 8,
                   padding: '20px',
                   display: 'flex',
                   flexDirection: 'column',
                   gap: 10,
-                  boxShadow: '0 1px 2px rgba(16,24,40,0.04)',
                 }}
               >
                 <div style={{
                   width: 38, height: 38, borderRadius: 8,
-                  background: '#EEF4FF',
+                  background: 'rgba(147,197,253,0.15)',
                   display: 'flex', alignItems: 'center', justifyContent: 'center',
                 }}>
-                  <Icon size={18} color="#1A56DB" strokeWidth={2} />
+                  <Icon size={18} color="#93c5fd" strokeWidth={2} />
                 </div>
-                <span style={{ fontSize: 15, fontWeight: 700, color: '#111827', lineHeight: 1.3 }}>
+                <span style={{ fontSize: 15, fontWeight: 700, color: '#f1f5f9', lineHeight: 1.3 }}>
                   {title}
                 </span>
-                <span style={{ fontSize: 13, color: '#6B7280', lineHeight: 1.5 }}>
+                <span style={{ fontSize: 13, color: '#94a3b8', lineHeight: 1.5 }}>
                   {desc}
                 </span>
               </div>
