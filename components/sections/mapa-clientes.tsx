@@ -308,6 +308,45 @@ export function MapaClientes() {
               </div>
             )}
           </div>
+
+          {/* Leyenda */}
+          <div style={{ marginTop: 16, display: 'flex', gap: 24, flexWrap: 'wrap', alignItems: 'flex-start' }}>
+            {/* Densidad */}
+            <div>
+              <span style={{ fontSize: 10, color: '#9CA3AF', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.06em', display: 'block', marginBottom: 6 }}>
+                Densidad de clientes
+              </span>
+              <div style={{ display: 'flex', gap: 4, alignItems: 'flex-end' }}>
+                {PALETA.map((color, i) => (
+                  <div key={i} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 3 }}>
+                    <span style={{ width: 22, height: 10, borderRadius: 2, background: color, display: 'block' }} />
+                    <span style={{ fontSize: 9, color: '#9CA3AF', lineHeight: 1 }}>{ETIQUETAS[i]}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Servicios */}
+            <div>
+              <span style={{ fontSize: 10, color: '#9CA3AF', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.06em', display: 'block', marginBottom: 6 }}>
+                Servicios presentes
+              </span>
+              <div style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
+                {([
+                  { bg: '#3B82F6', label: 'Limpieza', Icon: Sparkles },
+                  { bg: '#EF4444', label: 'Plagas', Icon: Bug },
+                  { bg: '#22C55E', label: 'Tienda', Icon: ShoppingBag },
+                ] as const).map(({ bg, label, Icon }) => (
+                  <div key={label} style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
+                    <span style={{ width: 18, height: 18, borderRadius: '50%', background: bg, display: 'inline-flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                      <Icon size={10} color="#fff" strokeWidth={2.5} />
+                    </span>
+                    <span style={{ fontSize: 11, color: '#6B7280' }}>{label}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
         </div>
 
         {/* Columna derecha: información de apoyo */}
