@@ -4,6 +4,7 @@ import { useEffect, useState } from "react"
 import { useRouter, useParams } from "next/navigation"
 import { Elements } from "@stripe/react-stripe-js"
 import { stripePromise } from "@/lib/stripe"
+import { PayPalScriptProvider } from "@paypal/react-paypal-js"
 import { useCartStore } from "@/lib/store/cart"
 import { CheckoutForm } from "@/components/tienda/CheckoutForm"
 import { Navbar } from "@/components/layout/Navbar"
@@ -91,53 +92,61 @@ export default function CheckoutPage() {
               Preparando el checkout...
             </div>
           ) : (
-            <div className="grid grid-cols-1 lg:grid-cols-[1fr_400px] gap-12">
-              {/* Form */}
-              <Elements
-                stripe={stripePromise}
-                options={{ clientSecret, appearance: { theme: "stripe" } }}
-              >
-                <CheckoutForm locale={locale} labels={labels} />
-              </Elements>
+            <PayPalScriptProvider
+              options={{
+                clientId: process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID || "sb",
+                currency: "EUR",
+                intent: "capture",
+              }}
+            >
+              <div className="grid grid-cols-1 lg:grid-cols-[1fr_400px] gap-12">
+                {/* Form */}
+                <Elements
+                  stripe={stripePromise}
+                  options={{ clientSecret, appearance: { theme: "stripe" } }}
+                >
+                  <CheckoutForm locale={locale} labels={labels} />
+                </Elements>
 
-              {/* Order summary */}
-              <div>
-                <div style={{
-                  background: "#FFFFFF",
-                  borderRadius: 8,
-                  border: "1px solid #E5E7EB",
-                  padding: "24px",
-                  position: "sticky",
-                  top: 24,
-                }}>
-                  <h2 style={{ fontSize: 15, fontWeight: 700, color: "#111827", marginBottom: 20 }}>
-                    Resumen del pedido
-                  </h2>
-                  <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
-                    {items.map((item) => (
-                      <div key={item.id} style={{ display: "flex", justifyContent: "space-between", gap: 12 }}>
-                        <div style={{ minWidth: 0 }}>
-                          <p style={{ fontSize: 14, fontWeight: 500, color: "#111827", lineHeight: 1.3 }}>{item.title}</p>
-                          <p style={{ fontSize: 12, color: "#9CA3AF", marginTop: 2 }}>x{item.quantity}</p>
-                        </div>
-                        <p style={{ fontSize: 14, fontWeight: 600, color: "#111827", flexShrink: 0 }}>
-                          {formatPrice(item.total)}
-                        </p>
-                      </div>
-                    ))}
-                  </div>
+                {/* Order summary */}
+                <div>
                   <div style={{
-                    borderTop: "1px solid #F3F4F6", marginTop: 20, paddingTop: 16,
-                    display: "flex", justifyContent: "space-between", alignItems: "center",
+                    background: "#FFFFFF",
+                    borderRadius: 8,
+                    border: "1px solid #E5E7EB",
+                    padding: "24px",
+                    position: "sticky",
+                    top: 24,
                   }}>
-                    <span style={{ fontSize: 15, fontWeight: 700, color: "#111827" }}>Total</span>
-                    <span style={{ fontSize: 20, fontWeight: 800, color: "#16a34a", letterSpacing: "-0.5px" }}>
-                      {formatPrice(total)}
-                    </span>
+                    <h2 style={{ fontSize: 15, fontWeight: 700, color: "#111827", marginBottom: 20 }}>
+                      Resumen del pedido
+                    </h2>
+                    <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+                      {items.map((item) => (
+                        <div key={item.id} style={{ display: "flex", justifyContent: "space-between", gap: 12 }}>
+                          <div style={{ minWidth: 0 }}>
+                            <p style={{ fontSize: 14, fontWeight: 500, color: "#111827", lineHeight: 1.3 }}>{item.title}</p>
+                            <p style={{ fontSize: 12, color: "#9CA3AF", marginTop: 2 }}>x{item.quantity}</p>
+                          </div>
+                          <p style={{ fontSize: 14, fontWeight: 600, color: "#111827", flexShrink: 0 }}>
+                            {formatPrice(item.total)}
+                          </p>
+                        </div>
+                      ))}
+                    </div>
+                    <div style={{
+                      borderTop: "1px solid #F3F4F6", marginTop: 20, paddingTop: 16,
+                      display: "flex", justifyContent: "space-between", alignItems: "center",
+                    }}>
+                      <span style={{ fontSize: 15, fontWeight: 700, color: "#111827" }}>Total</span>
+                      <span style={{ fontSize: 20, fontWeight: 800, color: "#16a34a", letterSpacing: "-0.5px" }}>
+                        {formatPrice(total)}
+                      </span>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
+            </PayPalScriptProvider>
           )}
         </div>
       </div>
