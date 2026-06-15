@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname, useRouter } from 'next/navigation';
-import { ChevronDown, ArrowRight, Store, Truck, Menu, X } from 'lucide-react';
+import { ChevronDown, ArrowRight, Store, Truck, Menu, X, User } from 'lucide-react';
 import { SERVICES, CATEGORY_LABELS, ServiceCategory } from '@/lib/services-data';
 import { CartButton } from "@/components/tienda/CartButton"
 
@@ -411,6 +411,21 @@ export function Navbar() {
             Tienda
           </Link>
 
+          {/* Mi cuenta */}
+          <Link
+            href={`/${currentLocale}/cuenta`}
+            title="Mi cuenta"
+            style={{
+              display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
+              width: 36, height: 36, borderRadius: 8,
+              color: (!showDark && isOnDarkPage) ? 'rgba(255,255,255,0.75)' : '#9CA3AF',
+              textDecoration: 'none', flexShrink: 0, marginLeft: 4,
+              transition: 'color 0.2s ease',
+            }}
+          >
+            <User size={16} />
+          </Link>
+
           <div style={{ color: linkColor }}>
             <CartButton />
           </div>
@@ -520,6 +535,10 @@ export function Navbar() {
             <Link href="/alquiler" style={mobileLinkStyle}>Alquiler de maquinaria</Link>
             <Link href="/nosotros" style={mobileLinkStyle}>Nosotros</Link>
             <Link href="/contacto" style={mobileLinkStyle}>Contacto</Link>
+            <Link href={`/${currentLocale}/cuenta`} style={{ ...mobileLinkStyle, display: 'flex', alignItems: 'center', gap: 8 }}>
+              <User size={16} style={{ color: '#6B7280' }} />
+              Mi cuenta
+            </Link>
 
             {/* CTAs */}
             <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginTop: 14 }}>
