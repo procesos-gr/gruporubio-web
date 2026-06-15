@@ -139,6 +139,15 @@ export function MapaClientes() {
             for (let iy = 0; iy < rows; iy++) {
               const idx = provIndice[ix * rows + iy];
               if (idx === -1) continue;
+              // Deja un hueco de separación entre provincias distintas
+              // (no afecta al borde exterior, que se recorta con el clip-path)
+              const vecinos = [
+                ix > 0 ? provIndice[(ix - 1) * rows + iy] : idx,
+                ix < cols - 1 ? provIndice[(ix + 1) * rows + iy] : idx,
+                iy > 0 ? provIndice[ix * rows + (iy - 1)] : idx,
+                iy < rows - 1 ? provIndice[ix * rows + (iy + 1)] : idx,
+              ];
+              if (vecinos.some(v => v !== -1 && v !== idx)) continue;
               puntosGrid.push({ x: ix * ESPAC, y: iy * ESPAC, munic: municIndice[ix * rows + iy] });
             }
           }
