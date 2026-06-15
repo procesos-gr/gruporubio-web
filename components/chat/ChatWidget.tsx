@@ -55,7 +55,7 @@ function BotText({ text }: { text: string }) {
   );
 }
 
-const NUDGE_DELAY_MS = 18_000; // tiempo navegando antes de mostrar el popup
+const NUDGE_DELAY_MS = 8_000; // tiempo navegando antes de mostrar el popup
 const NUDGE_KEY = 'gr-chat-nudge-shown';
 
 export function ChatWidget() {
