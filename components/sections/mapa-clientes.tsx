@@ -8,7 +8,6 @@ import { CLIENTES_MUNICIPIO } from '@/lib/clientes-municipio';
 
 // --- Constantes fácilmente ajustables ---
 const PALETA = ['#aec3ea', '#85a4dd', '#5c80cd', '#3458bd', '#1A56DB'];
-const COLOR_BORDE_PROVINCIA = '#6B7E9E';
 const TRAMOS = [1, 5, 20, 100];
 const ETIQUETAS = ['0', '1-4', '5-19', '20-99', '100+'];
 const ESPACIADO = 11; // px entre celdas
@@ -134,30 +133,27 @@ export function MapaClientes() {
             }
           }
 
+          // Lógica idéntica al prototipo HTML (12-mapa-cuadraditos.html)
           const puntosGrid: PuntoGrid[] = [];
           for (let ix = 0; ix < cols; ix++) {
             for (let iy = 0; iy < rows; iy++) {
               const idx = provIndice[ix * rows + iy];
               if (idx === -1) continue;
-              puntosGrid.push({ x: ix * ESPAC, y: iy * ESPAC, munic: municIndice[ix * rows + iy] });
+              // Solo dibuja si todos los vecinos directos son de la misma provincia
+              // (crea separación natural entre provincias sin líneas)
+              const vecinos = [
+                ix > 0             ? provIndice[(ix - 1) * rows + iy] : idx,
+                ix < cols - 1      ? provIndice[(ix + 1) * rows + iy] : idx,
+                iy > 0             ? provIndice[ix * rows + (iy - 1)] : idx,
+                iy < rows - 1      ? provIndice[ix * rows + (iy + 1)] : idx,
+              ];
+              if (vecinos.every(v => v === idx)) {
+                puntosGrid.push({ x: ix * ESPAC, y: iy * ESPAC, munic: municIndice[ix * rows + iy] });
+              }
             }
           }
 
-          // Recorta la cuadrícula exactamente al contorno real de las provincias,
-          // para que ningún cuadradito sobresalga del límite
-          const path = d3.geoPath(projection);
-          const clipId = `mc-clip-${Math.random().toString(36).slice(2)}`;
-          svg.append('defs')
-            .append('clipPath')
-            .attr('id', clipId)
-            .selectAll('path')
-            .data(provincias)
-            .join('path')
-            .attr('d', path);
-
-          svg.append('g')
-            .attr('clip-path', `url(#${clipId})`)
-            .selectAll('rect')
+          svg.selectAll('rect')
             .data(puntosGrid)
             .join('rect')
             .attr('x', d => d.x - LADO / 2)
@@ -176,18 +172,6 @@ export function MapaClientes() {
                 .html(`<b>${(d.munic.feature.properties as { name: string }).name}</b><div class="mc-zona">${d.munic.clientes} cliente${d.munic.clientes === 1 ? '' : 's'}</div>`);
             })
             .on('mouseleave', () => tooltip.style('opacity', 0));
-
-          // Contornos de provincia, por encima de la cuadrícula
-          svg.append('g')
-            .selectAll('path')
-            .data(provincias)
-            .join('path')
-            .attr('d', path)
-            .attr('fill', 'none')
-            .attr('stroke', COLOR_BORDE_PROVINCIA)
-            .attr('stroke-width', 1.5)
-            .attr('stroke-linejoin', 'round')
-            .style('pointer-events', 'none');
         }
 
         dibujar();
