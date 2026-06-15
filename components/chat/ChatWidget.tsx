@@ -194,7 +194,7 @@ export function ChatWidget() {
           transition={{ duration: 1.8, repeat: Infinity, ease: 'easeOut' }}
           style={{
             position: 'fixed', bottom: 24, right: 24,
-            width: 56, height: 56, borderRadius: 12,
+            width: 56, height: 56, borderRadius: 8,
             background: '#1d4ed8', zIndex: 9989, pointerEvents: 'none',
           }}
         />
@@ -211,7 +211,7 @@ export function ChatWidget() {
             style={{
               position: 'fixed', bottom: 94, right: 24, maxWidth: 260,
               background: '#ffffff', border: '1.5px solid #e5e7eb',
-              borderRadius: 12, boxShadow: '0 8px 28px rgba(0,0,0,0.14)',
+              borderRadius: 6, boxShadow: '0 8px 28px rgba(0,0,0,0.14)',
               padding: '14px 16px', zIndex: 9990, cursor: 'pointer',
             }}
             onClick={() => setOpen(true)}
@@ -221,13 +221,13 @@ export function ChatWidget() {
               aria-label="Cerrar aviso"
               style={{
                 position: 'absolute', top: -9, right: -9,
-                width: 22, height: 22, borderRadius: '50%',
+                width: 20, height: 20, borderRadius: '50%',
                 background: '#1d4ed8', color: '#ffffff',
                 border: 'none', cursor: 'pointer',
                 display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 0,
               }}
             >
-              <X size={12} />
+              <X size={11} />
             </button>
             <p style={{ margin: 0, fontSize: 13, fontWeight: 700, color: '#111827', lineHeight: 1.4 }}>
               ¿Necesitas ayuda con algo? 👋
@@ -253,8 +253,8 @@ export function ChatWidget() {
         aria-label={open ? 'Cerrar chat' : 'Abrir chat'}
         style={{
           position: 'fixed', bottom: 24, right: 24,
-          width: 56, height: 56, borderRadius: 12,
-          background: 'linear-gradient(135deg, #1d4ed8 0%, #1e293b 100%)',
+          width: 56, height: 56, borderRadius: 8,
+          background: '#1d4ed8',
           color: '#ffffff', border: 'none', cursor: 'pointer',
           display: 'flex', alignItems: 'center', justifyContent: 'center',
           boxShadow: '0 4px 20px rgba(29,78,216,0.45)',
@@ -281,16 +281,16 @@ export function ChatWidget() {
               position: 'fixed', bottom: 92, right: 24,
               width: 'min(390px, calc(100vw - 32px))',
               height: 'min(570px, calc(100vh - 130px))',
-              background: '#ffffff', borderRadius: 16,
+              background: '#ffffff', borderRadius: 8,
               border: '1px solid #e5e7eb',
               boxShadow: '0 16px 48px rgba(0,0,0,0.18)',
               display: 'flex', flexDirection: 'column',
               overflow: 'hidden', zIndex: 9991,
             }}
           >
-            {/* Header con gradiente */}
+            {/* Header color sólido */}
             <div style={{
-              background: 'linear-gradient(135deg, #1d4ed8 0%, #1e293b 100%)',
+              background: '#1d4ed8',
               padding: '18px 20px',
               display: 'flex', alignItems: 'center', gap: 14,
               flexShrink: 0,
@@ -305,11 +305,10 @@ export function ChatWidget() {
                 }}>
                   <span style={{ fontSize: 17, fontWeight: 800, color: '#ffffff', letterSpacing: '-0.5px' }}>I</span>
                 </div>
-                {/* Punto verde "en línea" */}
                 <span style={{
                   position: 'absolute', bottom: 1, right: 1,
                   width: 11, height: 11, borderRadius: '50%',
-                  background: '#22c55e', border: '2px solid #1e3a6e',
+                  background: '#22c55e', border: '2px solid #1d4ed8',
                 }} />
               </div>
 
@@ -325,7 +324,7 @@ export function ChatWidget() {
                 aria-label="Cerrar chat"
                 style={{
                   background: 'rgba(255,255,255,0.12)', border: 'none',
-                  borderRadius: 8, width: 32, height: 32,
+                  borderRadius: 6, width: 32, height: 32,
                   display: 'flex', alignItems: 'center', justifyContent: 'center',
                   cursor: 'pointer', color: '#ffffff', flexShrink: 0,
                 }}
@@ -354,7 +353,7 @@ export function ChatWidget() {
                       style={{
                         fontSize: 12, fontWeight: 600, color: '#1d4ed8',
                         background: '#EFF6FF', border: '1.5px solid #BFDBFE',
-                        borderRadius: 20, padding: '7px 13px',
+                        borderRadius: 6, padding: '7px 13px',
                         cursor: 'pointer', whiteSpace: 'nowrap', flexShrink: 0,
                         transition: 'background 0.15s',
                       }}
@@ -414,7 +413,7 @@ export function ChatWidget() {
                 placeholder="Escribe tu consulta..."
                 style={{
                   flex: 1, minWidth: 0,
-                  border: '1.5px solid #e5e7eb', borderRadius: 10,
+                  border: '1.5px solid #e5e7eb', borderRadius: 6,
                   padding: '10px 14px', fontSize: 13,
                   outline: 'none', color: '#111827',
                   background: '#F8FAFC',
@@ -426,10 +425,8 @@ export function ChatWidget() {
                 disabled={loading || !input.trim()}
                 aria-label="Enviar"
                 style={{
-                  width: 42, height: 42, borderRadius: 10, flexShrink: 0,
-                  background: loading || !input.trim()
-                    ? '#e5e7eb'
-                    : 'linear-gradient(135deg, #1d4ed8 0%, #1e293b 100%)',
+                  width: 42, height: 42, borderRadius: 6, flexShrink: 0,
+                  background: loading || !input.trim() ? '#e5e7eb' : '#1d4ed8',
                   color: loading || !input.trim() ? '#9CA3AF' : '#ffffff',
                   border: 'none',
                   cursor: loading || !input.trim() ? 'default' : 'pointer',
@@ -506,7 +503,7 @@ function Bubble({ role, children }: { role: 'user' | 'assistant'; children: Reac
       {!isUser && (
         <div style={{
           width: 26, height: 26, borderRadius: '50%', flexShrink: 0,
-          background: 'linear-gradient(135deg, #1d4ed8 0%, #1e293b 100%)',
+          background: '#1d4ed8',
           display: 'flex', alignItems: 'center', justifyContent: 'center',
         }}>
           <span style={{ fontSize: 11, fontWeight: 800, color: '#ffffff' }}>I</span>
@@ -516,12 +513,10 @@ function Bubble({ role, children }: { role: 'user' | 'assistant'; children: Reac
         style={{
           maxWidth: '78%',
           padding: '10px 14px',
-          borderRadius: isUser ? '12px 12px 4px 12px' : '12px 12px 12px 4px',
+          borderRadius: isUser ? '8px 8px 2px 8px' : '8px 8px 8px 2px',
           fontSize: 13,
           lineHeight: 1.55,
-          background: isUser
-            ? 'linear-gradient(135deg, #1d4ed8 0%, #1e293b 100%)'
-            : '#ffffff',
+          background: isUser ? '#1d4ed8' : '#ffffff',
           color: isUser ? '#ffffff' : '#111827',
           border: isUser ? 'none' : '1px solid #e9edf2',
           boxShadow: isUser ? 'none' : '0 1px 4px rgba(0,0,0,0.06)',
