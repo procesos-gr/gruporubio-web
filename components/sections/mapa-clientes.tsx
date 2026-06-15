@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import * as d3 from 'd3';
 import * as topojson from 'topojson-client';
-import { Sparkles, Bug, ShoppingBag, Wrench } from 'lucide-react';
+import { Sparkles, Bug, ShoppingBag } from 'lucide-react';
 import { CLIENTES_MUNICIPIO } from '@/lib/clientes-municipio';
 
 // --- Badges de servicios para el tooltip (SVG inline, sin React) ---
@@ -40,27 +40,11 @@ const LADO = 8.5; // tamaño de cada cuadradito
 const CODIGOS_PROVINCIA = ['31', '26', '50']; // Navarra, La Rioja, Zaragoza
 const MARGEN = 20; // px de margen alrededor del mapa
 
-const INFO_CARDS = [
-  {
-    icon: Sparkles,
-    title: 'Limpieza profesional',
-    desc: 'Industrial, de obra, fachadas, parkings, siniestros y altura. Maquinaria propia Kärcher.',
-  },
-  {
-    icon: Bug,
-    title: 'Control de plagas',
-    desc: 'DDD integral: desratización, desinsectación, desinfección, termitas, aves y legionela.',
-  },
-  {
-    icon: ShoppingBag,
-    title: 'Venta de productos',
-    desc: 'Productos de higiene y limpieza profesional para empresas, hostelería e industria.',
-  },
-  {
-    icon: Wrench,
-    title: 'Maquinaria y formación',
-    desc: 'Alquiler y servicio técnico oficial Kärcher. Centro de formación propio en Tudela.',
-  },
+const STATS = [
+  { value: '+1.500', label: 'clientes activos', sub: 'Navarra, La Rioja y Aragón' },
+  { value: '+55', label: 'años de experiencia', sub: 'Empresa familiar desde 1970' },
+  { value: '170+', label: 'municipios', sub: 'con cobertura activa' },
+  { value: '15', label: 'tipos de servicio', sub: 'Limpieza, plagas, maquinaria y más' },
 ];
 
 interface MunicipioInfo {
@@ -345,35 +329,31 @@ export function MapaClientes() {
           </div>
         </div>
 
-        {/* Columna derecha: información de apoyo */}
+        {/* Columna derecha: stats */}
         <div>
           <div className="mc-info-cards">
-            {INFO_CARDS.map(({ icon: Icon, title, desc }) => (
+            {STATS.map(({ value, label, sub }) => (
               <div
-                key={title}
+                key={label}
                 style={{
                   background: '#ffffff',
                   border: '1px solid #EEF1F6',
                   borderRadius: 8,
-                  padding: '20px',
+                  padding: '24px 20px',
                   display: 'flex',
                   flexDirection: 'column',
-                  gap: 10,
+                  gap: 4,
                   boxShadow: '0 1px 3px rgba(16,24,40,0.04)',
                 }}
               >
-                <div style={{
-                  width: 38, height: 38, borderRadius: 8,
-                  background: '#EEF4FF',
-                  display: 'flex', alignItems: 'center', justifyContent: 'center',
-                }}>
-                  <Icon size={18} color="#1A56DB" strokeWidth={2} />
-                </div>
-                <span style={{ fontSize: 15, fontWeight: 700, color: '#111827', lineHeight: 1.3 }}>
-                  {title}
+                <span style={{ fontSize: 34, fontWeight: 800, color: '#111827', letterSpacing: '-1.5px', lineHeight: 1 }}>
+                  {value}
                 </span>
-                <span style={{ fontSize: 13, color: '#6B7280', lineHeight: 1.5 }}>
-                  {desc}
+                <span style={{ fontSize: 14, fontWeight: 600, color: '#111827', marginTop: 6 }}>
+                  {label}
+                </span>
+                <span style={{ fontSize: 12, color: '#9CA3AF', lineHeight: 1.4 }}>
+                  {sub}
                 </span>
               </div>
             ))}
