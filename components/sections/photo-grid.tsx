@@ -10,7 +10,6 @@ import { GOOGLE_REVIEWS_URL } from '@/lib/company-info';
 const CARD_RADIUS = 12;
 
 const RATING = 4.1;
-const REVIEW_COUNT = 51;
 
 /* Centered overlay label + arrow — appears on hover */
 function CardOverlay({ title, large = false }: { title: string; large?: boolean }) {
@@ -147,31 +146,27 @@ function ReviewsWidget() {
     >
       {/* Logo Google */}
       <div style={{ flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-        <GoogleG size={34} />
+        <GoogleG size={44} />
       </div>
 
-      <div style={{ width: 1, height: 42, background: '#EEF1F6', flexShrink: 0 }} />
+      <div style={{ width: 1, height: 48, background: '#EEF1F6', flexShrink: 0 }} />
 
-      {/* Score + estrellas + label */}
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 5, minWidth: 0, flex: 1 }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-          <span style={{ fontSize: 34, fontWeight: 800, color: '#111827', lineHeight: 1, letterSpacing: '-1.5px', fontVariantNumeric: 'tabular-nums', flexShrink: 0 }}>
-            {score.toFixed(1)}
-          </span>
-          <div style={{ display: 'flex', gap: 2.5 }}>
-            {[0, 1, 2, 3, 4].map((i) => (
-              <AnimatedStar
-                key={i}
-                play={inView}
-                delay={0.15 + i * 0.08}
-                fillRatio={Math.max(0, Math.min(1, RATING - i))}
-              />
-            ))}
-          </div>
-        </div>
-        <span style={{ fontSize: 12, color: '#6B7280', fontWeight: 500, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-          {REVIEW_COUNT} reseñas en Google
+      {/* Score + estrellas */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: 14, minWidth: 0, flex: 1 }}>
+        <span style={{ fontSize: 44, fontWeight: 800, color: '#111827', lineHeight: 1, letterSpacing: '-1.5px', fontVariantNumeric: 'tabular-nums', flexShrink: 0 }}>
+          {score.toFixed(1)}
         </span>
+        <div style={{ display: 'flex', gap: 4 }}>
+          {[0, 1, 2, 3, 4].map((i) => (
+            <AnimatedStar
+              key={i}
+              play={inView}
+              delay={0.15 + i * 0.08}
+              size={26}
+              fillRatio={Math.max(0, Math.min(1, RATING - i))}
+            />
+          ))}
+        </div>
       </div>
 
       {/* Arrow — siempre visible, se realza al hover */}
