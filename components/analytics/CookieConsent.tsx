@@ -11,7 +11,8 @@ export function CookieConsent() {
 
   useEffect(() => {
     if (!localStorage.getItem('gr_cookie_consent')) {
-      setVisible(true);
+      const t = setTimeout(() => setVisible(true), 800);
+      return () => clearTimeout(t);
     }
   }, []);
 
@@ -24,7 +25,6 @@ export function CookieConsent() {
   const reject = () => {
     localStorage.setItem('gr_cookie_consent', 'rejected');
     setVisible(false);
-    window.dispatchEvent(new Event('gr_consent_change'));
   };
 
   if (!visible) return null;
@@ -32,60 +32,50 @@ export function CookieConsent() {
   return (
     <div style={{
       position: 'fixed',
-      bottom: 0,
-      left: 0,
-      right: 0,
+      bottom: 24,
+      left: 24,
       zIndex: 9999,
-      background: '#111827',
-      borderTop: '1px solid rgba(255,255,255,0.08)',
-      padding: '16px 24px',
-      display: 'flex',
-      alignItems: 'center',
-      gap: 16,
-      flexWrap: 'wrap',
+      background: '#FFFFFF',
+      border: '1px solid #E5E7EB',
+      borderRadius: 8,
+      padding: '20px 24px',
+      maxWidth: 320,
+      boxShadow: '0 4px 24px rgba(0,0,0,0.10)',
+      animation: 'cookieSlide 0.3s ease',
     }}>
-      <p style={{
-        flex: 1,
-        minWidth: 260,
-        fontSize: 13,
-        color: 'rgba(255,255,255,0.75)',
-        margin: 0,
-        lineHeight: 1.6,
-      }}>
-        Usamos cookies de análisis (Google Analytics) para mejorar el sitio.{' '}
-        <Link
-          href={`/${locale}/cookies`}
-          style={{ color: 'rgba(255,255,255,0.9)', textDecoration: 'underline' }}
-        >
-          Más información
+      <p style={{ fontSize: 14, color: '#374151', margin: '0 0 16px', lineHeight: 1.6 }}>
+        Usamos cookies para mejorar tu experiencia.{' '}
+        <Link href={`/${locale}/cookies`} style={{ color: '#111827', fontWeight: 600 }}>
+          Más info
         </Link>
       </p>
-
-      <div style={{ display: 'flex', gap: 10, flexShrink: 0 }}>
+      <div style={{ display: 'flex', gap: 8 }}>
         <button
           onClick={reject}
           style={{
-            padding: '8px 18px',
+            flex: 1,
+            padding: '9px 0',
             borderRadius: 6,
-            border: '1px solid rgba(255,255,255,0.2)',
-            background: 'transparent',
-            color: 'rgba(255,255,255,0.7)',
+            border: '1px solid #E5E7EB',
+            background: '#FFFFFF',
+            color: '#6B7280',
             fontSize: 13,
             fontWeight: 500,
             cursor: 'pointer',
             fontFamily: 'inherit',
           }}
         >
-          Solo necesarias
+          Rechazar
         </button>
         <button
           onClick={accept}
           style={{
-            padding: '8px 18px',
+            flex: 1,
+            padding: '9px 0',
             borderRadius: 6,
             border: 'none',
-            background: '#FFFFFF',
-            color: '#111827',
+            background: '#111827',
+            color: '#FFFFFF',
             fontSize: 13,
             fontWeight: 700,
             cursor: 'pointer',
@@ -95,6 +85,7 @@ export function CookieConsent() {
           Aceptar
         </button>
       </div>
+      <style>{`@keyframes cookieSlide { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }`}</style>
     </div>
   );
 }
