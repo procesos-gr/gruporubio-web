@@ -6,7 +6,7 @@ import { routing } from "@/i18n/routing";
 import { Providers } from "@/components/providers";
 import { Toaster } from "@/components/ui/Toast";
 import { ChatWidget } from "@/components/chat/ChatWidget";
-import { GoogleAnalytics } from "@/components/analytics/GoogleAnalytics";
+import { GoogleTagManager } from "@/components/analytics/GoogleTagManager";
 import { CookieConsent } from "@/components/analytics/CookieConsent";
 import "../globals.css";
 
@@ -98,7 +98,7 @@ export default async function LocaleLayout({
             <Toaster />
             <ChatWidget />
             <CookieConsent />
-            <GoogleAnalytics />
+            <GoogleTagManager />
           </Providers>
         </NextIntlClientProvider>
       </body>
