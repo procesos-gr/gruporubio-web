@@ -39,6 +39,7 @@ type CartStore = {
 }
 
 const REGION_ID = process.env.NEXT_PUBLIC_MEDUSA_REGION_ID!
+const SALES_CHANNEL_ID = process.env.NEXT_PUBLIC_MEDUSA_SALES_CHANNEL_ID!
 
 function parseItems(cart: { items?: CartItem[] }): LineItem[] {
   if (!cart.items) return []
@@ -81,12 +82,12 @@ export const useCartStore = create<CartStore>()(
               itemCount: items.reduce((s, i) => s + i.quantity, 0),
             })
           } else {
-            const { cart } = await medusa.store.cart.create({ region_id: REGION_ID })
+            const { cart } = await medusa.store.cart.create({ region_id: REGION_ID, sales_channel_id: SALES_CHANNEL_ID })
             set({ cartId: cart.id, items: [], total: 0, itemCount: 0 })
           }
         } catch {
           try {
-            const { cart } = await medusa.store.cart.create({ region_id: REGION_ID })
+            const { cart } = await medusa.store.cart.create({ region_id: REGION_ID, sales_channel_id: SALES_CHANNEL_ID })
             set({ cartId: cart.id, items: [], total: 0, itemCount: 0 })
           } catch {
             // Medusa unavailable (dev without backend)
@@ -99,7 +100,7 @@ export const useCartStore = create<CartStore>()(
         try {
           let { cartId } = get()
           if (!cartId) {
-            const { cart: newCart } = await medusa.store.cart.create({ region_id: REGION_ID })
+            const { cart: newCart } = await medusa.store.cart.create({ region_id: REGION_ID, sales_channel_id: SALES_CHANNEL_ID })
             cartId = newCart.id
             set({ cartId })
           }
