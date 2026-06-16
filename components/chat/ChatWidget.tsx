@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect, useCallback, Fragment } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { MessageCircle, X, Send, Sparkles, ThumbsUp, ThumbsDown } from 'lucide-react';
+import { MessageCircle, X, Send } from 'lucide-react';
 import Link from 'next/link';
 
 interface ChatMessage {
@@ -19,7 +19,6 @@ const SUGGESTIONS = [
   'Tengo un problema de plagas',
 ];
 
-/** Renderiza texto del bot: [texto](/ruta) → links, **texto** → negrita, \n → <br> — sin HTML crudo */
 function BotText({ text }: { text: string }) {
   const parts = text.split(/(\[[^\]]+\]\([^)]+\)|\*\*[^*]+\*\*)/g);
   return (
@@ -40,10 +39,7 @@ function BotText({ text }: { text: string }) {
           );
         }
         const bold = part.match(/^\*\*([^*]+)\*\*$/);
-        if (bold) {
-          return <strong key={i}>{bold[1]}</strong>;
-        }
-        // saltos de línea
+        if (bold) return <strong key={i}>{bold[1]}</strong>;
         return part.split('\n').map((line, j, arr) => (
           <Fragment key={`${i}-${j}`}>
             {line}
@@ -55,7 +51,7 @@ function BotText({ text }: { text: string }) {
   );
 }
 
-const NUDGE_DELAY_MS = 8_000; // tiempo navegando antes de mostrar el popup
+const NUDGE_DELAY_MS = 8_000;
 const NUDGE_KEY = 'gr-chat-nudge-shown';
 
 export function ChatWidget() {
@@ -69,7 +65,6 @@ export function ChatWidget() {
   const inputRef = useRef<HTMLInputElement>(null);
   const abortRef = useRef<AbortController | null>(null);
 
-  // Popup "¿Necesitas ayuda?" tras un rato navegando — una vez por sesión
   useEffect(() => {
     if (sessionStorage.getItem(NUDGE_KEY)) return;
     const timer = setTimeout(() => {
@@ -79,7 +74,6 @@ export function ChatWidget() {
     return () => clearTimeout(timer);
   }, []);
 
-  // Al abrir el chat, el popup desaparece
   useEffect(() => {
     if (open) setNudge(false);
   }, [open]);
@@ -100,8 +94,6 @@ export function ChatWidget() {
       if (!content || loading) return;
 
       const userMsg: ChatMessage = { role: 'user', content };
-      // historial acotado: últimas 11 + nueva (la API admite máx. 12),
-      // sin mensajes vacíos (streams cortados) y con respuestas largas recortadas
       const history = [
         ...messages
           .filter(m => m.content.trim().length > 0)
@@ -134,7 +126,6 @@ export function ChatWidget() {
           return;
         }
 
-        // Streaming de texto plano
         setMessages(prev => [...prev, { role: 'assistant', content: '' }]);
         const reader = res.body!.getReader();
         const decoder = new TextDecoder();
@@ -151,7 +142,6 @@ export function ChatWidget() {
           });
         }
 
-        // El stream terminó sin texto (fallo del modelo a mitad de respuesta)
         if (!acc.trim()) {
           setMessages(prev => {
             const next = [...prev];
@@ -187,18 +177,18 @@ export function ChatWidget() {
 
   return (
     <>
-      {/* Popup nube "¿Necesitas ayuda?" */}
+      {/* Nudge popup */}
       <AnimatePresence>
         {nudge && !open && (
           <motion.div
             initial={{ opacity: 0, y: 8, scale: 0.96 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 8, scale: 0.96 }}
-            transition={{ duration: 0.25, ease: 'easeOut' }}
+            transition={{ duration: 0.22, ease: 'easeOut' }}
             style={{
-              position: 'fixed', bottom: 108, right: 24, maxWidth: 260,
-              background: '#ffffff', border: '1.5px solid #e5e7eb',
-              borderRadius: 6, boxShadow: '0 8px 28px rgba(0,0,0,0.14)',
+              position: 'fixed', bottom: 100, right: 24, maxWidth: 256,
+              background: '#ffffff', border: '1px solid #e2e8f0',
+              borderRadius: 12, boxShadow: '0 8px 32px rgba(0,0,0,0.16)',
               padding: '14px 16px', zIndex: 9990, cursor: 'pointer',
             }}
             onClick={() => setOpen(true)}
@@ -207,32 +197,32 @@ export function ChatWidget() {
               onClick={e => { e.stopPropagation(); setNudge(false); }}
               aria-label="Cerrar aviso"
               style={{
-                position: 'absolute', top: -9, right: -9,
+                position: 'absolute', top: -8, right: -8,
                 width: 20, height: 20, borderRadius: '50%',
-                background: '#1e3a8a', color: '#ffffff',
+                background: '#0f172a', color: '#ffffff',
                 border: 'none', cursor: 'pointer',
                 display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 0,
               }}
             >
-              <X size={11} />
+              <X size={10} />
             </button>
-            <p style={{ margin: 0, fontSize: 13, fontWeight: 700, color: '#111827', lineHeight: 1.4 }}>
+            <p style={{ margin: 0, fontSize: 13, fontWeight: 700, color: '#0f172a', lineHeight: 1.4 }}>
               ¿Necesitas ayuda con algo? 👋
             </p>
-            <p style={{ margin: '4px 0 0', fontSize: 12, color: '#6B7280', lineHeight: 1.45 }}>
+            <p style={{ margin: '4px 0 0', fontSize: 12, color: '#64748b', lineHeight: 1.45 }}>
               Pregúntame por servicios, alquiler de maquinaria o productos.
             </p>
             <div style={{
-              position: 'absolute', bottom: -7, right: 22,
+              position: 'absolute', bottom: -7, right: 20,
               width: 12, height: 12, background: '#ffffff',
-              borderRight: '1.5px solid #e5e7eb', borderBottom: '1.5px solid #e5e7eb',
+              borderRight: '1px solid #e2e8f0', borderBottom: '1px solid #e2e8f0',
               transform: 'rotate(45deg)',
             }} />
           </motion.div>
         )}
       </AnimatePresence>
 
-      {/* Botón flotante */}
+      {/* FAB — cuadrado redondeado */}
       <motion.button
         onClick={() => setOpen(o => !o)}
         whileHover={{ scale: 1.05 }}
@@ -240,18 +230,19 @@ export function ChatWidget() {
         aria-label={open ? 'Cerrar chat' : 'Abrir chat'}
         style={{
           position: 'fixed', bottom: 24, right: 24,
-          width: 68, height: 68, borderRadius: '50%',
-          background: '#1e3a8a',
-          color: '#ffffff', border: '2px solid rgba(255,255,255,0.18)', cursor: 'pointer',
+          width: 56, height: 56,
+          borderRadius: 16,
+          background: '#0f172a',
+          color: '#ffffff', border: 'none', cursor: 'pointer',
           display: 'flex', alignItems: 'center', justifyContent: 'center',
-          boxShadow: '0 4px 20px rgba(30,64,175,0.5)',
+          boxShadow: '0 4px 24px rgba(0,0,0,0.35)',
           zIndex: 9990,
         }}
       >
         <AnimatePresence mode="wait">
           {open
-            ? <motion.span key="x" initial={{ rotate: -90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: 90, opacity: 0 }} transition={{ duration: 0.15 }}><X size={26} /></motion.span>
-            : <motion.span key="msg" initial={{ rotate: 90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: -90, opacity: 0 }} transition={{ duration: 0.15 }}><MessageCircle size={26} /></motion.span>
+            ? <motion.span key="x" initial={{ rotate: -90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: 90, opacity: 0 }} transition={{ duration: 0.15 }}><X size={22} /></motion.span>
+            : <motion.span key="msg" initial={{ rotate: 90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: -90, opacity: 0 }} transition={{ duration: 0.15 }}><MessageCircle size={22} /></motion.span>
           }
         </AnimatePresence>
       </motion.button>
@@ -260,48 +251,47 @@ export function ChatWidget() {
       <AnimatePresence>
         {open && (
           <motion.div
-            initial={{ opacity: 0, y: 20, scale: 0.97 }}
+            initial={{ opacity: 0, y: 16, scale: 0.97 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 20, scale: 0.97 }}
+            exit={{ opacity: 0, y: 16, scale: 0.97 }}
             transition={{ duration: 0.2, ease: 'easeOut' }}
             style={{
-              position: 'fixed', bottom: 104, right: 24,
-              width: 'min(390px, calc(100vw - 32px))',
-              height: 'min(570px, calc(100vh - 130px))',
-              background: '#ffffff', borderRadius: 8,
-              border: '1px solid #e5e7eb',
-              boxShadow: '0 16px 48px rgba(0,0,0,0.18)',
+              position: 'fixed', bottom: 92, right: 24,
+              width: 'min(380px, calc(100vw - 32px))',
+              height: 'min(560px, calc(100vh - 120px))',
+              background: '#ffffff',
+              borderRadius: 16,
+              boxShadow: '0 8px 48px rgba(0,0,0,0.2)',
               display: 'flex', flexDirection: 'column',
               overflow: 'hidden', zIndex: 9991,
             }}
           >
-            {/* Header color sólido */}
+            {/* Header oscuro */}
             <div style={{
-              background: '#1e3a8a',
-              padding: '18px 20px',
-              display: 'flex', alignItems: 'center', gap: 14,
+              background: '#0f172a',
+              padding: '16px 18px',
+              display: 'flex', alignItems: 'center', gap: 12,
               flexShrink: 0,
             }}>
-              {/* Avatar Ignacio */}
               <div style={{ position: 'relative', flexShrink: 0 }}>
                 <div style={{
-                  width: 44, height: 44, borderRadius: '50%',
-                  background: 'rgba(255,255,255,0.15)',
-                  border: '2px solid rgba(255,255,255,0.35)',
+                  width: 40, height: 40, borderRadius: '50%',
+                  background: 'rgba(255,255,255,0.1)',
+                  border: '1.5px solid rgba(255,255,255,0.2)',
                   display: 'flex', alignItems: 'center', justifyContent: 'center',
                 }}>
-                  <span style={{ fontSize: 17, fontWeight: 800, color: '#ffffff', letterSpacing: '-0.5px' }}>I</span>
+                  <span style={{ fontSize: 16, fontWeight: 800, color: '#ffffff' }}>I</span>
                 </div>
                 <span style={{
-                  position: 'absolute', bottom: 1, right: 1,
-                  width: 11, height: 11, borderRadius: '50%',
-                  background: '#22c55e', border: '2px solid #1e3a8a',
+                  position: 'absolute', bottom: 0, right: 0,
+                  width: 10, height: 10, borderRadius: '50%',
+                  background: '#22c55e', border: '2px solid #0f172a',
                 }} />
               </div>
 
               <div style={{ minWidth: 0, flex: 1 }}>
                 <p style={{ margin: 0, fontSize: 15, fontWeight: 700, color: '#ffffff', letterSpacing: '-0.3px' }}>Ignacio</p>
-                <p style={{ margin: '2px 0 0', fontSize: 11.5, color: 'rgba(255,255,255,0.65)' }}>
+                <p style={{ margin: '2px 0 0', fontSize: 11, color: 'rgba(255,255,255,0.55)' }}>
                   Asistente de Grupo Rubio · En línea
                 </p>
               </div>
@@ -310,26 +300,25 @@ export function ChatWidget() {
                 onClick={() => setOpen(false)}
                 aria-label="Cerrar chat"
                 style={{
-                  background: 'rgba(255,255,255,0.12)', border: 'none',
-                  borderRadius: 6, width: 32, height: 32,
+                  background: 'rgba(255,255,255,0.1)', border: 'none',
+                  borderRadius: 8, width: 30, height: 30,
                   display: 'flex', alignItems: 'center', justifyContent: 'center',
                   cursor: 'pointer', color: '#ffffff', flexShrink: 0,
                 }}
               >
-                <X size={16} />
+                <X size={15} />
               </button>
             </div>
 
             {/* Mensajes */}
-            <div ref={scrollRef} style={{ flex: 1, overflowY: 'auto', padding: '16px 14px 8px', background: '#F8FAFC' }}>
+            <div ref={scrollRef} style={{ flex: 1, overflowY: 'auto', padding: '16px 14px 8px', background: '#f8fafc' }}>
               <Bubble role="assistant">
                 <BotText text={GREETING} />
               </Bubble>
 
-              {/* Sugerencias — chips horizontales con scroll */}
               {messages.length === 0 && (
                 <div style={{
-                  display: 'flex', gap: 7, marginTop: 10, marginBottom: 4,
+                  display: 'flex', gap: 6, marginTop: 10, marginBottom: 4,
                   overflowX: 'auto', paddingBottom: 4,
                   scrollbarWidth: 'none',
                 }}>
@@ -338,14 +327,14 @@ export function ChatWidget() {
                       key={s}
                       onClick={() => send(s)}
                       style={{
-                        fontSize: 12, fontWeight: 600, color: '#1e3a8a',
-                        background: '#EFF6FF', border: '1.5px solid #BFDBFE',
-                        borderRadius: 6, padding: '7px 13px',
+                        fontSize: 11.5, fontWeight: 600, color: '#1e3a8a',
+                        background: '#f0f4ff', border: '1.5px solid #c7d7fd',
+                        borderRadius: 99, padding: '6px 12px',
                         cursor: 'pointer', whiteSpace: 'nowrap', flexShrink: 0,
                         transition: 'background 0.15s',
                       }}
-                      onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = '#DBEAFE'; }}
-                      onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = '#EFF6FF'; }}
+                      onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = '#dbeafe'; }}
+                      onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = '#f0f4ff'; }}
                     >
                       {s}
                     </button>
@@ -386,7 +375,7 @@ export function ChatWidget() {
             <form
               onSubmit={e => { e.preventDefault(); send(input); }}
               style={{
-                display: 'flex', gap: 8, padding: '12px 12px 14px',
+                display: 'flex', gap: 8, padding: '10px 12px 12px',
                 borderTop: '1px solid #f1f5f9',
                 background: '#ffffff',
               }}
@@ -400,28 +389,28 @@ export function ChatWidget() {
                 placeholder="Escribe tu consulta..."
                 style={{
                   flex: 1, minWidth: 0,
-                  border: '1.5px solid #e5e7eb', borderRadius: 6,
-                  padding: '10px 14px', fontSize: 13,
-                  outline: 'none', color: '#111827',
-                  background: '#F8FAFC',
+                  border: '1.5px solid #e2e8f0', borderRadius: 12,
+                  padding: '9px 14px', fontSize: 13,
+                  outline: 'none', color: '#0f172a',
+                  background: '#f8fafc',
                 }}
-                className="placeholder:text-[#9CA3AF] focus:border-[#1e3a8a] focus:bg-white"
+                className="placeholder:text-[#94a3b8] focus:border-[#0f172a] focus:bg-white"
               />
               <button
                 type="submit"
                 disabled={loading || !input.trim()}
                 aria-label="Enviar"
                 style={{
-                  width: 42, height: 42, borderRadius: 6, flexShrink: 0,
-                  background: loading || !input.trim() ? '#e5e7eb' : '#1e3a8a',
-                  color: loading || !input.trim() ? '#9CA3AF' : '#ffffff',
+                  width: 40, height: 40, borderRadius: 10, flexShrink: 0,
+                  background: loading || !input.trim() ? '#e2e8f0' : '#1e3a8a',
+                  color: loading || !input.trim() ? '#94a3b8' : '#ffffff',
                   border: 'none',
                   cursor: loading || !input.trim() ? 'default' : 'pointer',
                   display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  transition: 'all 0.15s',
+                  transition: 'background 0.15s',
                 }}
               >
-                <Send size={16} />
+                <Send size={15} />
               </button>
             </form>
           </motion.div>
@@ -431,7 +420,6 @@ export function ChatWidget() {
   );
 }
 
-/** Tres puntitos animados estilo "está escribiendo" */
 function TypingDots() {
   return (
     <span style={{ display: 'inline-flex', gap: 4, alignItems: 'center', height: 16 }}>
@@ -440,19 +428,18 @@ function TypingDots() {
           key={i}
           animate={{ opacity: [0.25, 1, 0.25], y: [0, -3, 0] }}
           transition={{ duration: 1, repeat: Infinity, delay: i * 0.18, ease: 'easeInOut' }}
-          style={{ width: 6, height: 6, borderRadius: '50%', background: '#9CA3AF', display: 'inline-block' }}
+          style={{ width: 5, height: 5, borderRadius: '50%', background: '#94a3b8', display: 'inline-block' }}
         />
       ))}
     </span>
   );
 }
 
-/** Botones ¿Te ha servido la respuesta? — feedback discreto bajo cada mensaje del bot */
 function FeedbackButtons({ rating, onRate }: { rating?: 'up' | 'down'; onRate: (r: 'up' | 'down') => void }) {
   if (rating) {
     return (
       <div style={{ display: 'flex', justifyContent: 'flex-start', marginTop: -4, marginBottom: 10, paddingLeft: 4 }}>
-        <span style={{ fontSize: 11, color: '#9CA3AF' }}>
+        <span style={{ fontSize: 11, color: '#94a3b8' }}>
           {rating === 'up' ? 'Gracias por tu valoración 🙂' : 'Gracias, lo tendremos en cuenta'}
         </span>
       </div>
@@ -463,20 +450,20 @@ function FeedbackButtons({ rating, onRate }: { rating?: 'up' | 'down'; onRate: (
       <button
         onClick={() => onRate('up')}
         aria-label="Respuesta útil"
-        style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 4, color: '#9CA3AF', display: 'flex' }}
+        style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 4, color: '#cbd5e1', display: 'flex' }}
         onMouseEnter={e => (e.currentTarget.style.color = '#16a34a')}
-        onMouseLeave={e => (e.currentTarget.style.color = '#9CA3AF')}
+        onMouseLeave={e => (e.currentTarget.style.color = '#cbd5e1')}
       >
-        <ThumbsUp size={13} />
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3H14z"/><path d="M7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/></svg>
       </button>
       <button
         onClick={() => onRate('down')}
         aria-label="Respuesta no útil"
-        style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 4, color: '#9CA3AF', display: 'flex' }}
-        onMouseEnter={e => (e.currentTarget.style.color = '#DC2626')}
-        onMouseLeave={e => (e.currentTarget.style.color = '#9CA3AF')}
+        style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 4, color: '#cbd5e1', display: 'flex' }}
+        onMouseEnter={e => (e.currentTarget.style.color = '#dc2626')}
+        onMouseLeave={e => (e.currentTarget.style.color = '#cbd5e1')}
       >
-        <ThumbsDown size={13} />
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M10 15v4a3 3 0 0 0 3 3l4-9V2H5.72a2 2 0 0 0-2 1.7l-1.38 9a2 2 0 0 0 2 2.3H10z"/><path d="M17 2h2.67A2.31 2.31 0 0 1 22 4v7a2.31 2.31 0 0 1-2.33 2H17"/></svg>
       </button>
     </div>
   );
@@ -486,27 +473,26 @@ function Bubble({ role, children }: { role: 'user' | 'assistant'; children: Reac
   const isUser = role === 'user';
   return (
     <div style={{ display: 'flex', justifyContent: isUser ? 'flex-end' : 'flex-start', alignItems: 'flex-end', gap: 8, marginBottom: 8 }}>
-      {/* Micro-avatar Ignacio solo en mensajes del bot */}
       {!isUser && (
         <div style={{
-          width: 26, height: 26, borderRadius: '50%', flexShrink: 0,
-          background: '#1e3a8a',
+          width: 24, height: 24, borderRadius: 8, flexShrink: 0,
+          background: '#0f172a',
           display: 'flex', alignItems: 'center', justifyContent: 'center',
         }}>
-          <span style={{ fontSize: 11, fontWeight: 800, color: '#ffffff' }}>I</span>
+          <span style={{ fontSize: 10, fontWeight: 800, color: '#ffffff' }}>I</span>
         </div>
       )}
       <div
         style={{
           maxWidth: '78%',
-          padding: '10px 14px',
-          borderRadius: isUser ? '8px 8px 2px 8px' : '8px 8px 8px 2px',
+          padding: '9px 13px',
+          borderRadius: isUser ? '14px 14px 4px 14px' : '4px 14px 14px 14px',
           fontSize: 13,
           lineHeight: 1.55,
           background: isUser ? '#1e3a8a' : '#ffffff',
-          color: isUser ? '#ffffff' : '#111827',
-          border: isUser ? 'none' : '1px solid #e9edf2',
-          boxShadow: isUser ? 'none' : '0 1px 4px rgba(0,0,0,0.06)',
+          color: isUser ? '#ffffff' : '#0f172a',
+          border: isUser ? 'none' : '1px solid #e2e8f0',
+          boxShadow: isUser ? 'none' : '0 1px 4px rgba(0,0,0,0.05)',
           wordBreak: 'break-word',
         }}
       >
