@@ -17,9 +17,11 @@ export default function PrivacidadPage() {
         <section style={{ marginBottom: 32 }}>
           <h2 style={{ fontSize: 18, fontWeight: 600, marginBottom: 12 }}>1. Responsable del tratamiento</h2>
           <ul style={{ paddingLeft: 20, lineHeight: 1.8 }}>
-            <li><strong>Identidad:</strong> Grupo Rubio</li>
-            <li><strong>Domicilio:</strong> Tudela, Navarra, España</li>
-            <li><strong>CIF:</strong> [pendiente confirmar]</li>
+            <li><strong>Identidad:</strong> Grupo Rubio Servicios Higiénicos Integrales S.L.</li>
+            <li><strong>Nombre comercial:</strong> Grupo Rubio</li>
+            <li><strong>CIF:</strong> B31784051</li>
+            <li><strong>Registro Mercantil:</strong> Navarra, Tomo 975, Folio 124, Sección 8, Hoja 19661</li>
+            <li><strong>Domicilio:</strong> Glorieta Merindad de Ultrapuertos 1, 31500, Tudela, Navarra</li>
             <li><strong>Teléfono:</strong> 948 82 50 25</li>
             <li><strong>Correo electrónico:</strong> administracion@gruporubio.net</li>
           </ul>

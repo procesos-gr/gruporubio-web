@@ -18,12 +18,15 @@ export default function AvisoLegalPage() {
           <h2 style={{ fontSize: 18, fontWeight: 600, marginBottom: 12 }}>1. Datos identificativos</h2>
           <p>En cumplimiento de la Ley 34/2002, de 11 de julio, de Servicios de la Sociedad de la Información y de Comercio Electrónico (LSSICE), se informa:</p>
           <ul style={{ marginTop: 12, paddingLeft: 20, lineHeight: 1.8 }}>
-            <li><strong>Razón social:</strong> Grupo Rubio</li>
-            <li><strong>Domicilio social:</strong> Tudela, Navarra, España</li>
-            <li><strong>CIF:</strong> [pendiente confirmar]</li>
+            <li><strong>Denominación social:</strong> Grupo Rubio Servicios Higiénicos Integrales S.L.</li>
+            <li><strong>Nombre comercial:</strong> Grupo Rubio</li>
+            <li><strong>CIF:</strong> B31784051</li>
+            <li><strong>Registro Mercantil:</strong> Navarra, Tomo 975, Folio 124, Sección 8, Hoja 19661</li>
+            <li><strong>Domicilio social:</strong> Glorieta Merindad de Ultrapuertos 1, 31500, Tudela, Navarra</li>
             <li><strong>Teléfono:</strong> 948 82 50 25</li>
             <li><strong>Correo electrónico:</strong> administracion@gruporubio.net</li>
             <li><strong>Sitio web:</strong> gruporubio.es</li>
+            <li><strong>Actividad:</strong> Servicios de limpieza profesional, control de plagas e higiene ambiental</li>
           </ul>
         </section>
 
