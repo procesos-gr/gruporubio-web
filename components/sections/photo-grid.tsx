@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import { useEffect, useId, useRef, useState } from 'react';
 import { motion, useInView, animate } from 'framer-motion';
@@ -11,11 +11,11 @@ const CARD_RADIUS = 12;
 
 const RATING = 4.1;
 
-/* Centered overlay label + arrow — appears on hover */
+/* Centered overlay label + arrow â€” appears on hover */
 function CardOverlay({ title, large = false }: { title: string; large?: boolean }) {
   return (
     <>
-      {/* Dark overlay — lightens at rest, darkens on hover */}
+      {/* Dark overlay â€” lightens at rest, darkens on hover */}
       <div
         className="absolute inset-0 transition-colors duration-400 ease-out"
         style={{ background: 'rgba(0,0,0,0.28)' }}
@@ -45,7 +45,7 @@ function CardOverlay({ title, large = false }: { title: string; large?: boolean 
           {title}
         </div>
 
-        {/* Arrow circle — slides up on hover */}
+        {/* Arrow circle â€” slides up on hover */}
         <div
           className="flex items-center justify-center w-9 h-9 rounded-full transition-all duration-300 ease-out opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0"
           style={{
@@ -75,7 +75,7 @@ function GoogleG({ size = 22 }: { size?: number }) {
   );
 }
 
-/* Estrella individual — se rellena animada al entrar en viewport */
+/* Estrella individual â€” se rellena animada al entrar en viewport */
 function AnimatedStar({ fillRatio, delay, play, size = 19 }: { fillRatio: number; delay: number; play: boolean; size?: number }) {
   const uid = useId();
   const clipId = `star-clip-${uid.replace(/:/g, '')}`;
@@ -170,7 +170,7 @@ function ReviewsWidget() {
         </div>
       </div>
 
-      {/* Arrow — siempre visible, se realza al hover */}
+      {/* Arrow â€” siempre visible, se realza al hover */}
       <div
         className="transition-all duration-300 ease-out group-hover:bg-[#EAEDF2] group-hover:translate-x-0.5"
         style={{
@@ -213,7 +213,7 @@ export function PhotoGrid() {
           .pg-reviews  { grid-column: 1 / 3; grid-row: 3; }
         }
       `}</style>
-      {/* Limpieza — col 1, full height */}
+      {/* Limpieza â€” col 1, full height */}
       <Link href="/servicios#limpieza" style={{ display: 'contents' }}>
         <div
           className="group cursor-pointer pg-limpieza"
@@ -232,7 +232,7 @@ export function PhotoGrid() {
         </div>
       </Link>
 
-      {/* Control de Plagas — col 2, row 1 */}
+      {/* Control de Plagas â€” col 2, row 1 */}
       <Link href="/servicios#plagas" style={{ display: 'contents' }}>
         <div
           className="group cursor-pointer pg-plagas"
@@ -251,19 +251,19 @@ export function PhotoGrid() {
         </div>
       </Link>
 
-      {/* Reviews widget — col 2, row 2 */}
+      {/* Reviews widget â€” col 2, row 2 */}
       <div className="pg-reviews">
         <ReviewsWidget />
       </div>
 
-      {/* Tienda — col 3, full height */}
+      {/* Tienda â€” col 3, full height */}
       <Link href="/tienda" style={{ display: 'contents' }}>
         <div
           className="group cursor-pointer pg-tienda"
           style={{ position: 'relative', borderRadius: CARD_RADIUS, overflow: 'hidden' }}
         >
           <Image
-            src="/images/home/tienda.jpg"
+            src="/images/home/tienda-v2.webp"
             alt="Nuestra tienda de productos de higiene y limpieza"
             fill
             priority

@@ -43,6 +43,18 @@ export function CookieConsent() {
       boxShadow: '0 4px 24px rgba(0,0,0,0.10)',
       animation: 'cookieSlide 0.3s ease',
     }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 12 }}>
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ flexShrink: 0 }}>
+          <circle cx="12" cy="12" r="10" fill="#FEF3C7" stroke="#D97706" strokeWidth="1.5"/>
+          <circle cx="8.5" cy="9" r="1.2" fill="#92400E"/>
+          <circle cx="14" cy="7.5" r="0.9" fill="#92400E"/>
+          <circle cx="15.5" cy="13" r="1.2" fill="#92400E"/>
+          <circle cx="10" cy="14.5" r="0.9" fill="#92400E"/>
+          <circle cx="12" cy="10.5" r="0.7" fill="#92400E"/>
+          <path d="M9 17.5 Q10.5 16 12 17.5" stroke="#92400E" strokeWidth="1" strokeLinecap="round" fill="none"/>
+        </svg>
+        <span style={{ fontSize: 13, fontWeight: 700, color: '#111827' }}>Cookies</span>
+      </div>
       <p style={{ fontSize: 14, color: '#374151', margin: '0 0 16px', lineHeight: 1.6 }}>
         Usamos cookies para mejorar tu experiencia.{' '}
         <Link href={`/${locale}/cookies`} style={{ color: '#111827', fontWeight: 600 }}>

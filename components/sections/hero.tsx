@@ -170,7 +170,7 @@ export function Hero() {
   return (
     <section style={{ padding: '120px 24px 110px', position: 'relative', borderRadius: 16 }}>
       <div style={{ position: 'absolute', inset: 0, borderRadius: 16, overflow: 'hidden', zIndex: 0 }}>
-        <Image src="/images/hero/hero-banner-v3.png" alt="" fill priority quality={85} className="object-cover object-center" />
+        <Image src="/images/hero/hero-banner-v4.webp" alt="" fill priority quality={85} className="object-cover object-center" />
         <div style={{
           position: 'absolute', inset: 0,
           background: 'linear-gradient(to bottom, rgba(255,255,255,0.32) 0%, rgba(255,255,255,0.18) 60%, rgba(255,255,255,0.06) 100%)',

@@ -65,7 +65,7 @@ const DIVISIONS = [
     tag: "02",
     desc: "Desratización, desinsectación y desinfección certificada. Especialistas en termitas, legionela, aves y procesionaria. Homologados por el Gobierno de Navarra.",
     href: "/servicios#plagas",
-    img: "/images/home/ddd.jpg",
+    img: "/images/home/ddd-v2.webp",
   },
   {
     id: "xanael",
