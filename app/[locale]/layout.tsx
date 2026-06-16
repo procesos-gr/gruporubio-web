@@ -6,6 +6,8 @@ import { routing } from "@/i18n/routing";
 import { Providers } from "@/components/providers";
 import { Toaster } from "@/components/ui/Toast";
 import { ChatWidget } from "@/components/chat/ChatWidget";
+import { GoogleAnalytics } from "@/components/analytics/GoogleAnalytics";
+import { CookieConsent } from "@/components/analytics/CookieConsent";
 import "../globals.css";
 
 const localBusinessSchema = {
@@ -95,6 +97,8 @@ export default async function LocaleLayout({
             </main>
             <Toaster />
             <ChatWidget />
+            <CookieConsent />
+            <GoogleAnalytics />
           </Providers>
         </NextIntlClientProvider>
       </body>

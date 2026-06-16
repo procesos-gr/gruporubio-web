@@ -51,12 +51,24 @@ export default function CookiesPage() {
                   <td style={{ padding: "10px 12px", border: "1px solid #E5E7EB" }}>Idioma preferido del usuario</td>
                   <td style={{ padding: "10px 12px", border: "1px solid #E5E7EB" }}>1 año</td>
                 </tr>
+                <tr style={{ background: "#F9FAFB" }}>
+                  <td style={{ padding: "10px 12px", border: "1px solid #E5E7EB" }}>gr_cookie_consent</td>
+                  <td style={{ padding: "10px 12px", border: "1px solid #E5E7EB" }}>Preferencia</td>
+                  <td style={{ padding: "10px 12px", border: "1px solid #E5E7EB" }}>Recuerda tu elección sobre cookies analíticas</td>
+                  <td style={{ padding: "10px 12px", border: "1px solid #E5E7EB" }}>Permanente</td>
+                </tr>
+                <tr>
+                  <td style={{ padding: "10px 12px", border: "1px solid #E5E7EB" }}>_ga, _ga_*</td>
+                  <td style={{ padding: "10px 12px", border: "1px solid #E5E7EB" }}>Analítica (opcional)</td>
+                  <td style={{ padding: "10px 12px", border: "1px solid #E5E7EB" }}>Google Analytics 4 — estadísticas de visitas anónimas (solo si aceptas)</td>
+                  <td style={{ padding: "10px 12px", border: "1px solid #E5E7EB" }}>2 años</td>
+                </tr>
               </tbody>
             </table>
           </div>
 
           <p style={{ marginTop: 16, color: "#6B7280", fontSize: 14 }}>
-            Actualmente no utilizamos cookies de análisis (Google Analytics) ni de publicidad. Si en el futuro se incorporan, se actualizará esta política y se solicitará tu consentimiento.
+            Las cookies analíticas (Google Analytics) solo se activan si las aceptas explícitamente en el banner de consentimiento. Puedes cambiar tu elección en cualquier momento borrando las cookies del navegador.
           </p>
         </section>
 
