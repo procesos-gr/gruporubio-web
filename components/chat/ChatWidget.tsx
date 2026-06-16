@@ -318,19 +318,18 @@ export function ChatWidget() {
 
               {messages.length === 0 && (
                 <div style={{
-                  display: 'flex', gap: 6, marginTop: 10, marginBottom: 4,
-                  overflowX: 'auto', paddingBottom: 4,
-                  scrollbarWidth: 'none',
+                  display: 'flex', flexDirection: 'column', gap: 6,
+                  marginTop: 10, marginBottom: 4,
                 }}>
                   {SUGGESTIONS.map(s => (
                     <button
                       key={s}
                       onClick={() => send(s)}
                       style={{
-                        fontSize: 11.5, fontWeight: 600, color: '#1e3a8a',
+                        fontSize: 12, fontWeight: 600, color: '#1e3a8a',
                         background: '#f0f4ff', border: '1.5px solid #c7d7fd',
-                        borderRadius: 99, padding: '6px 12px',
-                        cursor: 'pointer', whiteSpace: 'nowrap', flexShrink: 0,
+                        borderRadius: 10, padding: '9px 14px',
+                        cursor: 'pointer', textAlign: 'left',
                         transition: 'background 0.15s',
                       }}
                       onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = '#dbeafe'; }}
