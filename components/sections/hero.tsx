@@ -152,7 +152,6 @@ export function Hero() {
 
   function handleClear() {
     setQuery('');
-    setResults([]);
     setOpen(false);
     setActiveIndex(-1);
     inputRef.current?.focus();
