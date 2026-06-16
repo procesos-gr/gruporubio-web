@@ -67,12 +67,18 @@ export function ChatWidget() {
 
   useEffect(() => {
     if (sessionStorage.getItem(NUDGE_KEY)) return;
-    const timer = setTimeout(() => {
+    const show = setTimeout(() => {
       sessionStorage.setItem(NUDGE_KEY, '1');
       setNudge(true);
     }, NUDGE_DELAY_MS);
-    return () => clearTimeout(timer);
+    return () => clearTimeout(show);
   }, []);
+
+  useEffect(() => {
+    if (!nudge) return;
+    const hide = setTimeout(() => setNudge(false), 7_000);
+    return () => clearTimeout(hide);
+  }, [nudge]);
 
   useEffect(() => {
     if (open) setNudge(false);
