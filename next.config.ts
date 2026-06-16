@@ -4,7 +4,6 @@ import createNextIntlPlugin from "next-intl/plugin";
 const withNextIntl = createNextIntlPlugin("./i18n/request.ts");
 
 const nextConfig: NextConfig = {
-  output: 'standalone',
   reactCompiler: true,
   images: {
     qualities: [75, 85, 86, 88, 90],
