@@ -101,19 +101,13 @@ export default function CuentaPage() {
     <div style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", background: "#F9FAFB", minHeight: "100vh" }}>
       <Navbar />
 
-      {/* Header band */}
-      <div style={{ background: "#111827", padding: "80px 32px 40px" }}>
-        <div style={{ maxWidth: 800, margin: "0 auto" }}>
-          <h1 style={{ fontSize: "clamp(24px, 3vw, 38px)", fontWeight: 800, color: "#F9FAFB", letterSpacing: "-1.5px", margin: 0 }}>
-            Mi cuenta
-          </h1>
-        </div>
-      </div>
-
-      <div style={{ maxWidth: 800, margin: "0 auto", padding: "48px 24px 80px" }}>
+      <div style={{ maxWidth: 800, margin: "0 auto", padding: "120px 24px 80px" }}>
+        <h1 style={{ fontSize: "clamp(24px, 3vw, 38px)", fontWeight: 800, color: "#111827", letterSpacing: "-1.5px", marginBottom: 40 }}>
+          Mi cuenta
+        </h1>
         {!isLoggedIn ? (
           /* ── LOGIN ── */
-          <div style={{ maxWidth: 400, margin: "0 auto", paddingTop: 24 }}>
+          <div style={{ maxWidth: 400 }}>
             <p style={{ fontSize: 15, color: "#6B7280", marginBottom: 32, lineHeight: 1.6 }}>
               Accede para consultar tus pedidos y datos de envío.
             </p>
