@@ -28,6 +28,12 @@ export default function CheckoutPage() {
     }
     if (!cartId) return
 
+    // Pedido gratuito — sin Stripe
+    if (total === 0) {
+      setClientSecret("free")
+      return
+    }
+
     fetch("/api/stripe/payment-intent", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -101,12 +107,16 @@ export default function CheckoutPage() {
             >
               <div className="grid grid-cols-1 lg:grid-cols-[1fr_400px] gap-12">
                 {/* Form */}
-                <Elements
-                  stripe={stripePromise}
-                  options={{ clientSecret, appearance: { theme: "stripe" } }}
-                >
-                  <CheckoutForm locale={locale} labels={labels} />
-                </Elements>
+                {clientSecret === "free" ? (
+                  <CheckoutForm locale={locale} labels={labels} isFree />
+                ) : (
+                  <Elements
+                    stripe={stripePromise}
+                    options={{ clientSecret, appearance: { theme: "stripe" } }}
+                  >
+                    <CheckoutForm locale={locale} labels={labels} />
+                  </Elements>
+                )}
 
                 {/* Order summary */}
                 <div>
