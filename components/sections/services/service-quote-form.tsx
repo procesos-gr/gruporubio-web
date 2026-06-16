@@ -60,6 +60,7 @@ export function ServiceQuoteForm({ serviceTitle }: Props) {
   const [form, setForm] = useState({ name: '', email: '', phone: '', message: '' });
   const [toast, setToast] = useState<{ type: ToastType; message: string } | null>(null);
   const [loading, setLoading] = useState(false);
+  const [sent, setSent] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -72,8 +73,7 @@ export function ServiceQuoteForm({ serviceTitle }: Props) {
     setLoading(true);
     try {
       await new Promise((r) => setTimeout(r, 900));
-      setForm({ name: '', email: '', phone: '', message: '' });
-      setToast({ type: 'success', message: 'Nos pondremos en contacto en menos de 24 horas hábiles.' });
+      setSent(true);
     } catch {
       setToast({ type: 'error', message: 'No se pudo enviar la solicitud. Inténtalo de nuevo.' });
     } finally {
@@ -86,6 +86,23 @@ export function ServiceQuoteForm({ serviceTitle }: Props) {
     border: '1px solid #D1D5DB', fontSize: 14, color: '#111827',
     outline: 'none', boxSizing: 'border-box', background: '#FFFFFF',
   };
+
+  if (sent) {
+    return (
+      <div style={{ textAlign: 'center', padding: '32px 16px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 16 }}>
+        <div style={{ width: 52, height: 52, borderRadius: '50%', background: '#F0FDF4', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="#16a34a" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+        </div>
+        <div>
+          <p style={{ fontSize: 16, fontWeight: 700, color: '#111827', margin: '0 0 6px' }}>Solicitud enviada</p>
+          <p style={{ fontSize: 14, color: '#6B7280', margin: 0, lineHeight: 1.5 }}>Nos pondremos en contacto contigo en menos de 24 horas hábiles.</p>
+        </div>
+        <button onClick={() => { setForm({ name: '', email: '', phone: '', message: '' }); setSent(false); }} style={{ fontSize: 13, color: '#6B7280', background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline' }}>
+          Enviar otra solicitud
+        </button>
+      </div>
+    );
+  }
 
   return (
     <>

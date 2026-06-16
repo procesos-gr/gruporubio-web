@@ -152,7 +152,6 @@ export function ContactSection() {
         throw new Error(data?.error ?? 'No se pudo enviar el mensaje. Inténtalo de nuevo.');
       }
       setSent(true);
-      setToast({ type: 'success', message: 'Te contactamos en menos de 24 horas hábiles.' });
     } catch (err) {
       setToast({
         type: 'error',
