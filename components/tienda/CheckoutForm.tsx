@@ -8,7 +8,6 @@ import { useCartStore } from "@/lib/store/cart"
 
 type Props = {
   locale: string
-  isFree?: boolean
   labels: {
     name: string
     email: string
@@ -21,7 +20,7 @@ type Props = {
   }
 }
 
-export function CheckoutForm({ labels, locale, isFree = false }: Props) {
+export function CheckoutForm({ labels, locale }: Props) {
   const stripe = useStripe()
   const elements = useElements()
   const router = useRouter()
@@ -62,17 +61,6 @@ export function CheckoutForm({ labels, locale, isFree = false }: Props) {
     fontWeight: 700,
     color: "#111827",
     marginBottom: 16,
-  }
-
-  const handleFreeSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setIsProcessing(true)
-    setErrorMessage(null)
-    // Pedido gratuito — completar sin pasarela de pago
-    await new Promise(r => setTimeout(r, 600))
-    clearCart()
-    router.push(`/${locale}/tienda/confirmacion`)
-    setIsProcessing(false)
   }
 
   const handleStripeSubmit = async (e: React.FormEvent) => {
@@ -155,7 +143,7 @@ export function CheckoutForm({ labels, locale, isFree = false }: Props) {
   })
 
   return (
-    <form onSubmit={isFree ? handleFreeSubmit : paymentMethod === "stripe" ? handleStripeSubmit : (e) => e.preventDefault()} style={{ display: "flex", flexDirection: "column", gap: 28 }}>
+    <form onSubmit={paymentMethod === "stripe" ? handleStripeSubmit : (e) => e.preventDefault()} style={{ display: "flex", flexDirection: "column", gap: 28 }}>
       {/* Contact */}
       <div>
         <p style={sectionTitle}>Información de contacto</p>
@@ -219,15 +207,8 @@ export function CheckoutForm({ labels, locale, isFree = false }: Props) {
         </div>
       </div>
 
-      {/* Pedido gratuito */}
-      {isFree && (
-        <div style={{ padding: "16px 20px", borderRadius: 8, background: "#F0FDF4", border: "1px solid #BBF7D0", fontSize: 14, color: "#16a34a", fontWeight: 500 }}>
-          Este pedido es gratuito — no se requiere pago.
-        </div>
-      )}
-
       {/* Payment method selector */}
-      {!isFree && <div>
+      <div>
         <p style={sectionTitle}>Pago</p>
 
         {/* Selector */}
@@ -273,7 +254,7 @@ export function CheckoutForm({ labels, locale, isFree = false }: Props) {
             />
           </div>
         )}
-      </div>}
+      </div>
 
       {errorMessage && (
         <div style={{
@@ -288,20 +269,20 @@ export function CheckoutForm({ labels, locale, isFree = false }: Props) {
         </div>
       )}
 
-      {/* Submit */}
-      {(isFree || paymentMethod === "stripe") && (
+      {/* Submit — solo visible con Stripe */}
+      {paymentMethod === "stripe" && (
         <button
           type="submit"
-          disabled={(!isFree && !stripe) || isProcessing}
+          disabled={!stripe || isProcessing}
           style={{
             padding: "15px 24px", borderRadius: 8, border: "none",
-            background: ((!isFree && !stripe) || isProcessing) ? "#D1D5DB" : "#111827",
+            background: !stripe || isProcessing ? "#D1D5DB" : "#111827",
             color: "#FFFFFF", fontSize: 15, fontWeight: 700,
-            cursor: ((!isFree && !stripe) || isProcessing) ? "not-allowed" : "pointer",
+            cursor: !stripe || isProcessing ? "not-allowed" : "pointer",
             fontFamily: "inherit", transition: "background 0.15s",
           }}
         >
-          {isProcessing ? labels.processing : isFree ? "Confirmar pedido" : labels.pay}
+          {isProcessing ? labels.processing : labels.pay}
         </button>
       )}
     </form>

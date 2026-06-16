@@ -12,6 +12,54 @@ import Footer from "@/components/sections/Footer"
 import { useTranslations } from "next-intl"
 import Link from "next/link"
 
+function FreeCheckoutForm({ locale }: { locale: string }) {
+  const router = useRouter()
+  const { clearCart } = useCartStore()
+  const [isProcessing, setIsProcessing] = useState(false)
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setIsProcessing(true)
+    await new Promise(r => setTimeout(r, 500))
+    clearCart()
+    router.push(`/${locale}/tienda/confirmacion`)
+  }
+
+  const inputStyle: React.CSSProperties = {
+    width: "100%", padding: "12px 14px", borderRadius: 8,
+    border: "1px solid #E5E7EB", fontSize: 14, color: "#111827",
+    background: "#FFFFFF", fontFamily: "inherit", outline: "none", boxSizing: "border-box",
+  }
+
+  return (
+    <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: 20 }}>
+      <div>
+        <label style={{ display: "block", fontSize: 13, fontWeight: 600, color: "#374151", marginBottom: 6 }}>Email</label>
+        <input type="email" required style={inputStyle} placeholder="tu@email.com" />
+      </div>
+      <div>
+        <label style={{ display: "block", fontSize: 13, fontWeight: 600, color: "#374151", marginBottom: 6 }}>Nombre</label>
+        <input required style={inputStyle} placeholder="Nombre Apellidos" />
+      </div>
+      <div style={{ padding: "14px 18px", borderRadius: 8, background: "#F0FDF4", border: "1px solid #BBF7D0", fontSize: 14, color: "#16a34a", fontWeight: 500 }}>
+        Este pedido es gratuito — no se requiere pago.
+      </div>
+      <button
+        type="submit"
+        disabled={isProcessing}
+        style={{
+          padding: "15px 24px", borderRadius: 8, border: "none",
+          background: isProcessing ? "#D1D5DB" : "#111827",
+          color: "#FFFFFF", fontSize: 15, fontWeight: 700,
+          cursor: isProcessing ? "not-allowed" : "pointer", fontFamily: "inherit",
+        }}
+      >
+        {isProcessing ? "Procesando..." : "Confirmar pedido"}
+      </button>
+    </form>
+  )
+}
+
 export default function CheckoutPage() {
   const params = useParams<{ locale: string }>()
   const locale = params.locale
@@ -108,7 +156,7 @@ export default function CheckoutPage() {
               <div className="grid grid-cols-1 lg:grid-cols-[1fr_400px] gap-12">
                 {/* Form */}
                 {clientSecret === "free" ? (
-                  <CheckoutForm locale={locale} labels={labels} isFree />
+                  <FreeCheckoutForm locale={locale} />
                 ) : (
                   <Elements
                     stripe={stripePromise}
