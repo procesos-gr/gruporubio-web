@@ -1,5 +1,5 @@
 import { Navbar } from "@/components/layout/Navbar";
-import { Footer } from "@/components/sections/Footer";
+import Footer from "@/components/sections/Footer";
 
 export const metadata = {
   title: "Política de Cookies | Grupo Rubio",
