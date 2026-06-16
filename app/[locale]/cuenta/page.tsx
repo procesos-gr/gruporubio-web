@@ -3,7 +3,7 @@ import { useEffect, useState } from "react"
 import { useParams, useRouter } from "next/navigation"
 import { Navbar } from "@/components/layout/Navbar"
 import Footer from "@/components/sections/Footer"
-import { LogOut, ShoppingBag, User, MapPin } from "lucide-react"
+import { LogOut, ShoppingBag, User } from "lucide-react"
 
 const MEDUSA_URL = process.env.NEXT_PUBLIC_MEDUSA_URL || "http://localhost:9000"
 const PUBLISHABLE_KEY = process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY || ""
@@ -48,12 +48,9 @@ export default function CuentaPage() {
       return
     }
 
-    // Extraer metadatos de Google del JWT para la foto de perfil
     try {
       const payload = JSON.parse(atob(token.split(".")[1]))
-      if (payload.user_metadata) {
-        setGoogleMeta(payload.user_metadata)
-      }
+      if (payload.user_metadata) setGoogleMeta(payload.user_metadata)
     } catch {}
 
     const headers = {
@@ -68,7 +65,6 @@ export default function CuentaPage() {
       if (customerData.customer) {
         setCustomer(customerData.customer)
       } else {
-        // Token con actor_id vacío — mostrar datos del JWT mientras se completa el registro
         try {
           const payload = JSON.parse(atob(token.split(".")[1]))
           const meta = payload.user_metadata || {}
@@ -94,25 +90,31 @@ export default function CuentaPage() {
   }
 
   if (loading) return (
-    <div style={{ background: "#111827", minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center" }}>
-      <p style={{ color: "#9CA3AF", fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 15 }}>Cargando tu cuenta...</p>
+    <div style={{ background: "#F9FAFB", minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center" }}>
+      <p style={{ color: "#6B7280", fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 15 }}>Cargando tu cuenta...</p>
     </div>
   )
 
   const isLoggedIn = customer !== null
 
   return (
-    <div style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", background: "#111827", minHeight: "100vh" }}>
+    <div style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", background: "#F9FAFB", minHeight: "100vh" }}>
       <Navbar />
 
-      <div style={{ maxWidth: 800, margin: "0 auto", padding: "120px 24px 80px" }}>
+      {/* Header band */}
+      <div style={{ background: "#111827", padding: "80px 32px 40px" }}>
+        <div style={{ maxWidth: 800, margin: "0 auto" }}>
+          <h1 style={{ fontSize: "clamp(24px, 3vw, 38px)", fontWeight: 800, color: "#F9FAFB", letterSpacing: "-1.5px", margin: 0 }}>
+            Mi cuenta
+          </h1>
+        </div>
+      </div>
+
+      <div style={{ maxWidth: 800, margin: "0 auto", padding: "48px 24px 80px" }}>
         {!isLoggedIn ? (
-          /* ── PANTALLA DE LOGIN ── */
-          <div style={{ maxWidth: 400, margin: "0 auto" }}>
-            <h1 style={{ fontSize: "clamp(28px, 4vw, 40px)", fontWeight: 800, color: "#F9FAFB", letterSpacing: "-1.5px", marginBottom: 10 }}>
-              Mi cuenta
-            </h1>
-            <p style={{ fontSize: 15, color: "#9CA3AF", marginBottom: 40, lineHeight: 1.6 }}>
+          /* ── LOGIN ── */
+          <div style={{ maxWidth: 400, margin: "0 auto", paddingTop: 24 }}>
+            <p style={{ fontSize: 15, color: "#6B7280", marginBottom: 32, lineHeight: 1.6 }}>
               Accede para consultar tus pedidos y datos de envío.
             </p>
             <button
@@ -123,6 +125,7 @@ export default function CuentaPage() {
                 border: "1px solid #E5E7EB", borderRadius: 8,
                 fontSize: 15, fontWeight: 600, color: "#111827",
                 cursor: "pointer", fontFamily: "inherit",
+                boxShadow: "0 1px 3px rgba(0,0,0,0.08)",
               }}
             >
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
@@ -133,115 +136,114 @@ export default function CuentaPage() {
               </svg>
               Entrar con Google
             </button>
-            <p style={{ fontSize: 12, color: "#6B7280", textAlign: "center", marginTop: 24, lineHeight: 1.5 }}>
+            <p style={{ fontSize: 12, color: "#9CA3AF", textAlign: "center", marginTop: 20, lineHeight: 1.5 }}>
               Al acceder aceptas los términos de uso de Grupo Rubio
             </p>
           </div>
         ) : (
-          /* ── PANEL DE CUENTA ── */
-          <div style={{ display: "flex", flexDirection: "column", gap: 32 }}>
+          /* ── PANEL ── */
+          <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
 
             {/* Cabecera usuario */}
-            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 16 }}>
-              <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 16, paddingBottom: 24, borderBottom: "1px solid #E5E7EB" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
                 {googleMeta?.picture ? (
-                  <img src={googleMeta.picture} alt="avatar" style={{ width: 56, height: 56, borderRadius: "50%", border: "2px solid #1d4ed8" }} />
+                  <img src={googleMeta.picture} alt="avatar" style={{ width: 52, height: 52, borderRadius: "50%", border: "2px solid #E5E7EB" }} />
                 ) : (
-                  <div style={{ width: 56, height: 56, borderRadius: "50%", background: "#1d4ed8", display: "flex", alignItems: "center", justifyContent: "center" }}>
-                    <User size={24} color="#fff" />
+                  <div style={{ width: 52, height: 52, borderRadius: "50%", background: "#E5E7EB", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                    <User size={22} color="#6B7280" />
                   </div>
                 )}
                 <div>
-                  <h1 style={{ fontSize: 22, fontWeight: 700, color: "#F9FAFB", margin: 0 }}>
+                  <p style={{ fontSize: 18, fontWeight: 700, color: "#111827", margin: 0 }}>
                     {customer.first_name ? `${customer.first_name} ${customer.last_name || ""}`.trim() : customer.email}
-                  </h1>
-                  <p style={{ fontSize: 14, color: "#9CA3AF", margin: "4px 0 0" }}>{customer.email}</p>
+                  </p>
+                  <p style={{ fontSize: 14, color: "#6B7280", margin: "3px 0 0" }}>{customer.email}</p>
                 </div>
               </div>
               <button
                 onClick={handleLogout}
-                style={{ display: "flex", alignItems: "center", gap: 8, padding: "10px 18px", background: "transparent", border: "1px solid #374151", borderRadius: 8, color: "#9CA3AF", fontSize: 14, fontWeight: 500, cursor: "pointer", fontFamily: "inherit" }}
+                style={{ display: "flex", alignItems: "center", gap: 8, padding: "9px 16px", background: "#FFFFFF", border: "1px solid #E5E7EB", borderRadius: 8, color: "#6B7280", fontSize: 14, fontWeight: 500, cursor: "pointer", fontFamily: "inherit" }}
               >
-                <LogOut size={16} /> Cerrar sesión
+                <LogOut size={15} /> Cerrar sesión
               </button>
             </div>
 
             {/* Información de cuenta */}
-            <div style={{ background: "#1F2937", borderRadius: 8, padding: 24 }}>
+            <div style={{ background: "#FFFFFF", borderRadius: 8, border: "1px solid #E5E7EB", padding: 24 }}>
               <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 20 }}>
-                <User size={18} color="#1d4ed8" />
-                <h2 style={{ fontSize: 16, fontWeight: 700, color: "#F9FAFB", margin: 0 }}>Información de cuenta</h2>
+                <User size={17} color="#1e3a8a" />
+                <h2 style={{ fontSize: 15, fontWeight: 700, color: "#111827", margin: 0 }}>Información de cuenta</h2>
               </div>
               <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: 16 }}>
                 <div>
-                  <p style={{ fontSize: 12, color: "#6B7280", margin: "0 0 4px", textTransform: "uppercase", letterSpacing: "0.05em" }}>Nombre</p>
-                  <p style={{ fontSize: 15, color: "#F9FAFB", margin: 0 }}>
+                  <p style={{ fontSize: 12, color: "#9CA3AF", margin: "0 0 4px", textTransform: "uppercase", letterSpacing: "0.05em" }}>Nombre</p>
+                  <p style={{ fontSize: 14, color: "#111827", margin: 0, fontWeight: 500 }}>
                     {customer.first_name ? `${customer.first_name} ${customer.last_name || ""}`.trim() : "—"}
                   </p>
                 </div>
                 <div>
-                  <p style={{ fontSize: 12, color: "#6B7280", margin: "0 0 4px", textTransform: "uppercase", letterSpacing: "0.05em" }}>Email</p>
-                  <p style={{ fontSize: 15, color: "#F9FAFB", margin: 0 }}>{customer.email}</p>
+                  <p style={{ fontSize: 12, color: "#9CA3AF", margin: "0 0 4px", textTransform: "uppercase", letterSpacing: "0.05em" }}>Email</p>
+                  <p style={{ fontSize: 14, color: "#111827", margin: 0, fontWeight: 500 }}>{customer.email}</p>
                 </div>
                 {customer.phone && (
                   <div>
-                    <p style={{ fontSize: 12, color: "#6B7280", margin: "0 0 4px", textTransform: "uppercase", letterSpacing: "0.05em" }}>Teléfono</p>
-                    <p style={{ fontSize: 15, color: "#F9FAFB", margin: 0 }}>{customer.phone}</p>
+                    <p style={{ fontSize: 12, color: "#9CA3AF", margin: "0 0 4px", textTransform: "uppercase", letterSpacing: "0.05em" }}>Teléfono</p>
+                    <p style={{ fontSize: 14, color: "#111827", margin: 0, fontWeight: 500 }}>{customer.phone}</p>
                   </div>
                 )}
               </div>
             </div>
 
             {/* Mis pedidos */}
-            <div style={{ background: "#1F2937", borderRadius: 8, padding: 24 }}>
+            <div style={{ background: "#FFFFFF", borderRadius: 8, border: "1px solid #E5E7EB", padding: 24 }}>
               <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 20 }}>
-                <ShoppingBag size={18} color="#1d4ed8" />
-                <h2 style={{ fontSize: 16, fontWeight: 700, color: "#F9FAFB", margin: 0 }}>Mis pedidos</h2>
+                <ShoppingBag size={17} color="#1e3a8a" />
+                <h2 style={{ fontSize: 15, fontWeight: 700, color: "#111827", margin: 0 }}>Mis pedidos</h2>
               </div>
 
               {orders.length === 0 ? (
                 <div style={{ textAlign: "center", padding: "32px 0" }}>
-                  <ShoppingBag size={40} color="#374151" style={{ margin: "0 auto 12px" }} />
-                  <p style={{ color: "#6B7280", fontSize: 14, margin: 0 }}>Todavía no tienes pedidos</p>
+                  <ShoppingBag size={36} color="#D1D5DB" style={{ margin: "0 auto 12px" }} />
+                  <p style={{ color: "#9CA3AF", fontSize: 14, margin: "0 0 16px" }}>Todavía no tienes pedidos</p>
                   <button
                     onClick={() => router.push(`/${locale}/tienda`)}
-                    style={{ marginTop: 16, padding: "10px 20px", background: "#1d4ed8", border: "none", borderRadius: 8, color: "#fff", fontSize: 14, fontWeight: 600, cursor: "pointer", fontFamily: "inherit" }}
+                    style={{ padding: "10px 20px", background: "#111827", border: "none", borderRadius: 8, color: "#fff", fontSize: 14, fontWeight: 600, cursor: "pointer", fontFamily: "inherit" }}
                   >
                     Ir a la tienda
                   </button>
                 </div>
               ) : (
-                <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+                <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
                   {orders.map(order => (
-                    <div key={order.id} style={{ background: "#111827", borderRadius: 8, padding: 20, border: "1px solid #374151" }}>
+                    <div key={order.id} style={{ borderRadius: 8, padding: 18, border: "1px solid #E5E7EB", background: "#F9FAFB" }}>
                       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: 8 }}>
                         <div>
-                          <p style={{ fontSize: 14, fontWeight: 700, color: "#F9FAFB", margin: "0 0 4px" }}>
+                          <p style={{ fontSize: 14, fontWeight: 700, color: "#111827", margin: "0 0 3px" }}>
                             Pedido #{order.display_id}
                           </p>
-                          <p style={{ fontSize: 13, color: "#6B7280", margin: 0 }}>
+                          <p style={{ fontSize: 13, color: "#9CA3AF", margin: 0 }}>
                             {new Date(order.created_at).toLocaleDateString("es-ES", { day: "numeric", month: "long", year: "numeric" })}
                           </p>
                         </div>
                         <div style={{ textAlign: "right" }}>
                           <span style={{
-                            display: "inline-block", padding: "4px 10px",
-                            borderRadius: 4, fontSize: 12, fontWeight: 600,
-                            background: order.status === "completed" ? "#052e16" : order.status === "cancelled" ? "#450a0a" : "#1e3a5f",
-                            color: order.status === "completed" ? "#4ade80" : order.status === "cancelled" ? "#f87171" : "#93c5fd",
+                            display: "inline-block", padding: "3px 10px", borderRadius: 4, fontSize: 12, fontWeight: 600,
+                            background: order.status === "completed" ? "#DCFCE7" : order.status === "cancelled" ? "#FEE2E2" : "#DBEAFE",
+                            color: order.status === "completed" ? "#16a34a" : order.status === "cancelled" ? "#DC2626" : "#1d4ed8",
                           }}>
                             {STATUS_LABEL[order.status] || order.status}
                           </span>
-                          <p style={{ fontSize: 15, fontWeight: 700, color: "#F9FAFB", margin: "8px 0 0" }}>
-                            {order.total} {order.currency_code?.toUpperCase()}
+                          <p style={{ fontSize: 15, fontWeight: 700, color: "#111827", margin: "6px 0 0" }}>
+                            {(order.total / 100).toFixed(2)} {order.currency_code?.toUpperCase()}
                           </p>
                         </div>
                       </div>
                       {order.items && order.items.length > 0 && (
-                        <div style={{ marginTop: 12, paddingTop: 12, borderTop: "1px solid #1F2937" }}>
+                        <div style={{ marginTop: 12, paddingTop: 12, borderTop: "1px solid #E5E7EB" }}>
                           {order.items.map((item, i) => (
-                            <p key={i} style={{ fontSize: 13, color: "#9CA3AF", margin: "0 0 4px" }}>
-                              {item.quantity}× {item.title} — {item.unit_price} {order.currency_code?.toUpperCase()}
+                            <p key={i} style={{ fontSize: 13, color: "#6B7280", margin: "0 0 3px" }}>
+                              {item.quantity}× {item.title} — {(item.unit_price / 100).toFixed(2)} {order.currency_code?.toUpperCase()}
                             </p>
                           ))}
                         </div>
