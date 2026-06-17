@@ -32,12 +32,28 @@ export default async function TiendaPage({ params }: { params: Promise<{ locale:
   }
 
   return (
-    <div style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+    <div style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", background: "#FFFFFF" }}>
       <Navbar />
 
-      {/* ── HERO — mismo concepto que el inicio ─────────── */}
-      <div style={{ padding: "24px 24px 0", fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-        <section style={{ position: "relative", borderRadius: 16, overflow: "hidden", minHeight: 420 }}>
+      {/* ── HERO — mismo patrón que home: margin 16px, navbar fixed encima ── */}
+      <div className="tienda-hero-card" style={{ margin: 16, position: "relative", zIndex: 1 }}>
+        <style>{`
+          .tienda-hero-card { border-radius: 16px; overflow: hidden; }
+          @media (max-width: 640px) {
+            .tienda-hero-card { margin: 0; border-radius: 0; }
+            .tienda-hero-content { padding: 112px 24px 56px !important; }
+            .tienda-hero-overlay {
+              background: linear-gradient(
+                to bottom,
+                rgba(255,255,255,0.80) 0%,
+                rgba(255,255,255,0.55) 60%,
+                rgba(255,255,255,0.15) 100%
+              ) !important;
+            }
+          }
+        `}</style>
+
+        <section style={{ position: "relative", minHeight: 460 }}>
           {/* Imagen de fondo */}
           <Image
             src="/images/tienda-hero.jpg"
@@ -45,37 +61,38 @@ export default async function TiendaPage({ params }: { params: Promise<{ locale:
             fill
             priority
             quality={85}
-            style={{ objectFit: "cover", objectPosition: "center" }}
+            style={{ objectFit: "cover", objectPosition: "center 40%" }}
           />
-          {/* Overlay — más imagen visible, texto anclado a la izquierda */}
-          <div style={{
+
+          {/* Overlay — igual que home pero con degradado horizontal */}
+          <div className="tienda-hero-overlay" style={{
             position: "absolute", inset: 0,
-            background: "linear-gradient(to right, rgba(255,255,255,0.88) 0%, rgba(255,255,255,0.70) 38%, rgba(255,255,255,0.15) 65%, rgba(255,255,255,0) 100%)",
+            background: "linear-gradient(to right, rgba(255,255,255,0.92) 0%, rgba(255,255,255,0.75) 35%, rgba(255,255,255,0.20) 62%, rgba(255,255,255,0) 100%)",
           }} />
 
-          {/* Contenido */}
-          <div style={{
+          {/* Contenido: paddingTop 120px = 16px (margen carta) + 68px (navbar) + ~36px aire */}
+          <div className="tienda-hero-content" style={{
             position: "relative", zIndex: 1,
-            padding: "80px 56px 72px",
-            maxWidth: 620,
+            padding: "120px 56px 80px",
+            maxWidth: 600,
           }}>
             <p style={{
-              fontSize: 12, fontWeight: 700, letterSpacing: "0.1em",
-              textTransform: "uppercase", color: "#2563EB", marginBottom: 16,
+              fontSize: 11, fontWeight: 700, letterSpacing: "0.12em",
+              textTransform: "uppercase", color: "#2563EB", marginBottom: 14,
             }}>
               Tienda profesional · Grupo Rubio
             </p>
             <h1 style={{
-              fontSize: "clamp(32px, 4vw, 54px)",
+              fontSize: "clamp(34px, 4vw, 56px)",
               fontWeight: 800, color: "#111827",
-              letterSpacing: "-2px", lineHeight: 1.08,
+              letterSpacing: "-2px", lineHeight: 1.06,
               marginBottom: 18,
             }}>
               Todo lo que necesitas<br />para una higiene impecable.
             </h1>
             <p style={{
-              fontSize: 17, fontWeight: 600, color: "#374151",
-              lineHeight: 1.6, maxWidth: 440,
+              fontSize: 17, fontWeight: 500, color: "#374151",
+              lineHeight: 1.65, maxWidth: 420,
             }}>
               Desengrasantes, desinfectantes, insecticidas y productos de higiene
               para empresas, hostelería y comunidades de vecinos.
@@ -84,7 +101,7 @@ export default async function TiendaPage({ params }: { params: Promise<{ locale:
         </section>
       </div>
 
-      {/* ── STOREFRONT (client: trust bar + filtros + grid) ── */}
+      {/* ── STOREFRONT: trust bar + filtros + grid ── */}
       <TiendaStorefront products={products} locale={locale} />
 
       <Footer />
