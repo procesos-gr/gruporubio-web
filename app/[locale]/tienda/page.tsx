@@ -6,7 +6,7 @@ import { AdvisoryBanner } from "@/components/tienda/AdvisoryBanner"
 import { ReviewsCarousel } from "@/components/sections/reviews-carousel"
 import { medusa } from "@/lib/medusa"
 import Image from "next/image"
-import { ShieldCheck, MapPin, BadgeCheck, Users, Truck, Award, ThumbsUp, User } from "lucide-react"
+import { ShieldCheck, MapPin, BadgeCheck, Users, Truck, Award, ThumbsUp } from "lucide-react"
 
 const TRUST_ITEMS = [
   { icon: ShieldCheck, label: "Productos de uso profesional" },
@@ -111,15 +111,20 @@ export default async function TiendaPage({ params }: { params: Promise<{ locale:
                 {/* 1. Avatares apilados + clientes felices */}
                 <div style={{ display: "flex", alignItems: "center", gap: 13 }}>
                   <div style={{ display: "flex" }}>
-                    {["#2563EB", "#F97316", "#16A34A"].map((color, i) => (
+                    {[
+                      { img: "https://i.pravatar.cc/100?img=32", ring: "#2563EB" },
+                      { img: "https://i.pravatar.cc/100?img=47", ring: "#F97316" },
+                    ].map((item, i) => (
                       <div key={i} style={{
                         width: 36, height: 36, borderRadius: "50%",
-                        background: color, border: "2px solid #FFFFFF",
-                        display: "flex", alignItems: "center", justifyContent: "center",
+                        border: `2.5px solid ${item.ring}`,
                         marginLeft: i === 0 ? 0 : -12,
+                        overflow: "hidden",
                         boxShadow: "0 2px 8px rgba(0,0,0,0.30)",
+                        flexShrink: 0,
                       }}>
-                        <User size={15} style={{ color: "#FFFFFF" }} strokeWidth={2} />
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img src={item.img} alt="" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
                       </div>
                     ))}
                   </div>
