@@ -99,7 +99,7 @@ export default async function TiendaPage({ params }: { params: Promise<{ locale:
                 fontSize: "clamp(36px, 5vw, 64px)",
                 fontWeight: 800, color: "#FFFFFF",
                 letterSpacing: "-2px", lineHeight: 1.06,
-                marginBottom: 96,
+                marginBottom: 124,
               }}>
                 Productos de limpieza profesional
               </h1>
@@ -141,8 +141,9 @@ export default async function TiendaPage({ params }: { params: Promise<{ locale:
                 <div style={{ display: "flex", alignItems: "center", gap: 13 }}>
                   <div style={{
                     width: 38, height: 38, borderRadius: "50%",
-                    background: "rgba(255,255,255,0.14)",
-                    border: "2px solid rgba(255,255,255,0.45)",
+                    background: "#16A34A",
+                    border: "2px solid rgba(255,255,255,0.85)",
+                    boxShadow: "0 3px 10px rgba(0,0,0,0.25)",
                     display: "flex", alignItems: "center", justifyContent: "center",
                     flexShrink: 0,
                   }}>
@@ -160,8 +161,9 @@ export default async function TiendaPage({ params }: { params: Promise<{ locale:
                 <div style={{ display: "flex", alignItems: "center", gap: 13 }}>
                   <div style={{
                     width: 38, height: 38, borderRadius: "50%",
-                    background: "rgba(255,255,255,0.14)",
-                    border: "2px solid rgba(255,255,255,0.45)",
+                    background: "#2563EB",
+                    border: "2px solid rgba(255,255,255,0.85)",
+                    boxShadow: "0 3px 10px rgba(0,0,0,0.25)",
                     display: "flex", alignItems: "center", justifyContent: "center",
                     flexShrink: 0,
                   }}>
