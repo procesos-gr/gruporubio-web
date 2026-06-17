@@ -4,60 +4,19 @@ import { useEffect, useState } from "react"
 import { useRouter, useParams } from "next/navigation"
 import { Elements } from "@stripe/react-stripe-js"
 import { stripePromise } from "@/lib/stripe"
-import { PayPalScriptProvider } from "@paypal/react-paypal-js"
 import { useCartStore } from "@/lib/store/cart"
+import { medusa } from "@/lib/medusa"
 import { CheckoutForm } from "@/components/tienda/CheckoutForm"
 import { Navbar } from "@/components/layout/Navbar"
 import Footer from "@/components/sections/Footer"
 import { useTranslations } from "next-intl"
 import Link from "next/link"
+import { Truck, MapPin, Loader2 } from "lucide-react"
 
-function FreeCheckoutForm({ locale }: { locale: string }) {
-  const router = useRouter()
-  const { clearCart } = useCartStore()
-  const [isProcessing, setIsProcessing] = useState(false)
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setIsProcessing(true)
-    await new Promise(r => setTimeout(r, 500))
-    clearCart()
-    router.push(`/${locale}/tienda/confirmacion`)
-  }
-
-  const inputStyle: React.CSSProperties = {
-    width: "100%", padding: "12px 14px", borderRadius: 8,
-    border: "1px solid #E5E7EB", fontSize: 14, color: "#111827",
-    background: "#FFFFFF", fontFamily: "inherit", outline: "none", boxSizing: "border-box",
-  }
-
-  return (
-    <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: 20 }}>
-      <div>
-        <label style={{ display: "block", fontSize: 13, fontWeight: 600, color: "#374151", marginBottom: 6 }}>Email</label>
-        <input type="email" required style={inputStyle} placeholder="tu@email.com" />
-      </div>
-      <div>
-        <label style={{ display: "block", fontSize: 13, fontWeight: 600, color: "#374151", marginBottom: 6 }}>Nombre</label>
-        <input required style={inputStyle} placeholder="Nombre Apellidos" />
-      </div>
-      <div style={{ padding: "14px 18px", borderRadius: 8, background: "#F0FDF4", border: "1px solid #BBF7D0", fontSize: 14, color: "#16a34a", fontWeight: 500 }}>
-        Este pedido es gratuito — no se requiere pago.
-      </div>
-      <button
-        type="submit"
-        disabled={isProcessing}
-        style={{
-          padding: "15px 24px", borderRadius: 8, border: "none",
-          background: isProcessing ? "#D1D5DB" : "#111827",
-          color: "#FFFFFF", fontSize: 15, fontWeight: 700,
-          cursor: isProcessing ? "not-allowed" : "pointer", fontFamily: "inherit",
-        }}
-      >
-        {isProcessing ? "Procesando..." : "Confirmar pedido"}
-      </button>
-    </form>
-  )
+type ShippingOption = {
+  id: string
+  name: string
+  amount: number
 }
 
 export default function CheckoutPage() {
@@ -66,18 +25,45 @@ export default function CheckoutPage() {
   const t = useTranslations("Tienda")
   const router = useRouter()
   const { items, total, cartId, initCart } = useCartStore()
+
+  const [cartReady, setCartReady] = useState(false)
+  const [step, setStep] = useState<"address" | "payment">("address")
   const [clientSecret, setClientSecret] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
-  const [cartReady, setCartReady] = useState(false)
+  const [submitting, setSubmitting] = useState(false)
 
-  // Si hay cartId pero items vacíos, esperar a que initCart cargue los items
+  // Dirección
+  const [name, setName] = useState("")
+  const [email, setEmail] = useState("")
+  const [address, setAddress] = useState("")
+  const [city, setCity] = useState("")
+  const [postal, setPostal] = useState("")
+
+  // Envío
+  const [shippingOptions, setShippingOptions] = useState<ShippingOption[]>([])
+  const [shippingOptionId, setShippingOptionId] = useState<string>("")
+  const [loadingOptions, setLoadingOptions] = useState(true)
+
+  // Espera a que Zustand rehidrate desde localStorage antes de decidir si hay carrito o no.
+  // Sin esto, en una carga directa de /checkout (recarga o link externo) cartId todavia es
+  // null en el primer render y la pagina redirige a /tienda antes de que llegue el cartId real.
   useEffect(() => {
-    if (cartId && items.length === 0) {
-      initCart().finally(() => setCartReady(true))
-    } else {
-      setCartReady(true)
+    const afterHydration = () => {
+      const { cartId: hydratedCartId, items: hydratedItems } = useCartStore.getState()
+      if (hydratedCartId && hydratedItems.length === 0) {
+        initCart().finally(() => setCartReady(true))
+      } else {
+        setCartReady(true)
+      }
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+
+    if (useCartStore.persist.hasHydrated()) {
+      afterHydration()
+    } else {
+      const unsub = useCartStore.persist.onFinishHydration(afterHydration)
+      return unsub
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   useEffect(() => {
@@ -88,37 +74,91 @@ export default function CheckoutPage() {
     }
     if (!cartId) return
 
-    // Pedido gratuito — sin Stripe
-    if (total === 0) {
-      setClientSecret("free")
-      return
-    }
-
-    fetch("/api/stripe/payment-intent", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ amount: total, currency: "eur", cartId }),
-    })
-      .then((r) => r.json())
-      .then((data: { clientSecret?: string; error?: string }) => {
-        if (data.error) setError(data.error)
-        else if (data.clientSecret) setClientSecret(data.clientSecret)
+    medusa.store.fulfillment.listCartOptions({ cart_id: cartId })
+      .then((res) => {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const opts = (res.shipping_options ?? []).map((o: any) => ({
+          id: o.id,
+          name: o.name,
+          amount: o.calculated_price?.calculated_amount ?? o.amount ?? 0,
+        }))
+        setShippingOptions(opts)
+        if (opts.length > 0) setShippingOptionId(opts[0].id)
       })
-      .catch(() => setError("Error de conexión. Inténtalo de nuevo."))
-  }, [cartReady, items.length, total, cartId, locale, router])
+      .catch(() => setError("No se pudieron cargar las opciones de envío."))
+      .finally(() => setLoadingOptions(false))
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [cartReady, items.length, cartId, locale, router])
 
   const formatPrice = (amount: number) =>
+    new Intl.NumberFormat(locale, { style: "currency", currency: "EUR" }).format(amount)
+
+  const formatCents = (amount: number) =>
     new Intl.NumberFormat(locale, { style: "currency", currency: "EUR" }).format(amount / 100)
 
-  const labels = {
-    name: t("checkout_name"),
-    email: t("checkout_email"),
-    address: t("checkout_address"),
-    city: t("checkout_city"),
-    postal: t("checkout_postal"),
-    pay: t("checkout_pay"),
-    processing: t("checkout_processing"),
-    testCard: t("checkout_test_card"),
+  const handleContinueToPayment = async (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!cartId || !shippingOptionId) return
+    setSubmitting(true)
+    setError(null)
+    try {
+      // 1. Guardar email + dirección en el carrito
+      await medusa.store.cart.update(cartId, {
+        email,
+        shipping_address: {
+          first_name: name.split(" ")[0] || name,
+          last_name: name.split(" ").slice(1).join(" ") || "",
+          address_1: address,
+          city,
+          postal_code: postal,
+          country_code: "es",
+        },
+        billing_address: {
+          first_name: name.split(" ")[0] || name,
+          last_name: name.split(" ").slice(1).join(" ") || "",
+          address_1: address,
+          city,
+          postal_code: postal,
+          country_code: "es",
+        },
+      })
+
+      // 2. Asignar método de envío
+      await medusa.store.cart.addShippingMethod(cartId, { option_id: shippingOptionId })
+
+      // 3. Recuperar carrito actualizado (con el total ya incluyendo envío)
+      const { cart: updatedCart } = await medusa.store.cart.retrieve(cartId)
+
+      // 4. Iniciar sesión de pago con Stripe a través de Medusa
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const result = await medusa.store.payment.initiatePaymentSession(updatedCart as any, {
+        provider_id: "pp_stripe_stripe",
+      })
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const session = result.payment_collection?.payment_sessions?.find(
+        (s: any) => s.provider_id === "pp_stripe_stripe"
+      )
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const secret = (session?.data as any)?.client_secret as string | undefined
+      if (!secret) throw new Error("No se pudo iniciar el pago")
+
+      setClientSecret(secret)
+      setStep("payment")
+    } catch (err) {
+      console.error(err)
+      setError("No se pudo continuar al pago. Revisa los datos e inténtalo de nuevo.")
+    } finally {
+      setSubmitting(false)
+    }
+  }
+
+  const inputStyle: React.CSSProperties = {
+    width: "100%", padding: "12px 14px", borderRadius: 8,
+    border: "1px solid #E5E7EB", fontSize: 14, color: "#111827",
+    background: "#FFFFFF", fontFamily: "inherit", outline: "none", boxSizing: "border-box",
+  }
+  const labelStyle: React.CSSProperties = {
+    display: "block", fontSize: 13, fontWeight: 600, color: "#374151", marginBottom: 6,
   }
 
   return (
@@ -145,78 +185,163 @@ export default function CheckoutPage() {
 
       <div style={{ background: "#F9FAFB", minHeight: "60vh" }}>
         <div style={{ maxWidth: 1100, margin: "0 auto", padding: "48px 32px" }}>
-          {error ? (
+          {error && (
             <div style={{
-              padding: "16px 20px", borderRadius: 8,
+              padding: "16px 20px", borderRadius: 8, marginBottom: 24,
               background: "#FEF2F2", border: "1px solid #FCA5A5",
               fontSize: 14, color: "#DC2626",
             }}>
               {error}
             </div>
-          ) : !clientSecret ? (
-            <div style={{ color: "#9CA3AF", fontSize: 15, padding: "40px 0" }}>
-              Preparando el checkout...
+          )}
+
+          {!cartReady || loadingOptions ? (
+            <div style={{ color: "#9CA3AF", fontSize: 15, padding: "40px 0", display: "flex", alignItems: "center", gap: 10 }}>
+              <Loader2 size={18} className="animate-spin" /> Preparando el checkout...
             </div>
           ) : (
-            <PayPalScriptProvider
-              options={{
-                clientId: process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID || "sb",
-                currency: "EUR",
-                intent: "capture",
-              }}
-            >
-              <div className="grid grid-cols-1 lg:grid-cols-[1fr_400px] gap-12">
-                {/* Form */}
-                {clientSecret === "free" ? (
-                  <FreeCheckoutForm locale={locale} />
-                ) : (
-                  <Elements
-                    stripe={stripePromise}
-                    options={{ clientSecret, appearance: { theme: "stripe" } }}
-                  >
-                    <CheckoutForm locale={locale} labels={labels} />
-                  </Elements>
-                )}
+            <div className="grid grid-cols-1 lg:grid-cols-[1fr_400px] gap-12">
 
-                {/* Order summary */}
-                <div>
-                  <div style={{
-                    background: "#FFFFFF",
-                    borderRadius: 8,
-                    border: "1px solid #E5E7EB",
-                    padding: "24px",
-                    position: "sticky",
-                    top: 24,
-                  }}>
-                    <h2 style={{ fontSize: 15, fontWeight: 700, color: "#111827", marginBottom: 20 }}>
-                      Resumen del pedido
-                    </h2>
-                    <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
-                      {items.map((item) => (
-                        <div key={item.id} style={{ display: "flex", justifyContent: "space-between", gap: 12 }}>
-                          <div style={{ minWidth: 0 }}>
-                            <p style={{ fontSize: 14, fontWeight: 500, color: "#111827", lineHeight: 1.3 }}>{item.title}</p>
-                            <p style={{ fontSize: 12, color: "#9CA3AF", marginTop: 2 }}>x{item.quantity}</p>
-                          </div>
-                          <p style={{ fontSize: 14, fontWeight: 600, color: "#111827", flexShrink: 0 }}>
-                            {formatPrice(item.total)}
-                          </p>
-                        </div>
+              {/* ── Columna principal: paso 1 (dirección+envío) o paso 2 (pago) ── */}
+              {step === "address" ? (
+                <form onSubmit={handleContinueToPayment} style={{ display: "flex", flexDirection: "column", gap: 28 }}>
+                  <div>
+                    <p style={{ fontSize: 15, fontWeight: 700, color: "#111827", marginBottom: 16 }}>Información de contacto</p>
+                    <label style={labelStyle}>Email</label>
+                    <input type="email" required value={email} onChange={e => setEmail(e.target.value)} style={inputStyle} placeholder="tu@email.com" />
+                  </div>
+
+                  <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+                    <p style={{ fontSize: 15, fontWeight: 700, color: "#111827" }}>Dirección de envío</p>
+                    <div>
+                      <label style={labelStyle}>Nombre completo</label>
+                      <input required value={name} onChange={e => setName(e.target.value)} style={inputStyle} placeholder="Nombre Apellidos" />
+                    </div>
+                    <div>
+                      <label style={labelStyle}>Dirección</label>
+                      <input required value={address} onChange={e => setAddress(e.target.value)} style={inputStyle} placeholder="Calle, número, piso" />
+                    </div>
+                    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+                      <div>
+                        <label style={labelStyle}>Ciudad</label>
+                        <input required value={city} onChange={e => setCity(e.target.value)} style={inputStyle} placeholder="Ciudad" />
+                      </div>
+                      <div>
+                        <label style={labelStyle}>Código postal</label>
+                        <input required value={postal} onChange={e => setPostal(e.target.value)} style={inputStyle} placeholder="31001" />
+                      </div>
+                    </div>
+                  </div>
+
+                  <div>
+                    <p style={{ fontSize: 15, fontWeight: 700, color: "#111827", marginBottom: 12 }}>Método de envío</p>
+                    <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+                      {shippingOptions.map(opt => (
+                        <label
+                          key={opt.id}
+                          style={{
+                            display: "flex", alignItems: "center", justifyContent: "space-between",
+                            padding: "14px 16px", borderRadius: 8,
+                            border: `2px solid ${shippingOptionId === opt.id ? "#2563EB" : "#E5E7EB"}`,
+                            background: shippingOptionId === opt.id ? "#EFF6FF" : "#FFFFFF",
+                            cursor: "pointer",
+                          }}
+                        >
+                          <span style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                            <input
+                              type="radio"
+                              name="shipping"
+                              checked={shippingOptionId === opt.id}
+                              onChange={() => setShippingOptionId(opt.id)}
+                            />
+                            {opt.amount === 0
+                              ? <MapPin size={16} style={{ color: "#374151" }} />
+                              : <Truck size={16} style={{ color: "#374151" }} />}
+                            <span style={{ fontSize: 14, fontWeight: 600, color: "#111827" }}>{opt.name}</span>
+                          </span>
+                          <span style={{ fontSize: 14, fontWeight: 700, color: opt.amount === 0 ? "#16a34a" : "#111827" }}>
+                            {opt.amount === 0 ? "Gratis" : formatPrice(opt.amount)}
+                          </span>
+                        </label>
                       ))}
                     </div>
-                    <div style={{
-                      borderTop: "1px solid #F3F4F6", marginTop: 20, paddingTop: 16,
-                      display: "flex", justifyContent: "space-between", alignItems: "center",
-                    }}>
-                      <span style={{ fontSize: 15, fontWeight: 700, color: "#111827" }}>Total</span>
-                      <span style={{ fontSize: 20, fontWeight: 800, color: "#16a34a", letterSpacing: "-0.5px" }}>
-                        {formatPrice(total)}
-                      </span>
+                  </div>
+
+                  <button
+                    type="submit"
+                    disabled={submitting || !shippingOptionId}
+                    style={{
+                      padding: "15px 24px", borderRadius: 8, border: "none",
+                      background: submitting || !shippingOptionId ? "#D1D5DB" : "#111827",
+                      color: "#FFFFFF", fontSize: 15, fontWeight: 700,
+                      cursor: submitting || !shippingOptionId ? "not-allowed" : "pointer",
+                      fontFamily: "inherit",
+                    }}
+                  >
+                    {submitting ? "Procesando..." : "Continuar al pago"}
+                  </button>
+                </form>
+              ) : clientSecret ? (
+                <Elements stripe={stripePromise} options={{ clientSecret, appearance: { theme: "stripe" } }}>
+                  <CheckoutForm
+                    locale={locale}
+                    cartId={cartId!}
+                    onBack={() => setStep("address")}
+                    onSuccess={(orderId) => {
+                      // El carrito se limpia en /confirmacion (no aqui), para que el
+                      // efecto de "carrito vacio -> redirigir a /tienda" de esta pagina
+                      // no gane la carrera contra esta navegacion.
+                      router.push(`/${locale}/tienda/confirmacion?order_id=${orderId}`)
+                    }}
+                  />
+                </Elements>
+              ) : null}
+
+              {/* ── Resumen del pedido ── */}
+              <div>
+                <div style={{
+                  background: "#FFFFFF", borderRadius: 8, border: "1px solid #E5E7EB",
+                  padding: "24px", position: "sticky", top: 24,
+                }}>
+                  <h2 style={{ fontSize: 15, fontWeight: 700, color: "#111827", marginBottom: 20 }}>
+                    Resumen del pedido
+                  </h2>
+                  <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+                    {items.map((item) => (
+                      <div key={item.id} style={{ display: "flex", justifyContent: "space-between", gap: 12 }}>
+                        <div style={{ minWidth: 0 }}>
+                          <p style={{ fontSize: 14, fontWeight: 500, color: "#111827", lineHeight: 1.3 }}>{item.title}</p>
+                          <p style={{ fontSize: 12, color: "#9CA3AF", marginTop: 2 }}>x{item.quantity}</p>
+                        </div>
+                        <p style={{ fontSize: 14, fontWeight: 600, color: "#111827", flexShrink: 0 }}>
+                          {formatCents(item.total)}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                  {step === "address" && shippingOptionId && (
+                    <div style={{ display: "flex", justifyContent: "space-between", gap: 12, marginTop: 14, paddingTop: 14, borderTop: "1px solid #F3F4F6" }}>
+                      <p style={{ fontSize: 13, color: "#6B7280" }}>Envío</p>
+                      <p style={{ fontSize: 13, fontWeight: 600, color: "#111827" }}>
+                        {formatPrice(shippingOptions.find(o => o.id === shippingOptionId)?.amount ?? 0)}
+                      </p>
                     </div>
+                  )}
+                  <div style={{
+                    borderTop: "1px solid #F3F4F6", marginTop: 20, paddingTop: 16,
+                    display: "flex", justifyContent: "space-between", alignItems: "center",
+                  }}>
+                    <span style={{ fontSize: 15, fontWeight: 700, color: "#111827" }}>Total</span>
+                    <span style={{ fontSize: 20, fontWeight: 800, color: "#16a34a", letterSpacing: "-0.5px" }}>
+                      {formatCents(total)}
+                      {step === "address" && shippingOptionId && (
+                        <span style={{ fontSize: 13, color: "#9CA3AF", fontWeight: 500 }}> + envío</span>
+                      )}
+                    </span>
                   </div>
                 </div>
               </div>
-            </PayPalScriptProvider>
+            </div>
           )}
         </div>
       </div>
