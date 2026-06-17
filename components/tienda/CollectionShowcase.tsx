@@ -7,14 +7,14 @@ import {
 } from "lucide-react"
 
 const COLLECTIONS = [
-  { icon: SprayCan, label: "Limpieza Industrial" },
-  { icon: Droplets, label: "Desinfección e Higiene" },
-  { icon: Bug, label: "Control de Plagas" },
-  { icon: HandHeart, label: "Higiene Personal" },
-  { icon: Wrench, label: "Maquinaria y Equipos" },
-  { icon: HardHat, label: "EPIs y Protección" },
-  { icon: Scroll, label: "Papel y Celulosa" },
-  { icon: Wind, label: "Ambientadores" },
+  { icon: SprayCan, label: "Limpieza Industrial", handle: "limpieza-profesional" },
+  { icon: Droplets, label: "Desinfección e Higiene", handle: "desinfección" },
+  { icon: Bug, label: "Control de Plagas", handle: "control-de-plagas" },
+  { icon: HandHeart, label: "Higiene Personal", handle: "higiene-industrial" },
+  { icon: Wrench, label: "Maquinaria y Equipos", handle: null },
+  { icon: HardHat, label: "EPIs y Protección", handle: null },
+  { icon: Scroll, label: "Papel y Celulosa", handle: null },
+  { icon: Wind, label: "Ambientadores", handle: null },
 ]
 
 export function CollectionShowcase({ locale }: { locale: string }) {
@@ -49,7 +49,7 @@ export function CollectionShowcase({ locale }: { locale: string }) {
             return (
               <Link
                 key={i}
-                href={`/${locale}/tienda`}
+                href={item.handle ? `/${locale}/tienda/categoria/${item.handle}` : `/${locale}/tienda`}
                 style={{ textDecoration: "none" }}
               >
                 <div
