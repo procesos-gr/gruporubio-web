@@ -20,15 +20,17 @@ export function BrandStory() {
           align-items: center;
         }
         .puzzle-grid {
+          position: relative;
           display: grid;
           grid-template-columns: 1.6fr 1fr;
           grid-template-rows: 1fr 1fr;
           gap: 10px;
           height: 420px;
+          margin-bottom: 28px;
         }
         @media (max-width: 900px) {
           .brand-story-grid { grid-template-columns: 1fr !important; gap: 32px !important; }
-          .puzzle-grid { height: 320px !important; }
+          .puzzle-grid { height: 320px !important; margin-bottom: 20px !important; }
         }
       `}</style>
 
@@ -39,8 +41,8 @@ export function BrandStory() {
           <div className="puzzle-grid">
             <div style={{ gridRow: "1 / 3", position: "relative", borderRadius: 8, overflow: "hidden" }}>
               <Image
-                src="/images/Diseño sin título (10).jpg"
-                alt="Limpieza profesional Grupo Rubio"
+                src="/images/brand-story-large.png"
+                alt="Productos de limpieza profesional Grupo Rubio"
                 fill
                 style={{ objectFit: "cover" }}
                 sizes="(max-width: 900px) 60vw, 360px"
@@ -48,20 +50,31 @@ export function BrandStory() {
             </div>
             <div style={{ position: "relative", borderRadius: 8, overflow: "hidden" }}>
               <Image
-                src="/images/Diseño sin título (9).jpg"
-                alt="Maquinaria profesional de limpieza"
+                src="/images/brand-story-small-2.jpg"
+                alt="Bayetas y esponjas de limpieza"
                 fill
                 style={{ objectFit: "cover" }}
                 sizes="(max-width: 900px) 40vw, 220px"
               />
             </div>
-            <div style={{ position: "relative", borderRadius: 8, overflow: "hidden" }}>
+            <div style={{ position: "relative", borderRadius: 8, overflow: "hidden" }} />
+
+            {/* Imagen pequeña ampliada, sobrepuesta sobre las demás */}
+            <div style={{
+              position: "absolute",
+              width: "44%", height: "48%",
+              bottom: -28, right: "10%",
+              borderRadius: 8, overflow: "hidden",
+              border: "5px solid #FFFFFF",
+              boxShadow: "0 16px 36px rgba(0,0,0,0.22)",
+              zIndex: 2,
+            }}>
               <Image
-                src="/images/Tienda.jpg"
-                alt="Productos de limpieza profesional"
+                src="/images/brand-story-small-1.jpg"
+                alt="Producto de limpieza en uso"
                 fill
                 style={{ objectFit: "cover" }}
-                sizes="(max-width: 900px) 40vw, 220px"
+                sizes="(max-width: 900px) 30vw, 180px"
               />
             </div>
           </div>
