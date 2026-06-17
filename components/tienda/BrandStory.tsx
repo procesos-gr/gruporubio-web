@@ -28,6 +28,8 @@ export function BrandStory() {
           height: 420px;
           margin-bottom: 28px;
         }
+        .puzzle-cell img { transition: transform 0.4s ease; }
+        .puzzle-cell:hover img { transform: scale(1.08); }
         @media (max-width: 900px) {
           .brand-story-grid { grid-template-columns: 1fr !important; gap: 32px !important; }
           .puzzle-grid { height: 320px !important; margin-bottom: 20px !important; }
@@ -39,7 +41,7 @@ export function BrandStory() {
 
           {/* ── PUZZLE DE IMÁGENES ── */}
           <div className="puzzle-grid">
-            <div style={{ gridRow: "1 / 3", position: "relative", borderRadius: 8, overflow: "hidden" }}>
+            <div className="puzzle-cell" style={{ gridRow: "1 / 3", position: "relative", borderRadius: 8, overflow: "hidden" }}>
               <Image
                 src="/images/brand-story-large.png"
                 alt="Productos de limpieza profesional Grupo Rubio"
@@ -48,7 +50,7 @@ export function BrandStory() {
                 sizes="(max-width: 900px) 60vw, 360px"
               />
             </div>
-            <div style={{ position: "relative", borderRadius: 8, overflow: "hidden" }}>
+            <div className="puzzle-cell" style={{ position: "relative", borderRadius: 8, overflow: "hidden" }}>
               <Image
                 src="/images/brand-story-small-2.jpg"
                 alt="Bayetas y esponjas de limpieza"
@@ -59,11 +61,11 @@ export function BrandStory() {
             </div>
             <div style={{ position: "relative", borderRadius: 8, overflow: "hidden" }} />
 
-            {/* Imagen pequeña ampliada, sobrepuesta sobre las demás */}
-            <div style={{
+            {/* Imagen pequeña ampliada, sobrepuesta sobre las demás (incluida la de arriba) */}
+            <div className="puzzle-cell" style={{
               position: "absolute",
-              width: "44%", height: "48%",
-              bottom: -28, right: "10%",
+              width: "56%", height: "62%",
+              bottom: -32, right: "4%",
               borderRadius: 8, overflow: "hidden",
               border: "5px solid #FFFFFF",
               boxShadow: "0 16px 36px rgba(0,0,0,0.22)",
@@ -74,7 +76,7 @@ export function BrandStory() {
                 alt="Producto de limpieza en uso"
                 fill
                 style={{ objectFit: "cover" }}
-                sizes="(max-width: 900px) 30vw, 180px"
+                sizes="(max-width: 900px) 36vw, 220px"
               />
             </div>
           </div>
