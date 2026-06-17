@@ -39,6 +39,33 @@ type RelatedProduct = {
   variants?: MedusaVariant[]
 }
 
+export async function generateMetadata({ params }: { params: Promise<{ handle: string }> }) {
+  const { handle: rawHandle } = await params
+  const handle = decodeURIComponent(rawHandle)
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const result = await medusa.store.product.list({ handle, fields: "title,description,thumbnail" } as any).catch(() => null)
+  const product = result?.products?.[0]
+
+  if (!product) {
+    return { title: "Producto no encontrado — Grupo Rubio" }
+  }
+
+  const description = product.description
+    ? product.description.slice(0, 160)
+    : "Producto profesional de limpieza e higiene Grupo Rubio."
+
+  return {
+    title: `${product.title} — Grupo Rubio`,
+    description,
+    openGraph: {
+      title: `${product.title} — Grupo Rubio`,
+      description,
+      images: product.thumbnail ? [{ url: product.thumbnail }] : [],
+      type: "website",
+    },
+  }
+}
+
 export default async function ProductPage({
   params,
 }: {
@@ -100,8 +127,30 @@ export default async function ProductPage({
     }
   }
 
+  const productSchema = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    name: product.title,
+    description: product.description ?? undefined,
+    image: images.map(img => img.url),
+    sku: product.handle,
+    category: category?.name,
+    url: `https://gruporubio.es/${locale}/tienda/${product.handle}`,
+    offers: minPrice != null ? {
+      "@type": "Offer",
+      priceCurrency: "EUR",
+      price: (minPrice / 100).toFixed(2),
+      availability: "https://schema.org/InStock",
+      url: `https://gruporubio.es/${locale}/tienda/${product.handle}`,
+    } : undefined,
+  }
+
   return (
     <div style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", background: "#FFFFFF", minHeight: "100vh" }}>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(productSchema) }}
+      />
       <Navbar />
 
       <div style={{ paddingTop: 84 }}>

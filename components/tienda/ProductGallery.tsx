@@ -2,6 +2,8 @@
 
 import { useState } from "react"
 import Image from "next/image"
+import * as Dialog from "@radix-ui/react-dialog"
+import { X, ZoomIn } from "lucide-react"
 
 type ProductImage = {
   id: string
@@ -16,6 +18,7 @@ type Props = {
 
 export function ProductGallery({ images, title }: Props) {
   const [selected, setSelected] = useState(0)
+  const [zoomOpen, setZoomOpen] = useState(false)
 
   if (images.length === 0) {
     return (
@@ -32,11 +35,16 @@ export function ProductGallery({ images, title }: Props) {
 
   return (
     <div>
-      <div style={{
-        position: "relative", aspectRatio: "1 / 1",
-        borderRadius: 8, overflow: "hidden",
-        background: "#F3F4F6", marginBottom: 12,
-      }}>
+      <button
+        onClick={() => setZoomOpen(true)}
+        style={{
+          position: "relative", aspectRatio: "1 / 1",
+          borderRadius: 8, overflow: "hidden",
+          background: "#F3F4F6", marginBottom: 12,
+          border: "none", padding: 0, width: "100%", cursor: "zoom-in",
+          display: "block",
+        }}
+      >
         <Image
           src={images[selected].url}
           alt={images[selected].alt ?? title}
@@ -45,7 +53,18 @@ export function ProductGallery({ images, title }: Props) {
           sizes="(max-width: 768px) 100vw, 50vw"
           priority
         />
-      </div>
+        <span style={{
+          position: "absolute", bottom: 10, right: 10,
+          background: "rgba(17,24,39,0.75)", color: "#FFFFFF",
+          borderRadius: 6, padding: "6px 10px",
+          fontSize: 12, fontWeight: 600,
+          display: "flex", alignItems: "center", gap: 6,
+        }}>
+          <ZoomIn size={14} />
+          Ampliar
+        </span>
+      </button>
+
       {images.length > 1 && (
         <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
           {images.map((img, i) => (
@@ -64,6 +83,49 @@ export function ProductGallery({ images, title }: Props) {
           ))}
         </div>
       )}
+
+      {/* Modal de zoom */}
+      <Dialog.Root open={zoomOpen} onOpenChange={setZoomOpen}>
+        <Dialog.Portal>
+          <Dialog.Overlay style={{
+            position: "fixed", inset: 0,
+            background: "rgba(0,0,0,0.85)", zIndex: 300,
+          }} />
+          <Dialog.Content style={{
+            position: "fixed", top: "50%", left: "50%",
+            transform: "translate(-50%, -50%)",
+            width: "min(92vw, 900px)", height: "min(92vh, 900px)",
+            zIndex: 301, outline: "none",
+          }}>
+            <Dialog.Title style={{ position: "absolute", width: 1, height: 1, overflow: "hidden" }}>
+              {title}
+            </Dialog.Title>
+            <div style={{ position: "relative", width: "100%", height: "100%" }}>
+              <Image
+                src={images[selected].url}
+                alt={images[selected].alt ?? title}
+                fill
+                style={{ objectFit: "contain" }}
+                sizes="900px"
+              />
+            </div>
+            <Dialog.Close asChild>
+              <button
+                style={{
+                  position: "absolute", top: -44, right: 0,
+                  background: "rgba(255,255,255,0.12)", border: "none",
+                  borderRadius: 6, width: 36, height: 36,
+                  display: "flex", alignItems: "center", justifyContent: "center",
+                  cursor: "pointer", color: "#FFFFFF",
+                }}
+                aria-label="Cerrar"
+              >
+                <X size={18} />
+              </button>
+            </Dialog.Close>
+          </Dialog.Content>
+        </Dialog.Portal>
+      </Dialog.Root>
     </div>
   )
 }

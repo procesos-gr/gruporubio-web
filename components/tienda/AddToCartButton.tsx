@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import * as Select from "@radix-ui/react-select"
-import { ChevronDown, Check, ShoppingBag } from "lucide-react"
+import { ChevronDown, Check, ShoppingBag, Minus, Plus } from "lucide-react"
 import { useCartStore } from "@/lib/store/cart"
 import { toast } from "sonner"
 
@@ -20,17 +20,19 @@ export function AddToCartButton({ variants, productTitle = "", labelAdd, labelAd
   const [selectedVariantId, setSelectedVariantId] = useState(
     variants.length === 1 ? variants[0].id : ""
   )
+  const [quantity, setQuantity] = useState(1)
   const { addItem, isLoading } = useCartStore()
 
   const handleAdd = async () => {
     if (!selectedVariantId) return
     try {
-      await addItem(selectedVariantId, 1)
+      await addItem(selectedVariantId, quantity)
       const variant = variants.find(v => v.id === selectedVariantId)
       toast.success(
         `${productTitle}${variant?.title && variants.length > 1 ? ` (${variant.title})` : ""} añadido al carrito`,
         { description: "Puedes verlo en el icono del carrito ↑", duration: 3500 }
       )
+      setQuantity(1)
     } catch {
       toast.error("No se pudo añadir el producto, inténtalo de nuevo.")
     }
@@ -95,23 +97,62 @@ export function AddToCartButton({ variants, productTitle = "", labelAdd, labelAd
         </Select.Root>
       )}
 
-      <button
-        onClick={handleAdd}
-        disabled={isLoading || !selectedVariantId}
-        style={{
-          display: "flex", alignItems: "center", justifyContent: "center", gap: 10,
-          width: "100%", padding: "15px 28px", borderRadius: 8, border: "none",
-          background: isLoading || !selectedVariantId ? "#D1D5DB" : "#111827",
-          color: "#FFFFFF", fontSize: 15, fontWeight: 700,
-          cursor: isLoading || !selectedVariantId ? "not-allowed" : "pointer",
-          fontFamily: "inherit", transition: "background 0.15s",
-        }}
-        onMouseEnter={e => { if (!isLoading && selectedVariantId) e.currentTarget.style.background = "#1F2937" }}
-        onMouseLeave={e => { if (!isLoading && selectedVariantId) e.currentTarget.style.background = "#111827" }}
-      >
-        <ShoppingBag size={17} />
-        {isLoading ? labelAdding : labelAdd}
-      </button>
+      <div style={{ display: "flex", gap: 10 }}>
+        {/* Selector de cantidad */}
+        <div style={{
+          display: "flex", alignItems: "center",
+          border: "1.5px solid #E5E7EB", borderRadius: 8,
+          flexShrink: 0,
+        }}>
+          <button
+            type="button"
+            onClick={() => setQuantity(q => Math.max(1, q - 1))}
+            disabled={quantity <= 1}
+            style={{
+              width: 38, height: 50, display: "flex", alignItems: "center", justifyContent: "center",
+              border: "none", background: "transparent", cursor: quantity <= 1 ? "not-allowed" : "pointer",
+              color: quantity <= 1 ? "#D1D5DB" : "#374151",
+            }}
+            aria-label="Disminuir cantidad"
+          >
+            <Minus size={15} />
+          </button>
+          <span style={{
+            width: 32, textAlign: "center", fontSize: 15, fontWeight: 700, color: "#111827",
+          }}>
+            {quantity}
+          </span>
+          <button
+            type="button"
+            onClick={() => setQuantity(q => q + 1)}
+            style={{
+              width: 38, height: 50, display: "flex", alignItems: "center", justifyContent: "center",
+              border: "none", background: "transparent", cursor: "pointer", color: "#374151",
+            }}
+            aria-label="Aumentar cantidad"
+          >
+            <Plus size={15} />
+          </button>
+        </div>
+
+        <button
+          onClick={handleAdd}
+          disabled={isLoading || !selectedVariantId}
+          style={{
+            display: "flex", alignItems: "center", justifyContent: "center", gap: 10,
+            flex: 1, padding: "15px 28px", borderRadius: 8, border: "none",
+            background: isLoading || !selectedVariantId ? "#D1D5DB" : "#111827",
+            color: "#FFFFFF", fontSize: 15, fontWeight: 700,
+            cursor: isLoading || !selectedVariantId ? "not-allowed" : "pointer",
+            fontFamily: "inherit", transition: "background 0.15s",
+          }}
+          onMouseEnter={e => { if (!isLoading && selectedVariantId) e.currentTarget.style.background = "#1F2937" }}
+          onMouseLeave={e => { if (!isLoading && selectedVariantId) e.currentTarget.style.background = "#111827" }}
+        >
+          <ShoppingBag size={17} />
+          {isLoading ? labelAdding : labelAdd}
+        </button>
+      </div>
     </div>
   )
 }
