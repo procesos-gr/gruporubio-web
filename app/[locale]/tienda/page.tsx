@@ -61,7 +61,7 @@ export default async function TiendaPage({ params }: { params: Promise<{ locale:
             }
           `}</style>
 
-          <section style={{ position: "relative", minHeight: 420 }}>
+          <section style={{ position: "relative", minHeight: 560 }}>
             <Image
               src="/images/tienda-hero.jpg"
               alt="Productos de limpieza profesional"
@@ -78,7 +78,7 @@ export default async function TiendaPage({ params }: { params: Promise<{ locale:
 
             <div className="tienda-hero-content" style={{
               position: "relative", zIndex: 1,
-              padding: "64px 24px 72px",
+              padding: "100px 24px 100px",
               display: "flex", flexDirection: "column",
               alignItems: "center", textAlign: "center",
             }}>
