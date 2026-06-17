@@ -98,7 +98,7 @@ export default async function TiendaPage({ params }: { params: Promise<{ locale:
                 fontSize: "clamp(36px, 5vw, 64px)",
                 fontWeight: 800, color: "#FFFFFF",
                 letterSpacing: "-2px", lineHeight: 1.06,
-                marginBottom: 36,
+                marginBottom: 96,
               }}>
                 Productos de limpieza profesional
               </h1>
