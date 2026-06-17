@@ -27,12 +27,14 @@ type Variant = {
   calculated_price?: { calculated_amount?: number | null } | null
 }
 type Collection = { id: string; title: string; handle: string }
+type ProductImage = { url: string }
 type Product = {
   id: string
   handle: string
   title: string
   description?: string | null
   thumbnail: string | null
+  images?: ProductImage[]
   variants?: Variant[]
   collection?: Collection | null
 }
@@ -109,7 +111,7 @@ export default async function CategoriaPage({
     const result = await medusa.store.product.list({
       category_id: [category.id],
       region_id: REGION_ID,
-      fields: "+variants.calculated_price,+collection.id,+collection.title,+collection.handle",
+      fields: "+variants.calculated_price,+collection.id,+collection.title,+collection.handle,+images",
       limit: 100,
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } as any)
@@ -223,6 +225,8 @@ export default async function CategoriaPage({
                   .filter(v => v.id && v.title)
                   .map(v => ({ id: v.id, title: v.title! }))
 
+                const secondImage = (product.images ?? []).find(img => img.url !== product.thumbnail)?.url ?? null
+
                 return (
                   <ProductCard
                     key={product.id}
@@ -230,6 +234,7 @@ export default async function CategoriaPage({
                     title={product.title}
                     description={product.description}
                     thumbnail={product.thumbnail}
+                    secondImage={secondImage}
                     minPrice={minPrice}
                     formats={formats}
                     categoryLabel={category!.name}
@@ -237,6 +242,7 @@ export default async function CategoriaPage({
                     currency="EUR"
                     locale={locale}
                     variants={variants}
+                    rating={null}
                   />
                 )
               })}
