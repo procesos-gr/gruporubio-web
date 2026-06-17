@@ -6,7 +6,7 @@ import { AdvisoryBanner } from "@/components/tienda/AdvisoryBanner"
 import { ReviewsCarousel } from "@/components/sections/reviews-carousel"
 import { medusa } from "@/lib/medusa"
 import Image from "next/image"
-import { ShieldCheck, MapPin, BadgeCheck, Users, Truck, Award } from "lucide-react"
+import { ShieldCheck, MapPin, BadgeCheck, Users, Truck, Award, ThumbsUp, User } from "lucide-react"
 
 const TRUST_ITEMS = [
   { icon: ShieldCheck, label: "Productos de uso profesional" },
@@ -63,6 +63,7 @@ export default async function TiendaPage({ params }: { params: Promise<{ locale:
             @media (max-width: 640px) {
               .tienda-hero-wrap { margin: 0; border-radius: 0; }
               .tienda-hero-content { padding: 48px 24px 56px !important; }
+              .hero-social-proof { flex-direction: column !important; gap: 16px !important; }
             }
           `}</style>
 
@@ -75,6 +76,12 @@ export default async function TiendaPage({ params }: { params: Promise<{ locale:
               quality={85}
               style={{ objectFit: "cover", objectPosition: "center 40%" }}
             />
+            {/* Refuerzo de legibilidad detrás del texto */}
+            <div style={{
+              position: "absolute", inset: 0,
+              background: "radial-gradient(ellipse 75% 65% at 50% 38%, rgba(0,0,0,0.50) 0%, rgba(0,0,0,0.15) 60%, transparent 80%)",
+            }} />
+
             <div className="tienda-hero-content" style={{
               position: "relative", zIndex: 1,
               padding: "100px 24px 100px",
@@ -83,17 +90,85 @@ export default async function TiendaPage({ params }: { params: Promise<{ locale:
             }}>
               <p style={{
                 fontSize: 11, fontWeight: 700, letterSpacing: "0.12em",
-                textTransform: "uppercase", color: "#111827", marginBottom: 14,
+                textTransform: "uppercase", color: "rgba(255,255,255,0.85)", marginBottom: 14,
               }}>
                 Tienda profesional · Grupo Rubio
               </p>
               <h1 style={{
                 fontSize: "clamp(36px, 5vw, 64px)",
-                fontWeight: 800, color: "#111827",
+                fontWeight: 800, color: "#FFFFFF",
                 letterSpacing: "-2px", lineHeight: 1.06,
+                marginBottom: 36,
               }}>
                 Productos de limpieza profesional
               </h1>
+
+              {/* ── PRUEBA SOCIAL: 3 apartados ── */}
+              <div className="hero-social-proof" style={{
+                display: "flex", alignItems: "center", justifyContent: "center",
+                gap: 40, flexWrap: "wrap",
+              }}>
+                {/* 1. Avatares apilados + clientes felices */}
+                <div style={{ display: "flex", alignItems: "center", gap: 13 }}>
+                  <div style={{ display: "flex" }}>
+                    {["#2563EB", "#F97316", "#16A34A"].map((color, i) => (
+                      <div key={i} style={{
+                        width: 36, height: 36, borderRadius: "50%",
+                        background: color, border: "2px solid #FFFFFF",
+                        display: "flex", alignItems: "center", justifyContent: "center",
+                        marginLeft: i === 0 ? 0 : -12,
+                        boxShadow: "0 2px 8px rgba(0,0,0,0.30)",
+                      }}>
+                        <User size={15} style={{ color: "#FFFFFF" }} strokeWidth={2} />
+                      </div>
+                    ))}
+                  </div>
+                  <span style={{
+                    fontSize: 14, fontWeight: 700, color: "#FFFFFF",
+                    textShadow: "0 1px 6px rgba(0,0,0,0.45)", whiteSpace: "nowrap",
+                  }}>
+                    +2.000 clientes felices
+                  </span>
+                </div>
+
+                {/* 2. Satisfacción */}
+                <div style={{ display: "flex", alignItems: "center", gap: 13 }}>
+                  <div style={{
+                    width: 38, height: 38, borderRadius: "50%",
+                    background: "rgba(255,255,255,0.14)",
+                    border: "2px solid rgba(255,255,255,0.45)",
+                    display: "flex", alignItems: "center", justifyContent: "center",
+                    flexShrink: 0,
+                  }}>
+                    <ThumbsUp size={17} style={{ color: "#FFFFFF" }} strokeWidth={2} />
+                  </div>
+                  <span style={{
+                    fontSize: 14, fontWeight: 700, color: "#FFFFFF",
+                    textShadow: "0 1px 6px rgba(0,0,0,0.45)", whiteSpace: "nowrap",
+                  }}>
+                    Satisfacción garantizada
+                  </span>
+                </div>
+
+                {/* 3. Calidad certificada */}
+                <div style={{ display: "flex", alignItems: "center", gap: 13 }}>
+                  <div style={{
+                    width: 38, height: 38, borderRadius: "50%",
+                    background: "rgba(255,255,255,0.14)",
+                    border: "2px solid rgba(255,255,255,0.45)",
+                    display: "flex", alignItems: "center", justifyContent: "center",
+                    flexShrink: 0,
+                  }}>
+                    <ShieldCheck size={17} style={{ color: "#FFFFFF" }} strokeWidth={2} />
+                  </div>
+                  <span style={{
+                    fontSize: 14, fontWeight: 700, color: "#FFFFFF",
+                    textShadow: "0 1px 6px rgba(0,0,0,0.45)", whiteSpace: "nowrap",
+                  }}>
+                    Calidad profesional certificada
+                  </span>
+                </div>
+              </div>
             </div>
 
             {/* ── TRUST STRIP deslizante, fondo negro, encima del borde inferior del hero ── */}
