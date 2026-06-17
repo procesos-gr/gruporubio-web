@@ -2,11 +2,14 @@ import { Navbar } from "@/components/layout/Navbar"
 import Footer from "@/components/sections/Footer"
 import { ProductGallery } from "@/components/tienda/ProductGallery"
 import { AddToCartButton } from "@/components/tienda/AddToCartButton"
+import { ProductReviews } from "@/components/tienda/ProductReviews"
+import { ProductCard } from "@/components/tienda/ProductCard"
+import { AdvisoryBanner } from "@/components/tienda/AdvisoryBanner"
 import { medusa } from "@/lib/medusa"
 import { getTranslations } from "next-intl/server"
 import Link from "next/link"
 import { notFound } from "next/navigation"
-import { ArrowLeft, ShieldCheck, Truck, Award, Package, ChevronRight } from "lucide-react"
+import { ShieldCheck, Truck, Award, Package, ChevronRight } from "lucide-react"
 
 const REGION_ID = process.env.NEXT_PUBLIC_MEDUSA_REGION_ID!
 
@@ -16,6 +19,7 @@ type MedusaVariant = {
   title?: string | null
   calculated_price?: { calculated_amount?: number | null } | null
 }
+type MedusaCategory = { id: string; name: string; handle: string }
 type MedusaProduct = {
   id: string
   title?: string | null
@@ -23,6 +27,15 @@ type MedusaProduct = {
   description?: string | null
   thumbnail?: string | null
   images?: MedusaImage[]
+  variants?: MedusaVariant[]
+  categories?: MedusaCategory[]
+}
+
+type RelatedProduct = {
+  id: string
+  handle: string
+  title: string
+  thumbnail: string | null
   variants?: MedusaVariant[]
 }
 
@@ -36,11 +49,11 @@ export default async function ProductPage({
 
   let product: MedusaProduct | null = null
   try {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const result = await medusa.store.product.list({
       handle,
       region_id: REGION_ID,
-      fields: "+variants.calculated_price,+images",
+      fields: "+variants.calculated_price,+images,*categories",
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } as any)
     product = (result.products?.[0] ?? null) as MedusaProduct | null
   } catch {
@@ -68,132 +81,157 @@ export default async function ProductPage({
     ? new Intl.NumberFormat(locale, { style: "currency", currency: "EUR" }).format(minPrice / 100)
     : null
 
+  const category = product.categories?.[0] ?? null
+
+  let related: RelatedProduct[] = []
+  if (category) {
+    try {
+      const result = await medusa.store.product.list({
+        category_id: [category.id],
+        region_id: REGION_ID,
+        fields: "+variants.calculated_price",
+        limit: 5,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } as any)
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      related = ((result.products ?? []) as any[]).filter(p => p.id !== product!.id).slice(0, 4)
+    } catch {
+      related = []
+    }
+  }
+
   return (
-    <div style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", background: "#F9FAFB", minHeight: "100vh" }}>
+    <div style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", background: "#FFFFFF", minHeight: "100vh" }}>
       <Navbar />
 
-      {/* Thin dark back-strip */}
-      <div style={{ background: "#111827" }}>
-        <div style={{ maxWidth: 1100, margin: "0 auto", padding: "96px 32px 20px" }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 6, fontSize: 13, color: "rgba(255,255,255,0.45)" }}>
-            <Link href={`/${locale}`} style={{ color: "rgba(255,255,255,0.35)", textDecoration: "none" }}>Inicio</Link>
+      <div style={{ paddingTop: 84 }}>
+        {/* ── BREADCRUMB ── */}
+        <div style={{ maxWidth: 1100, margin: "0 auto", padding: "24px 32px 0" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 6, fontSize: 13, color: "#6B7280", flexWrap: "wrap" }}>
+            <Link href={`/${locale}`} style={{ color: "#9CA3AF", textDecoration: "none" }}>Inicio</Link>
             <ChevronRight size={12} />
-            <Link href={`/${locale}/tienda`} style={{ color: "rgba(255,255,255,0.45)", textDecoration: "none", display: "flex", alignItems: "center", gap: 5 }}>
-              <ArrowLeft size={12} />
-              {t("breadcrumb_shop")}
-            </Link>
+            <Link href={`/${locale}/tienda`} style={{ color: "#9CA3AF", textDecoration: "none" }}>{t("breadcrumb_shop")}</Link>
+            {category && (
+              <>
+                <ChevronRight size={12} />
+                <Link href={`/${locale}/tienda/categoria/${category.handle}`} style={{ color: "#9CA3AF", textDecoration: "none" }}>
+                  {category.name}
+                </Link>
+              </>
+            )}
+            <ChevronRight size={12} />
+            <span style={{ color: "#111827", fontWeight: 600 }}>{product.title}</span>
           </div>
         </div>
-      </div>
 
-      {/* ── Hero product block ── */}
-      <div style={{ background: "#FFFFFF", borderTop: "1px solid #1F2937" }}>
-        <div style={{ maxWidth: 1100, margin: "0 auto", padding: "52px 32px 64px" }}>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16">
+        {/* ── Hero product block ── */}
+        <div style={{ padding: "32px 32px 64px" }}>
+          <div style={{ maxWidth: 1100, margin: "0 auto" }}>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16">
 
-            {/* Gallery — will show all product images from Medusa */}
-            <ProductGallery images={images} title={product.title ?? ""} />
+              <ProductGallery images={images} title={product.title ?? ""} />
 
-            {/* Info panel */}
-            <div style={{ display: "flex", flexDirection: "column" }}>
+              {/* Info panel */}
+              <div style={{ display: "flex", flexDirection: "column" }}>
 
-              {/* Badges */}
-              <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 18, flexWrap: "wrap" }}>
-                <span style={{
-                  display: "inline-flex", alignItems: "center", gap: 5,
-                  background: "#EFF6FF", border: "1px solid #BFDBFE",
-                  borderRadius: 6, padding: "3px 10px",
-                  fontSize: 11, fontWeight: 700, color: "#1D4ED8",
-                  textTransform: "uppercase", letterSpacing: "0.08em",
-                }}>
-                  <Award size={10} />
-                  Grupo Rubio
-                </span>
-                <span style={{
-                  background: "#F0FDF4", border: "1px solid #BBF7D0",
-                  borderRadius: 6, padding: "3px 10px",
-                  fontSize: 11, fontWeight: 600, color: "#15803D",
-                }}>
-                  Uso profesional
-                </span>
-                {variants.length > 1 && (
+                {/* Badges */}
+                <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 18, flexWrap: "wrap" }}>
                   <span style={{
-                    background: "#FFF7ED", border: "1px solid #FED7AA",
+                    display: "inline-flex", alignItems: "center", gap: 5,
+                    background: "#EFF6FF", border: "1px solid #BFDBFE",
                     borderRadius: 6, padding: "3px 10px",
-                    fontSize: 11, fontWeight: 600, color: "#C2410C",
+                    fontSize: 11, fontWeight: 700, color: "#1D4ED8",
+                    textTransform: "uppercase", letterSpacing: "0.08em",
                   }}>
-                    {variants.length} variantes
+                    <Award size={10} />
+                    Grupo Rubio
                   </span>
-                )}
-              </div>
-
-              {/* Title */}
-              <h1 style={{
-                fontSize: "clamp(22px, 3vw, 36px)", fontWeight: 800, color: "#111827",
-                letterSpacing: "-1px", lineHeight: 1.1, marginBottom: 20,
-              }}>
-                {product.title}
-              </h1>
-
-              {/* Price */}
-              {formattedPrice && (
-                <div style={{
-                  display: "flex", alignItems: "baseline", gap: 10,
-                  marginBottom: 28, paddingBottom: 28,
-                  borderBottom: "1px solid #F3F4F6",
-                }}>
-                  <span style={{ fontSize: 38, fontWeight: 800, color: "#111827", letterSpacing: "-1.5px" }}>
-                    {formattedPrice}
+                  <span style={{
+                    background: "#F0FDF4", border: "1px solid #BBF7D0",
+                    borderRadius: 6, padding: "3px 10px",
+                    fontSize: 11, fontWeight: 600, color: "#15803D",
+                  }}>
+                    Uso profesional
                   </span>
-                  <span style={{ fontSize: 13, color: "#6B7280", fontWeight: 500 }}>IVA incl.</span>
+                  {variants.length > 1 && (
+                    <span style={{
+                      background: "#FFF7ED", border: "1px solid #FED7AA",
+                      borderRadius: 6, padding: "3px 10px",
+                      fontSize: 11, fontWeight: 600, color: "#C2410C",
+                    }}>
+                      {variants.length} variantes
+                    </span>
+                  )}
                 </div>
-              )}
 
-              {/* Short description — from Medusa product description */}
-              {product.description && (
-                <p style={{
-                  fontSize: 15, color: "#4B5563", lineHeight: 1.75,
-                  marginBottom: 28,
+                {/* Title */}
+                <h1 style={{
+                  fontSize: "clamp(22px, 3vw, 36px)", fontWeight: 800, color: "#111827",
+                  letterSpacing: "-1px", lineHeight: 1.1, marginBottom: 20,
                 }}>
-                  {product.description}
-                </p>
-              )}
+                  {product.title}
+                </h1>
 
-              {/* Add to cart */}
-              <AddToCartButton
-                variants={variants}
-                productTitle={product.title ?? ""}
-                labelAdd={t("add_to_cart")}
-                labelAdding={t("adding")}
-                labelSelect={t("select_variant")}
-              />
-
-              {/* Trust row */}
-              <div style={{
-                display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 10,
-                marginTop: 28, paddingTop: 24, borderTop: "1px solid #F3F4F6",
-              }}>
-                {[
-                  { icon: <Truck size={15} />, label: "Envío rápido" },
-                  { icon: <ShieldCheck size={15} />, label: "Calidad garantizada" },
-                  { icon: <Package size={15} />, label: "Stock disponible" },
-                ].map(({ icon, label }) => (
-                  <div key={label} style={{
-                    display: "flex", flexDirection: "column", alignItems: "center", gap: 6,
-                    padding: "12px 6px", borderRadius: 8,
-                    background: "#F9FAFB", border: "1px solid #F3F4F6", textAlign: "center",
+                {/* Price */}
+                {formattedPrice && (
+                  <div style={{
+                    display: "flex", alignItems: "baseline", gap: 10,
+                    marginBottom: 28, paddingBottom: 28,
+                    borderBottom: "1px solid #F3F4F6",
                   }}>
-                    <span style={{ color: "#2563EB" }}>{icon}</span>
-                    <span style={{ fontSize: 11, fontWeight: 600, color: "#374151", lineHeight: 1.3 }}>{label}</span>
+                    <span style={{ fontSize: 38, fontWeight: 800, color: "#111827", letterSpacing: "-1.5px" }}>
+                      {formattedPrice}
+                    </span>
+                    <span style={{ fontSize: 13, color: "#6B7280", fontWeight: 500 }}>IVA incl.</span>
                   </div>
-                ))}
+                )}
+
+                {/* Short description */}
+                {product.description && (
+                  <p style={{
+                    fontSize: 15, color: "#4B5563", lineHeight: 1.75,
+                    marginBottom: 28,
+                  }}>
+                    {product.description}
+                  </p>
+                )}
+
+                {/* Add to cart */}
+                <AddToCartButton
+                  variants={variants}
+                  productTitle={product.title ?? ""}
+                  labelAdd={t("add_to_cart")}
+                  labelAdding={t("adding")}
+                  labelSelect={t("select_variant")}
+                />
+
+                {/* Trust row */}
+                <div style={{
+                  display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 10,
+                  marginTop: 28, paddingTop: 24, borderTop: "1px solid #F3F4F6",
+                }}>
+                  {[
+                    { icon: <Truck size={15} />, label: "Envío rápido" },
+                    { icon: <ShieldCheck size={15} />, label: "Calidad garantizada" },
+                    { icon: <Package size={15} />, label: "Stock disponible" },
+                  ].map(({ icon, label }) => (
+                    <div key={label} style={{
+                      display: "flex", flexDirection: "column", alignItems: "center", gap: 6,
+                      padding: "12px 6px", borderRadius: 8,
+                      background: "#F9FAFB", border: "1px solid #F3F4F6", textAlign: "center",
+                    }}>
+                      <span style={{ color: "#2563EB" }}>{icon}</span>
+                      <span style={{ fontSize: 11, fontWeight: 600, color: "#374151", lineHeight: 1.3 }}>{label}</span>
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
 
-      {/* ── Description section — populated from Medusa ── */}
+      {/* ── Description section ── */}
       {product.description && (
         <div style={{ background: "#F9FAFB", borderTop: "1px solid #E5E7EB" }}>
           <div style={{ maxWidth: 1100, margin: "0 auto", padding: "56px 32px" }}>
@@ -213,7 +251,6 @@ export default async function ProductPage({
                 </div>
               </div>
 
-              {/* Sidebar specs placeholder — future: add custom Medusa metadata fields */}
               <div style={{
                 background: "#FFFFFF", borderRadius: 8,
                 border: "1px solid #E5E7EB", padding: "24px",
@@ -227,7 +264,7 @@ export default async function ProductPage({
                     { label: "Referencia", value: product.handle },
                     { label: "Variantes disponibles", value: variants.length > 0 ? `${variants.length}` : "—" },
                     { label: "Uso", value: "Profesional" },
-                    { label: "Categoría", value: "Higiene industrial" },
+                    { label: "Categoría", value: category?.name ?? "—" },
                   ].map(({ label, value }) => (
                     <div key={label} style={{ display: "flex", justifyContent: "space-between", gap: 8, paddingBottom: 12, borderBottom: "1px solid #F3F4F6" }}>
                       <span style={{ fontSize: 12, color: "#6B7280", fontWeight: 500 }}>{label}</span>
@@ -240,6 +277,51 @@ export default async function ProductPage({
           </div>
         </div>
       )}
+
+      {/* ── Reviews — preparado para cuando exista sistema de opiniones ── */}
+      <ProductReviews rating={null} reviews={[]} />
+
+      {/* ── Productos relacionados de la misma categoría ── */}
+      {related.length > 0 && (
+        <div style={{ background: "#F8FAFC", borderTop: "1px solid #E5E7EB" }}>
+          <div style={{ maxWidth: 1100, margin: "0 auto", padding: "56px 32px" }}>
+            <h2 style={{ fontSize: 22, fontWeight: 800, color: "#111827", letterSpacing: "-0.5px", marginBottom: 24 }}>
+              También te puede interesar
+            </h2>
+            <div style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))",
+              gap: 20,
+            }}>
+              {related.map(p => {
+                const relPrices = (p.variants ?? [])
+                  .map(v => v.calculated_price?.calculated_amount ?? null)
+                  .filter((x): x is number => x !== null)
+                const relMinPrice = relPrices.length > 0 ? Math.min(...relPrices) : null
+                const relVariants = (p.variants ?? [])
+                  .filter(v => v.id && v.title)
+                  .map(v => ({ id: v.id, title: v.title! }))
+
+                return (
+                  <ProductCard
+                    key={p.id}
+                    handle={p.handle}
+                    title={p.title}
+                    thumbnail={p.thumbnail}
+                    minPrice={relMinPrice}
+                    currency="EUR"
+                    locale={locale}
+                    variants={relVariants}
+                    rating={null}
+                  />
+                )
+              })}
+            </div>
+          </div>
+        </div>
+      )}
+
+      <AdvisoryBanner locale={locale} />
 
       <Footer />
     </div>
