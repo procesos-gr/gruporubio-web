@@ -71,7 +71,8 @@ function getFormats(product: Product): string[] {
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ handle: string }> }) {
-  const { handle } = await params
+  const { handle: rawHandle } = await params
+  const handle = decodeURIComponent(rawHandle)
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const result = await medusa.store.category.list({ handle: [handle] } as any).catch(() => null)
   const category = result?.product_categories?.[0]
@@ -86,7 +87,8 @@ export default async function CategoriaPage({
 }: {
   params: Promise<{ locale: string; handle: string }>
 }) {
-  const { locale, handle } = await params
+  const { locale, handle: rawHandle } = await params
+  const handle = decodeURIComponent(rawHandle)
 
   let category: Category | null = null
   try {
