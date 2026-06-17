@@ -63,14 +63,6 @@ export default async function TiendaPage({ params }: { params: Promise<{ locale:
             @media (max-width: 640px) {
               .tienda-hero-wrap { margin: 0; border-radius: 0; }
               .tienda-hero-content { padding: 48px 24px 56px !important; }
-              .tienda-hero-overlay {
-                background: linear-gradient(
-                  to bottom,
-                  rgba(255,255,255,0.85) 0%,
-                  rgba(255,255,255,0.55) 65%,
-                  rgba(255,255,255,0.10) 100%
-                ) !important;
-              }
             }
           `}</style>
 
@@ -83,12 +75,6 @@ export default async function TiendaPage({ params }: { params: Promise<{ locale:
               quality={85}
               style={{ objectFit: "cover", objectPosition: "center 40%" }}
             />
-            {/* Overlay oscuro sutil para legibilidad del texto blanco */}
-            <div style={{
-              position: "absolute", inset: 0,
-              background: "rgba(0,0,0,0.32)",
-            }} />
-
             <div className="tienda-hero-content" style={{
               position: "relative", zIndex: 1,
               padding: "100px 24px 100px",
@@ -97,13 +83,13 @@ export default async function TiendaPage({ params }: { params: Promise<{ locale:
             }}>
               <p style={{
                 fontSize: 11, fontWeight: 700, letterSpacing: "0.12em",
-                textTransform: "uppercase", color: "rgba(255,255,255,0.80)", marginBottom: 14,
+                textTransform: "uppercase", color: "#111827", marginBottom: 14,
               }}>
                 Tienda profesional · Grupo Rubio
               </p>
               <h1 style={{
                 fontSize: "clamp(36px, 5vw, 64px)",
-                fontWeight: 800, color: "#FFFFFF",
+                fontWeight: 800, color: "#111827",
                 letterSpacing: "-2px", lineHeight: 1.06,
               }}>
                 Productos de limpieza profesional
@@ -150,7 +136,7 @@ export default async function TiendaPage({ params }: { params: Promise<{ locale:
       {/* ── NUESTRA COLECCIÓN ── 8 categorías con simbología profesional ── */}
       <CollectionShowcase locale={locale} />
 
-      {/* ── STOREFRONT: filtros + grid + más vendidos + banner B2B ── */}
+      {/* ── MÁS VENDIDOS ── */}
       <TiendaStorefront products={products} locale={locale} />
 
       {/* ── GOOGLE REVIEWS ── */}
