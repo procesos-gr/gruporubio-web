@@ -96,10 +96,11 @@ export default async function TiendaPage({ params }: { params: Promise<{ locale:
               </h1>
             </div>
 
-            {/* ── TRUST STRIP deslizante, fondo transparente, encima del borde inferior del hero ── */}
+            {/* ── TRUST STRIP deslizante, fondo negro, encima del borde inferior del hero ── */}
             <div style={{
               position: "absolute", bottom: 0, left: 0, right: 0,
-              background: "transparent",
+              background: "#0B0F14",
+              borderTop: "1px solid rgba(255,255,255,0.08)",
               overflow: "hidden",
               zIndex: 2,
             }}>
@@ -115,10 +116,10 @@ export default async function TiendaPage({ params }: { params: Promise<{ locale:
                       display: "flex", alignItems: "center", gap: 9,
                       padding: "13px 32px",
                     }}>
-                      <Icon size={14} style={{ color: "#111827", flexShrink: 0 }} />
+                      <Icon size={14} style={{ color: "rgba(255,255,255,0.50)", flexShrink: 0 }} />
                       <span style={{
-                        fontSize: 12.5, fontWeight: 700,
-                        color: "#111827", letterSpacing: "0.01em",
+                        fontSize: 12.5, fontWeight: 600,
+                        color: "rgba(255,255,255,0.85)", letterSpacing: "0.01em",
                       }}>
                         {item.label}
                       </span>
