@@ -92,17 +92,16 @@ export function CheckoutForm({ labels, locale }: Props) {
   }
 
   const handlePayPalCreateOrder = async () => {
-    // En sandbox, PayPal necesita un orderId propio. Para dev devolvemos un ID temporal.
-    try {
-      await fetch("/api/paypal/create-order", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ cartId, amount: total }),
-      })
-    } catch {
-      // ignorar error de conexión con Medusa en dev
+    const res = await fetch("/api/paypal/create-order", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ cartId }),
+    })
+    const data = await res.json() as { paypalOrderId?: string; error?: string }
+    if (!res.ok || !data.paypalOrderId) {
+      throw new Error(data.error ?? "Error al crear el pedido PayPal")
     }
-    return `paypal-order-${Date.now()}`
+    return data.paypalOrderId
   }
 
   const handlePayPalApprove = async () => {
