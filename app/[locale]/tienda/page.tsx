@@ -91,7 +91,7 @@ export default async function TiendaPage({ params }: { params: Promise<{ locale:
             }}>
               <p style={{
                 fontSize: 11, fontWeight: 700, letterSpacing: "0.12em",
-                textTransform: "uppercase", color: "#3B82F6", marginBottom: 14,
+                textTransform: "uppercase", color: "rgba(255,255,255,0.85)", marginBottom: 14,
               }}>
                 Tienda profesional · Grupo Rubio
               </p>
