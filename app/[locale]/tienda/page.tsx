@@ -2,6 +2,7 @@ import { Navbar } from "@/components/layout/Navbar"
 import Footer from "@/components/sections/Footer"
 import { TiendaStorefront, type StoreProduct } from "@/components/tienda/TiendaStorefront"
 import { CollectionShowcase } from "@/components/tienda/CollectionShowcase"
+import { BrandStory } from "@/components/tienda/BrandStory"
 import { AdvisoryBanner } from "@/components/tienda/AdvisoryBanner"
 import { ReviewsCarousel } from "@/components/sections/reviews-carousel"
 import { medusa } from "@/lib/medusa"
@@ -215,6 +216,9 @@ export default async function TiendaPage({ params }: { params: Promise<{ locale:
 
       {/* ── NUESTRA COLECCIÓN ── 8 categorías con simbología profesional ── */}
       <CollectionShowcase locale={locale} />
+
+      {/* ── BRAND STORY ── puzzle de imágenes + texto de confianza ── */}
+      <BrandStory />
 
       {/* ── MÁS VENDIDOS ── */}
       <TiendaStorefront products={products} locale={locale} />
