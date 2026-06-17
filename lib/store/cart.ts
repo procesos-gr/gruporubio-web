@@ -73,7 +73,7 @@ export const useCartStore = create<CartStore>()(
         try {
           if (cartId) {
             const { cart } = await medusa.store.cart.retrieve(cartId, {
-              fields: "+items,+items.variant,+items.thumbnail",
+              fields: "+items,+items.variant,+items.thumbnail,+items.total,+items.unit_price,+items.subtotal",
             } as Parameters<typeof medusa.store.cart.retrieve>[1])
             const items = parseItems(cart as { items?: CartItem[] })
             set({
@@ -144,7 +144,7 @@ export const useCartStore = create<CartStore>()(
         try {
           await medusa.store.cart.deleteLineItem(cartId, lineItemId)
           const { cart } = await medusa.store.cart.retrieve(cartId, {
-            fields: "+items,+items.variant,+items.thumbnail",
+            fields: "+items,+items.variant,+items.thumbnail,+items.total,+items.unit_price,+items.subtotal",
           } as Parameters<typeof medusa.store.cart.retrieve>[1])
           const items = parseItems(cart as { items?: CartItem[] })
           set({

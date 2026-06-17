@@ -65,11 +65,23 @@ export default function CheckoutPage() {
   const locale = params.locale
   const t = useTranslations("Tienda")
   const router = useRouter()
-  const { items, total, cartId } = useCartStore()
+  const { items, total, cartId, initCart } = useCartStore()
   const [clientSecret, setClientSecret] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
+  const [cartReady, setCartReady] = useState(false)
+
+  // Si hay cartId pero items vacíos, esperar a que initCart cargue los items
+  useEffect(() => {
+    if (cartId && items.length === 0) {
+      initCart().finally(() => setCartReady(true))
+    } else {
+      setCartReady(true)
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   useEffect(() => {
+    if (!cartReady) return
     if (items.length === 0) {
       router.push(`/${locale}/tienda`)
       return
@@ -93,7 +105,7 @@ export default function CheckoutPage() {
         else if (data.clientSecret) setClientSecret(data.clientSecret)
       })
       .catch(() => setError("Error de conexión. Inténtalo de nuevo."))
-  }, [items.length, total, cartId, locale, router])
+  }, [cartReady, items.length, total, cartId, locale, router])
 
   const formatPrice = (amount: number) =>
     new Intl.NumberFormat(locale, { style: "currency", currency: "EUR" }).format(amount / 100)
