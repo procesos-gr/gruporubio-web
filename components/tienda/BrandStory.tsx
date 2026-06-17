@@ -21,10 +21,6 @@ export function BrandStory() {
         }
         .puzzle-grid {
           position: relative;
-          display: grid;
-          grid-template-columns: 1.6fr 1fr;
-          grid-template-rows: 1fr 1fr;
-          gap: 10px;
           height: 420px;
           margin-bottom: 28px;
         }
@@ -39,44 +35,60 @@ export function BrandStory() {
       <div style={{ maxWidth: 1160, margin: "0 auto" }}>
         <div className="brand-story-grid">
 
-          {/* ── PUZZLE DE IMÁGENES ── */}
+          {/* ── PUZZLE DE IMÁGENES ── 3 piezas en cascada, cada una solapando a la anterior ── */}
           <div className="puzzle-grid">
-            <div className="puzzle-cell" style={{ gridRow: "1 / 3", position: "relative", borderRadius: 8, overflow: "hidden" }}>
+            {/* Imagen grande, base del puzzle */}
+            <div className="puzzle-cell" style={{
+              position: "absolute", top: 0, left: 0,
+              width: "62%", height: "100%",
+              borderRadius: 8, overflow: "hidden",
+              zIndex: 1,
+            }}>
               <Image
-                src="/images/brand-story-large.png"
+                src="/images/tienda/brand-story/large.png"
                 alt="Productos de limpieza profesional Grupo Rubio"
                 fill
+                quality={92}
                 style={{ objectFit: "cover" }}
-                sizes="(max-width: 900px) 60vw, 360px"
+                sizes="(max-width: 900px) 70vw, 420px"
               />
             </div>
-            <div className="puzzle-cell" style={{ position: "relative", borderRadius: 8, overflow: "hidden" }}>
-              <Image
-                src="/images/brand-story-small-2.jpg"
-                alt="Bayetas y esponjas de limpieza"
-                fill
-                style={{ objectFit: "cover" }}
-                sizes="(max-width: 900px) 40vw, 220px"
-              />
-            </div>
-            <div style={{ position: "relative", borderRadius: 8, overflow: "hidden" }} />
 
-            {/* Imagen pequeña ampliada, sobrepuesta sobre las demás (incluida la de arriba) */}
+            {/* Imagen pequeña 1, solapa la esquina de la grande */}
             <div className="puzzle-cell" style={{
-              position: "absolute",
-              width: "56%", height: "62%",
-              bottom: -32, right: "4%",
+              position: "absolute", top: "4%", right: "2%",
+              width: "40%", height: "44%",
               borderRadius: 8, overflow: "hidden",
-              border: "5px solid #FFFFFF",
-              boxShadow: "0 16px 36px rgba(0,0,0,0.22)",
+              border: "4px solid #FFFFFF",
+              boxShadow: "0 10px 28px rgba(0,0,0,0.18)",
               zIndex: 2,
             }}>
               <Image
-                src="/images/brand-story-small-1.jpg"
+                src="/images/tienda/brand-story/small-2.jpg"
+                alt="Bayetas y esponjas de limpieza"
+                fill
+                quality={92}
+                style={{ objectFit: "cover" }}
+                sizes="(max-width: 900px) 45vw, 270px"
+              />
+            </div>
+
+            {/* Imagen pequeña 2, ampliada, solapa la grande y la anterior */}
+            <div className="puzzle-cell" style={{
+              position: "absolute", bottom: "2%", right: "9%",
+              width: "46%", height: "50%",
+              borderRadius: 8, overflow: "hidden",
+              border: "5px solid #FFFFFF",
+              boxShadow: "0 16px 36px rgba(0,0,0,0.22)",
+              zIndex: 3,
+            }}>
+              <Image
+                src="/images/tienda/brand-story/small-1.jpg"
                 alt="Producto de limpieza en uso"
                 fill
+                quality={92}
                 style={{ objectFit: "cover" }}
-                sizes="(max-width: 900px) 36vw, 220px"
+                sizes="(max-width: 900px) 50vw, 300px"
               />
             </div>
           </div>

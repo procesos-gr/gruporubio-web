@@ -70,7 +70,7 @@ export default async function TiendaPage({ params }: { params: Promise<{ locale:
 
           <section style={{ position: "relative", minHeight: 560 }}>
             <Image
-              src="/images/tienda-hero.jpg"
+              src="/images/tienda/hero.jpg"
               alt="Productos de limpieza profesional"
               fill
               priority
