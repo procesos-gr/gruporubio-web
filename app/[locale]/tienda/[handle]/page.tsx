@@ -127,6 +127,44 @@ export default async function ProductPage({
     }
   }
 
+  // ── Reviews (plugin @lambdacurry/medusa-product-reviews) ──
+  type RawReview = {
+    id: string
+    name?: string | null
+    rating: number
+    content?: string | null
+    created_at: string
+  }
+  type StatsResponse = { product_review_stats: { average_rating?: number; review_count?: number }[] }
+  type ReviewsResponse = { product_reviews: RawReview[] }
+
+  let reviewRating: { average: number; count: number } | null = null
+  let reviewList: { id: string; author: string; rating: number; text: string; date: string }[] = []
+  try {
+    const [statsRes, reviewsRes] = await Promise.all([
+      medusa.client.fetch<StatsResponse>("/store/product-review-stats", {
+        query: { product_id: product.id },
+      }),
+      medusa.client.fetch<ReviewsResponse>("/store/product-reviews", {
+        query: { product_id: product.id, status: "approved", limit: 20 },
+      }),
+    ])
+    const stats = statsRes.product_review_stats?.[0]
+    if (stats && (stats.review_count ?? 0) > 0) {
+      reviewRating = { average: stats.average_rating ?? 0, count: stats.review_count ?? 0 }
+    }
+    reviewList = (reviewsRes.product_reviews ?? []).map(r => ({
+      id: r.id,
+      author: r.name || "Cliente",
+      rating: r.rating,
+      text: r.content ?? "",
+      date: new Date(r.created_at).toLocaleDateString(locale, { year: "numeric", month: "long" }),
+    }))
+  } catch {
+    reviewRating = null
+    reviewList = []
+  }
+
   const productSchema = {
     "@context": "https://schema.org",
     "@type": "Product",
@@ -328,7 +366,7 @@ export default async function ProductPage({
       )}
 
       {/* ── Reviews — preparado para cuando exista sistema de opiniones ── */}
-      <ProductReviews rating={null} reviews={[]} />
+      <ProductReviews rating={reviewRating} reviews={reviewList} />
 
       {/* ── Productos relacionados de la misma categoría ── */}
       {related.length > 0 && (
