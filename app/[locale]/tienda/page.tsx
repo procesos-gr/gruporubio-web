@@ -70,37 +70,31 @@ export default async function TiendaPage({ params }: { params: Promise<{ locale:
               quality={85}
               style={{ objectFit: "cover", objectPosition: "center 40%" }}
             />
-            <div className="tienda-hero-overlay" style={{
+            {/* Overlay oscuro sutil para legibilidad del texto blanco */}
+            <div style={{
               position: "absolute", inset: 0,
-              background: "linear-gradient(to right, rgba(255,255,255,0.92) 0%, rgba(255,255,255,0.75) 35%, rgba(255,255,255,0.18) 62%, rgba(255,255,255,0) 100%)",
+              background: "rgba(0,0,0,0.32)",
             }} />
 
             <div className="tienda-hero-content" style={{
               position: "relative", zIndex: 1,
-              padding: "64px 56px 72px",
-              maxWidth: 600,
+              padding: "64px 24px 72px",
+              display: "flex", flexDirection: "column",
+              alignItems: "center", textAlign: "center",
             }}>
               <p style={{
                 fontSize: 11, fontWeight: 700, letterSpacing: "0.12em",
-                textTransform: "uppercase", color: "#2563EB", marginBottom: 14,
+                textTransform: "uppercase", color: "rgba(255,255,255,0.80)", marginBottom: 14,
               }}>
                 Tienda profesional · Grupo Rubio
               </p>
               <h1 style={{
-                fontSize: "clamp(34px, 4vw, 56px)",
-                fontWeight: 800, color: "#111827",
+                fontSize: "clamp(36px, 5vw, 64px)",
+                fontWeight: 800, color: "#FFFFFF",
                 letterSpacing: "-2px", lineHeight: 1.06,
-                marginBottom: 18,
               }}>
-                Todo lo que necesitas<br />para una higiene impecable.
+                Productos de limpieza profesional
               </h1>
-              <p style={{
-                fontSize: 17, fontWeight: 500, color: "#374151",
-                lineHeight: 1.65, maxWidth: 420,
-              }}>
-                Desengrasantes, desinfectantes, insecticidas y productos de higiene
-                para empresas, hostelería y comunidades de vecinos.
-              </p>
             </div>
           </section>
         </div>
