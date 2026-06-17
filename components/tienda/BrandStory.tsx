@@ -75,8 +75,8 @@ export function BrandStory() {
 
             {/* Imagen pequeña 2, ampliada, solapa la grande y la anterior */}
             <div className="puzzle-cell" style={{
-              position: "absolute", bottom: "2%", right: "9%",
-              width: "46%", height: "50%",
+              position: "absolute", top: "34%", right: "9%",
+              width: "46%", height: "56%",
               borderRadius: 8, overflow: "hidden",
               border: "5px solid #FFFFFF",
               boxShadow: "0 16px 36px rgba(0,0,0,0.22)",
