@@ -80,14 +80,14 @@ export default async function TiendaPage({ params }: { params: Promise<{ locale:
             {/* Refuerzo de legibilidad detrás del texto */}
             <div style={{
               position: "absolute", inset: 0,
-              background: "radial-gradient(ellipse 75% 65% at 50% 38%, rgba(0,0,0,0.50) 0%, rgba(0,0,0,0.15) 60%, transparent 80%)",
+              background: "radial-gradient(ellipse 70% 65% at 32% 38%, rgba(0,0,0,0.50) 0%, rgba(0,0,0,0.15) 60%, transparent 80%)",
             }} />
 
             <div className="tienda-hero-content" style={{
               position: "relative", zIndex: 1,
               padding: "100px 24px 100px",
               display: "flex", flexDirection: "column",
-              alignItems: "center", textAlign: "center",
+              alignItems: "flex-start", textAlign: "left",
             }}>
               <p style={{
                 fontSize: 11, fontWeight: 700, letterSpacing: "0.12em",
@@ -99,15 +99,15 @@ export default async function TiendaPage({ params }: { params: Promise<{ locale:
                 fontSize: "clamp(36px, 5vw, 64px)",
                 fontWeight: 800, color: "#FFFFFF",
                 letterSpacing: "-2px", lineHeight: 1.06,
-                marginBottom: 124,
+                marginBottom: 36,
               }}>
                 Productos de limpieza profesional
               </h1>
 
-              {/* ── PRUEBA SOCIAL: 3 apartados ── */}
+              {/* ── PRUEBA SOCIAL: 3 apartados, en columna a la izquierda ── */}
               <div className="hero-social-proof" style={{
-                display: "flex", alignItems: "center", justifyContent: "center",
-                gap: 40, flexWrap: "wrap",
+                display: "flex", flexDirection: "column",
+                alignItems: "flex-start", gap: 16,
               }}>
                 {/* 1. Avatares apilados + clientes felices */}
                 <div style={{ display: "flex", alignItems: "center", gap: 13 }}>
