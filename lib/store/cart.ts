@@ -113,7 +113,6 @@ export const useCartStore = create<CartStore>()(
             items,
             total: (cart as { total?: number }).total ?? 0,
             itemCount: items.reduce((s, i) => s + i.quantity, 0),
-            isOpen: true,
           })
         } finally {
           set({ isLoading: false })

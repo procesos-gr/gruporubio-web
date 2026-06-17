@@ -162,6 +162,7 @@ export default async function ProductPage({
               {/* Add to cart */}
               <AddToCartButton
                 variants={variants}
+                productTitle={product.title ?? ""}
                 labelAdd={t("add_to_cart")}
                 labelAdding={t("adding")}
                 labelSelect={t("select_variant")}
