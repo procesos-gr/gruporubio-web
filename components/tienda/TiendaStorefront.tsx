@@ -100,56 +100,17 @@ export function TiendaStorefront({ products, locale }: Props) {
   return (
     <div style={{ background: "#F8FAFC" }}>
       <style>{`
-        .trust-grid { grid-template-columns: repeat(4, 1fr) !important; }
-        .trust-item-border { border-right: 1px solid #F3F4F6; }
         .store-grid { grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)) !important; }
         @media (max-width: 640px) {
-          .trust-grid { grid-template-columns: repeat(2, 1fr) !important; }
-          .trust-item-border { border-right: none !important; border-bottom: 1px solid #F3F4F6; }
-          .trust-item-border:nth-child(odd) { border-right: 1px solid #F3F4F6 !important; }
-          .trust-item-border:nth-child(3), .trust-item-border:nth-child(4) { border-bottom: none !important; }
           .store-grid { grid-template-columns: repeat(2, 1fr) !important; gap: 12px !important; }
           .store-outer-pad { padding: 20px 16px 60px !important; }
           .b2b-banner { flex-direction: column !important; padding: 28px 24px !important; }
-          .b2b-banner-ctas { flex-direction: row !important; width: 100%; }
           .filterbar-inner { padding: 10px 0 !important; }
-          .hero-stats { display: none !important; }
         }
         @media (max-width: 480px) {
           .store-grid { grid-template-columns: repeat(2, 1fr) !important; gap: 10px !important; }
         }
       `}</style>
-
-      {/* ── TRUST BAR ─────────────────────────────────── */}
-      <div style={{
-        background: "#FFFFFF",
-        borderBottom: "1px solid #E5E7EB",
-        padding: "0 32px",
-      }}>
-        <div className="trust-grid" style={{
-          maxWidth: 1160, margin: "0 auto",
-          display: "grid",
-          gap: 0,
-        }}>
-          {[
-            { icon: "🚚", title: "Entrega 24–48h", sub: "En toda Navarra" },
-            { icon: "🏅", title: "+3.000 empresas", sub: "confían en nosotros" },
-            { icon: "✅", title: "Productos certificados", sub: "Uso profesional" },
-            { icon: "💬", title: "Asesoramiento gratuito", sub: "Expertos en higiene" },
-          ].map((item, i) => (
-            <div key={i} className={i < 3 ? "trust-item-border" : ""} style={{
-              display: "flex", alignItems: "center", gap: 12,
-              padding: "18px 20px",
-            }}>
-              <span style={{ fontSize: 22, lineHeight: 1 }}>{item.icon}</span>
-              <div>
-                <p style={{ fontSize: 13, fontWeight: 700, color: "#111827", lineHeight: 1.2 }}>{item.title}</p>
-                <p style={{ fontSize: 12, color: "#6B7280", marginTop: 2 }}>{item.sub}</p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
 
       {/* ── FILTER BAR ────────────────────────────────── */}
       <div style={{
