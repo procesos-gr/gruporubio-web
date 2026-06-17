@@ -50,3 +50,5 @@ next-env.d.ts
 .ai-variants/
 preview-variantes/
 _variants/
+
+.vercel
