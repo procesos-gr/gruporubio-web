@@ -3,7 +3,8 @@ import { useEffect, useState } from "react"
 import { useParams, useRouter } from "next/navigation"
 import { Navbar } from "@/components/layout/Navbar"
 import Footer from "@/components/sections/Footer"
-import { LogOut, ShoppingBag, User } from "lucide-react"
+import { ReviewForm } from "@/components/tienda/ReviewForm"
+import { LogOut, ShoppingBag, User, Star } from "lucide-react"
 
 const MEDUSA_URL = process.env.NEXT_PUBLIC_MEDUSA_URL || "http://localhost:9000"
 const PUBLISHABLE_KEY = process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY || ""
@@ -16,6 +17,7 @@ type Customer = {
   phone?: string
 }
 
+type OrderItem = { id: string; title: string; quantity: number; unit_price: number; product_id?: string | null }
 type Order = {
   id: string
   display_id: number
@@ -23,7 +25,7 @@ type Order = {
   status: string
   total: number
   currency_code: string
-  items?: { title: string; quantity: number; unit_price: number }[]
+  items?: OrderItem[]
 }
 
 const STATUS_LABEL: Record<string, string> = {
@@ -40,6 +42,8 @@ export default function CuentaPage() {
   const [orders, setOrders] = useState<Order[]>([])
   const [loading, setLoading] = useState(true)
   const [googleMeta, setGoogleMeta] = useState<{ name?: string; picture?: string } | null>(null)
+  const [openReviewFor, setOpenReviewFor] = useState<string | null>(null)
+  const [reviewedItems, setReviewedItems] = useState<Set<string>>(new Set())
 
   useEffect(() => {
     const token = localStorage.getItem("medusa_customer_token")
@@ -60,7 +64,7 @@ export default function CuentaPage() {
 
     Promise.all([
       fetch(`${MEDUSA_URL}/store/customers/me`, { headers }).then(r => r.json()),
-      fetch(`${MEDUSA_URL}/store/orders`, { headers }).then(r => r.json()),
+      fetch(`${MEDUSA_URL}/store/orders?fields=*items,+items.id,+items.product_id`, { headers }).then(r => r.json()),
     ]).then(([customerData, ordersData]) => {
       if (customerData.customer) {
         setCustomer(customerData.customer)
@@ -236,9 +240,42 @@ export default function CuentaPage() {
                       {order.items && order.items.length > 0 && (
                         <div style={{ marginTop: 12, paddingTop: 12, borderTop: "1px solid #E5E7EB" }}>
                           {order.items.map((item, i) => (
-                            <p key={i} style={{ fontSize: 13, color: "#6B7280", margin: "0 0 3px" }}>
-                              {item.quantity}× {item.title} — {(item.unit_price / 100).toFixed(2)} {order.currency_code?.toUpperCase()}
-                            </p>
+                            <div key={item.id || i}>
+                              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 10, flexWrap: "wrap" }}>
+                                <p style={{ fontSize: 13, color: "#6B7280", margin: "0 0 3px" }}>
+                                  {item.quantity}× {item.title} — {(item.unit_price / 100).toFixed(2)} {order.currency_code?.toUpperCase()}
+                                </p>
+                                {order.status === "completed" && item.id && (
+                                  reviewedItems.has(item.id) ? (
+                                    <span style={{ display: "flex", alignItems: "center", gap: 5, fontSize: 12, color: "#16A34A", fontWeight: 600 }}>
+                                      <Star size={13} style={{ fill: "#16A34A" }} /> Opinión enviada
+                                    </span>
+                                  ) : (
+                                    <button
+                                      onClick={() => setOpenReviewFor(openReviewFor === item.id ? null : item.id)}
+                                      style={{
+                                        fontSize: 12, fontWeight: 600, color: "#2563EB",
+                                        background: "none", border: "none", cursor: "pointer",
+                                        padding: "2px 0", fontFamily: "inherit",
+                                      }}
+                                    >
+                                      {openReviewFor === item.id ? "Cancelar" : "Escribir opinión"}
+                                    </button>
+                                  )
+                                )}
+                              </div>
+                              {openReviewFor === item.id && (
+                                <ReviewForm
+                                  orderId={order.id}
+                                  orderLineItemId={item.id}
+                                  productTitle={item.title}
+                                  onSubmitted={() => {
+                                    setReviewedItems(prev => new Set(prev).add(item.id))
+                                    setOpenReviewFor(null)
+                                  }}
+                                />
+                              )}
+                            </div>
                           ))}
                         </div>
                       )}
