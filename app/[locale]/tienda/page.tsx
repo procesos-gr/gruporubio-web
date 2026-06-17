@@ -80,18 +80,18 @@ export default async function TiendaPage({ params }: { params: Promise<{ locale:
             {/* Refuerzo de legibilidad detrás del texto */}
             <div style={{
               position: "absolute", inset: 0,
-              background: "radial-gradient(ellipse 70% 65% at 32% 38%, rgba(0,0,0,0.50) 0%, rgba(0,0,0,0.15) 60%, transparent 80%)",
+              background: "radial-gradient(ellipse 75% 65% at 50% 38%, rgba(0,0,0,0.50) 0%, rgba(0,0,0,0.15) 60%, transparent 80%)",
             }} />
 
             <div className="tienda-hero-content" style={{
               position: "relative", zIndex: 1,
               padding: "100px 24px 100px",
               display: "flex", flexDirection: "column",
-              alignItems: "flex-start", textAlign: "left",
+              alignItems: "center", textAlign: "center",
             }}>
               <p style={{
                 fontSize: 11, fontWeight: 700, letterSpacing: "0.12em",
-                textTransform: "uppercase", color: "rgba(255,255,255,0.85)", marginBottom: 14,
+                textTransform: "uppercase", color: "#3B82F6", marginBottom: 14,
               }}>
                 Tienda profesional · Grupo Rubio
               </p>
@@ -99,15 +99,15 @@ export default async function TiendaPage({ params }: { params: Promise<{ locale:
                 fontSize: "clamp(36px, 5vw, 64px)",
                 fontWeight: 800, color: "#FFFFFF",
                 letterSpacing: "-2px", lineHeight: 1.06,
-                marginBottom: 36,
+                marginBottom: 124,
               }}>
                 Productos de limpieza profesional
               </h1>
 
-              {/* ── PRUEBA SOCIAL: 3 apartados, en columna a la izquierda ── */}
+              {/* ── PRUEBA SOCIAL: 3 apartados ── */}
               <div className="hero-social-proof" style={{
-                display: "flex", flexDirection: "column",
-                alignItems: "flex-start", gap: 16,
+                display: "flex", alignItems: "center", justifyContent: "center",
+                gap: 40, flexWrap: "wrap",
               }}>
                 {/* 1. Avatares apilados + clientes felices */}
                 <div style={{ display: "flex", alignItems: "center", gap: 13 }}>
