@@ -5,6 +5,8 @@ const withNextIntl = createNextIntlPlugin("./i18n/request.ts");
 
 const nextConfig: NextConfig = {
   reactCompiler: true,
+  // output: standalone solo para builds Docker (no compatible con Vercel)
+  ...(process.env.DOCKER_BUILD === "true" ? { output: "standalone" } : {}),
   images: {
     qualities: [75, 85, 86, 88, 90],
     remotePatterns: [
