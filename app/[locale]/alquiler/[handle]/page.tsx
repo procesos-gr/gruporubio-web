@@ -2,7 +2,9 @@ import { Navbar } from "@/components/layout/Navbar"
 import Footer from "@/components/sections/Footer"
 import { RentalRequestForm } from "@/components/alquiler/RentalRequestForm"
 import { MaquinasRelacionadas } from "@/components/alquiler/MaquinasRelacionadas"
-import { getMaquina, MAQUINARIA } from "@/lib/maquinaria-alquiler"
+import { getMaquina, getTituloConSpec, getMaquinaConsejos, MAQUINARIA } from "@/lib/maquinaria-alquiler"
+import { ServiceFAQAccordion } from "@/components/sections/services/service-faq"
+import { buildAlternates } from "@/lib/seo"
 import Link from "next/link"
 import { notFound } from "next/navigation"
 import {
@@ -23,14 +25,15 @@ export async function generateStaticParams() {
 export async function generateMetadata({
   params,
 }: {
-  params: Promise<{ handle: string }>
+  params: Promise<{ locale: string; handle: string }>
 }): Promise<Metadata> {
-  const { handle } = await params
+  const { locale, handle } = await params
   const maquina = getMaquina(handle)
   if (!maquina) return {}
   return {
-    title: `${maquina.titulo} — Alquiler | Grupo Rubio`,
+    title: `Alquiler de ${getTituloConSpec(maquina)} | Grupo Rubio`,
     description: maquina.descripcionCorta,
+    alternates: buildAlternates(locale, `alquiler/${maquina.handle}`),
   }
 }
 
@@ -47,8 +50,37 @@ export default async function AlquilerDetallePage({
   const disponibleBg = maquina.disponible ? "#F0FDF4" : "#FEF2F2"
   const disponibleBorder = maquina.disponible ? "#BBF7D0" : "#FECACA"
 
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Inicio", item: `https://gruporubio.es/${locale}` },
+      { "@type": "ListItem", position: 2, name: "Alquiler de maquinaria", item: `https://gruporubio.es/${locale}/alquiler` },
+      { "@type": "ListItem", position: 3, name: maquina.titulo, item: `https://gruporubio.es/${locale}/alquiler/${maquina.handle}` },
+    ],
+  }
+
+  const consejos = getMaquinaConsejos(maquina)
+  const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: consejos.map((c) => ({
+      "@type": "Question",
+      name: c.q,
+      acceptedAnswer: { "@type": "Answer", text: c.a },
+    })),
+  }
+
   return (
     <div style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", background: "#F9FAFB", minHeight: "100vh" }}>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+      />
       <Navbar />
 
       {/* Breadcrumb strip */}
@@ -231,6 +263,11 @@ export default async function AlquilerDetallePage({
                 }}
               >
                 {maquina.titulo}
+                {maquina.specsDestacadas?.[0] && (
+                  <span style={{ display: "block", fontSize: "0.52em", fontWeight: 600, color: "#6B7280", marginTop: 6 }}>
+                    {maquina.specsDestacadas[0][0]}: {maquina.specsDestacadas[0][1]}
+                  </span>
+                )}
               </h1>
 
               {/* Price */}
@@ -347,6 +384,19 @@ export default async function AlquilerDetallePage({
           </div>
         </div>
       </div>
+
+      {/* Consejos de uso */}
+      <section style={{ background: "#FFFFFF", padding: "56px 32px", borderTop: "1px solid #F3F4F6" }}>
+        <div style={{ maxWidth: 760, margin: "0 auto" }}>
+          <p style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: "#9CA3AF", marginBottom: 8 }}>
+            Consejos de uso
+          </p>
+          <h2 style={{ fontSize: "clamp(22px, 2.5vw, 28px)", fontWeight: 800, color: "#111827", letterSpacing: "-0.8px", marginBottom: 14 }}>
+            Cómo elegir y usar este equipo
+          </h2>
+          <ServiceFAQAccordion faqs={consejos} />
+        </div>
+      </section>
 
       <MaquinasRelacionadas
         maquinas={MAQUINARIA.filter((m) => m.handle !== handle).slice(0, 3)}

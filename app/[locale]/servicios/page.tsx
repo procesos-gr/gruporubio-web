@@ -1,20 +1,25 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { SERVICES, CATEGORY_LABELS, ServiceCategory } from "@/lib/services-data";
-
-export const metadata: Metadata = {
-  title: "Servicios de Limpieza y Control de Plagas | Grupo Rubio",
-  description: "Todos nuestros servicios: limpieza industrial, control de plagas DDD, ozonización, seguridad alimentaria, formación y más. Empresa especializada en Navarra desde 1970.",
-  openGraph: {
-    title: "Servicios | Grupo Rubio",
-    description: "Limpieza profesional, DDD, ozonización, tratamiento de suelos y más en Navarra, Aragón y La Rioja.",
-    url: "https://gruporubio.es/es/servicios",
-  },
-};
+import { buildAlternates } from "@/lib/seo";
 import { Navbar } from "@/components/layout/Navbar";
 import Footer from "@/components/sections/Footer";
 import { HashScrollCenter, ServiciosQuickNav } from "@/components/sections/services/scroll-center";
 import { ArrowRight, Phone } from "lucide-react";
+
+export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
+  const { locale } = await params;
+  return {
+    title: "Servicios de Limpieza y Control de Plagas | Grupo Rubio",
+    description: "Todos nuestros servicios: limpieza industrial, control de plagas DDD, ozonización, seguridad alimentaria, formación y más. Empresa especializada en Navarra desde 1970.",
+    alternates: buildAlternates(locale, "servicios"),
+    openGraph: {
+      title: "Servicios | Grupo Rubio",
+      description: "Limpieza profesional, DDD, ozonización, tratamiento de suelos y más en Navarra, Aragón y La Rioja.",
+      url: `https://gruporubio.es/${locale}/servicios`,
+    },
+  };
+}
 
 const CATEGORY_ORDER: ServiceCategory[] = ["limpieza", "plagas", "alimentaria", "maquinaria", "formacion"];
 

@@ -2,11 +2,16 @@ import Link from "next/link";
 import { Navbar } from "@/components/layout/Navbar";
 import Footer from "@/components/sections/Footer";
 import { PresupuestoForm } from "@/components/sections/PresupuestoForm";
+import { buildAlternates } from "@/lib/seo";
 
-export const metadata = {
-  title: "Solicitar Presupuesto — Grupo Rubio",
-  description: "Solicita un presupuesto gratuito y sin compromiso para limpieza, control de plagas, seguridad alimentaria o formación profesional.",
-};
+export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale } = await params;
+  return {
+    title: "Solicitar Presupuesto — Grupo Rubio",
+    description: "Solicita un presupuesto gratuito y sin compromiso para limpieza, control de plagas, seguridad alimentaria o formación profesional.",
+    alternates: buildAlternates(locale, "presupuesto"),
+  };
+}
 
 export default function PresupuestoPage() {
   return (

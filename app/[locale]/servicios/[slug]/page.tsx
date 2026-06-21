@@ -1,12 +1,37 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { SERVICES, getServiceBySlug, getRelatedServices, ServiceData } from "@/lib/services-data";
+import { SERVICES, getServiceBySlug, getRelatedServices, getServiceFAQs, ServiceData } from "@/lib/services-data";
 import { Navbar } from "@/components/layout/Navbar";
 import Footer from "@/components/sections/Footer";
 import { ServiceQuoteForm } from "@/components/sections/services/service-quote-form";
+import { ServiceFAQAccordion } from "@/components/sections/services/service-faq";
+import { buildAlternates } from "@/lib/seo";
 import { MaquinariaAlquilerStrip } from "@/components/alquiler/MaquinariaAlquilerStrip";
 import Image from "next/image";
 import { Phone, CheckCircle2, ArrowRight, ImageIcon } from "lucide-react";
+import type { Metadata } from "next";
+
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const { slug, locale } = await params;
+  const service = getServiceBySlug(slug);
+  if (!service) return {};
+
+  const title = `${service.title} en Navarra, Aragón y La Rioja | Grupo Rubio`;
+  const description = service.shortDesc;
+  const url = `https://gruporubio.es/${locale}/servicios/${service.slug}`;
+
+  return {
+    title,
+    description,
+    alternates: buildAlternates(locale, `servicios/${service.slug}`),
+    openGraph: {
+      title: `${service.title} | Grupo Rubio`,
+      description,
+      url,
+      images: service.image ? [{ url: service.image }] : [],
+    },
+  };
+}
 
 const SLUGS_CON_ALQUILER = new Set([
   'alquiler-de-maquinaria',
@@ -187,9 +212,57 @@ export default async function ServicePage({ params }: PageProps) {
   const serviceIndex = SERVICES.findIndex(s => s.slug === slug);
   const layout = serviceIndex % 3;
   const related = getRelatedServices(service.relatedSlugs);
+  const faqs = getServiceFAQs(service);
+
+  const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faqs.map((faq) => ({
+      "@type": "Question",
+      name: faq.q,
+      acceptedAnswer: { "@type": "Answer", text: faq.a },
+    })),
+  };
+
+  const serviceSchema = {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    name: service.title,
+    description: service.shortDesc,
+    serviceType: service.categoryLabel,
+    url: `https://gruporubio.es/${locale}/servicios/${service.slug}`,
+    provider: { "@id": "https://gruporubio.es" },
+    areaServed: [
+      { "@type": "AdministrativeArea", name: "Navarra" },
+      { "@type": "AdministrativeArea", name: "La Rioja" },
+      { "@type": "AdministrativeArea", name: "Aragón" },
+    ],
+  };
+
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Inicio", item: `https://gruporubio.es/${locale}` },
+      { "@type": "ListItem", position: 2, name: "Servicios", item: `https://gruporubio.es/${locale}/servicios` },
+      { "@type": "ListItem", position: 3, name: service.title, item: `https://gruporubio.es/${locale}/servicios/${service.slug}` },
+    ],
+  };
 
   return (
     <div style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+      />
       <Navbar />
 
       {/* ── Hero ── */}
@@ -281,6 +354,15 @@ export default async function ServicePage({ params }: PageProps) {
 
       {/* ── Alquiler strip ── */}
       {SLUGS_CON_ALQUILER.has(slug) && <MaquinariaAlquilerStrip locale={locale} />}
+
+      {/* ── FAQ ── */}
+      <section style={{ background: "#FFFFFF", padding: "64px 32px", borderTop: "1px solid #F3F4F6" }}>
+        <div style={{ maxWidth: 760, margin: "0 auto" }}>
+          <SectionTag text="Preguntas frecuentes" />
+          <h2 style={{ ...h2, marginBottom: 8 }}>Sobre {service.title}</h2>
+          <ServiceFAQAccordion faqs={faqs} />
+        </div>
+      </section>
 
       {/* ── Quote form ── */}
       <section id="solicitar" style={{ background: "#FFFFFF", padding: "72px 32px", borderTop: "1px solid #F3F4F6" }}>

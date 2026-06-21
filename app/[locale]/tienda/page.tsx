@@ -6,6 +6,7 @@ import { BrandStory } from "@/components/tienda/BrandStory"
 import { AdvisoryBanner } from "@/components/tienda/AdvisoryBanner"
 import { ReviewsCarousel } from "@/components/sections/reviews-carousel"
 import { medusa } from "@/lib/medusa"
+import { buildAlternates } from "@/lib/seo"
 import Image from "next/image"
 import { ShieldCheck, MapPin, BadgeCheck, Users, Truck, Award, ThumbsUp } from "lucide-react"
 
@@ -20,10 +21,12 @@ const TRUST_ITEMS = [
 
 const REGION_ID = process.env.NEXT_PUBLIC_MEDUSA_REGION_ID!
 
-export async function generateMetadata() {
+export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale } = await params
   return {
     title: "Tienda profesional — Grupo Rubio",
     description: "Desengrasantes, desinfectantes, insecticidas y productos de higiene para empresas y comunidades.",
+    alternates: buildAlternates(locale, "tienda"),
   }
 }
 

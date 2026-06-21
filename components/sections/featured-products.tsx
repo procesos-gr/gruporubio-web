@@ -6,51 +6,41 @@ import { ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 
-const PRODUCTS = [
-  {
-    name: 'Desengrasante Industrial 5L',
-    rating: 4.9,
-    price: '18,50 €',
-    img: 'https://images.unsplash.com/photo-1563453392212-326f5e854473?w=400&h=260&fit=crop&auto=format',
-  },
-  {
-    name: 'Fregasuelos Concentrado 2L',
-    rating: 4.7,
-    price: '8,90 €',
-    img: 'https://images.unsplash.com/photo-1585771724684-38269d6639fd?w=400&h=260&fit=crop&auto=format',
-  },
-  {
-    name: 'Desinfectante Multiusos 1L',
-    rating: 4.8,
-    price: '6,50 €',
-    img: 'https://images.unsplash.com/photo-1584464491033-06628f3a6b7b?w=400&h=260&fit=crop&auto=format',
-  },
-  {
-    name: 'Bolsas Basura Reforzadas x100',
-    rating: 4.6,
-    price: '12,90 €',
-    img: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&h=260&fit=crop&auto=format',
-  },
-  {
-    name: 'Papel Higiénico Industrial x12',
-    rating: 4.8,
-    price: '22,00 €',
-    img: 'https://images.unsplash.com/photo-1583947581924-860bda6a26df?w=400&h=260&fit=crop&auto=format',
-  },
-  {
-    name: 'Guantes Nitrilo Talla M x50',
-    rating: 4.5,
-    price: '9,95 €',
-    img: 'https://images.unsplash.com/photo-1572635196237-14b3f281503f?w=400&h=260&fit=crop&auto=format',
-  },
-];
+type Variant = {
+  calculated_price?: { calculated_amount?: number | null } | null;
+};
+
+export type FeaturedProduct = {
+  id: string;
+  handle: string;
+  title: string;
+  thumbnail: string | null;
+  variants?: Variant[];
+};
+
+type Props = {
+  products: FeaturedProduct[];
+  locale: string;
+};
 
 const CARD_W = 250;
 const GAP = 16;
 
-function ProductCard({ product }: { product: typeof PRODUCTS[number] }) {
+function getMinPrice(product: FeaturedProduct): number | null {
+  const prices = (product.variants ?? [])
+    .map(v => v.calculated_price?.calculated_amount ?? null)
+    .filter((p): p is number => p !== null);
+  return prices.length > 0 ? Math.min(...prices) : null;
+}
+
+function ProductCard({ product, locale }: { product: FeaturedProduct; locale: string }) {
+  const minPrice = getMinPrice(product);
+  const formattedPrice = minPrice != null
+    ? new Intl.NumberFormat(locale, { style: 'currency', currency: 'EUR' }).format(minPrice / 100)
+    : 'Consultar';
+
   return (
-    <Link href="/tienda" style={{ textDecoration: 'none', display: 'block' }} draggable={false}>
+    <Link href={`/${locale}/tienda/${product.handle}`} style={{ textDecoration: 'none', display: 'block' }} draggable={false}>
     <motion.div
       whileHover="hover"
       initial="rest"
@@ -72,37 +62,25 @@ function ProductCard({ product }: { product: typeof PRODUCTS[number] }) {
           transition={{ duration: 0.4, ease: 'easeOut' }}
           style={{ position: 'absolute', inset: 0 }}
         >
-          <Image
-            src={product.img}
-            alt={product.name}
-            fill
-            sizes="250px"
-            className="object-cover object-center pointer-events-none"
-            draggable={false}
-          />
+          {product.thumbnail ? (
+            <Image
+              src={product.thumbnail}
+              alt={product.title}
+              fill
+              sizes="250px"
+              className="object-cover object-center pointer-events-none"
+              draggable={false}
+            />
+          ) : (
+            <div style={{
+              width: '100%', height: '100%',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              background: 'linear-gradient(135deg, #1c2433, #0F1623)',
+            }}>
+              <div style={{ fontSize: 40, opacity: 0.3 }}>🧴</div>
+            </div>
+          )}
         </motion.div>
-
-        {/* Rating chip — top right */}
-        <div
-          style={{
-            position: 'absolute',
-            top: 10,
-            right: 10,
-            background: 'rgba(255,255,255,0.92)',
-            backdropFilter: 'blur(4px)',
-            borderRadius: 8,
-            padding: '3px 8px',
-            fontSize: 11,
-            fontWeight: 700,
-            color: '#111827',
-            display: 'flex',
-            alignItems: 'center',
-            gap: 3,
-          }}
-        >
-          <span style={{ color: '#F59E0B' }}>★</span>
-          {product.rating.toFixed(1)}
-        </div>
       </div>
 
       {/* Info strip */}
@@ -127,10 +105,10 @@ function ProductCard({ product }: { product: typeof PRODUCTS[number] }) {
               textOverflow: 'ellipsis',
             }}
           >
-            {product.name}
+            {product.title}
           </p>
           <span style={{ fontSize: 15, fontWeight: 800, color: '#111827' }}>
-            {product.price}
+            {formattedPrice}
           </span>
         </div>
 
@@ -157,7 +135,7 @@ function ProductCard({ product }: { product: typeof PRODUCTS[number] }) {
   );
 }
 
-export function FeaturedProducts() {
+export function FeaturedProducts({ products, locale }: Props) {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [canLeft, setCanLeft] = useState(false);
   const [canRight, setCanRight] = useState(true);
@@ -179,6 +157,8 @@ export function FeaturedProducts() {
     scrollRef.current?.scrollBy({ left: dir * (CARD_W + GAP) * 2, behavior: 'smooth' });
   };
 
+  if (products.length === 0) return null;
+
   return (
     <section style={{ background: '#0F1623', padding: '88px 0', overflow: 'hidden' }}>
       <div style={{ maxWidth: 1200, margin: '0 auto', padding: '0 24px' }}>
@@ -197,7 +177,7 @@ export function FeaturedProducts() {
                 fontFamily: 'var(--font-plus-jakarta), sans-serif',
               }}
             >
-              Lo que nuestros clientes más eligen
+              Descubre nuestra tienda
             </h2>
             <p style={{ fontSize: 15, color: 'rgba(255,255,255,0.65)', margin: 0, lineHeight: 1.65, fontFamily: 'var(--font-plus-jakarta), sans-serif' }}>
               Productos profesionales de limpieza, higiene y desinfección usados por empresas,
@@ -206,7 +186,7 @@ export function FeaturedProducts() {
           </div>
 
           <Link
-            href="/tienda"
+            href={`/${locale}/tienda`}
             style={{
               display: 'inline-flex', alignItems: 'center', gap: 6,
               background: '#ffffff', color: '#111827', borderRadius: 8,
@@ -237,8 +217,8 @@ export function FeaturedProducts() {
         `}</style>
 
         <div ref={scrollRef} className="fp-track" onScroll={update}>
-          {PRODUCTS.map((product) => (
-            <ProductCard key={product.name} product={product} />
+          {products.map((product) => (
+            <ProductCard key={product.id} product={product} locale={locale} />
           ))}
         </div>
 

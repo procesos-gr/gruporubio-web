@@ -424,3 +424,56 @@ export function getMaquina(handle: string): MaquinaAlquiler | undefined {
 }
 
 export const CATEGORIAS = [...new Set(MAQUINARIA.map((m) => m.categoria))]
+
+// Título enriquecido con la spec destacada principal (ej. "Fregadora Industrial Conductor a Pie — ≈ 2.200 m²/h")
+// para capturar búsquedas long-tail por especificación, siguiendo el patrón de Kiloutou/Loxam.
+export function getTituloConSpec(maquina: MaquinaAlquiler): string {
+  const specPrincipal = maquina.specsDestacadas?.[0]?.[1]
+  return specPrincipal ? `${maquina.titulo} — ${specPrincipal}` : maquina.titulo
+}
+
+export type ConsejoMaquina = { q: string; a: string }
+
+const USO_LABEL: Record<MaquinaAlquiler['uso'], string> = {
+  interior: 'Está pensada para uso en interior (naves, almacenes, locales cerrados).',
+  exterior: 'Está pensada para uso en exterior (obra, fachadas, espacios abiertos).',
+  ambos: 'Puede usarse tanto en interior como en exterior.',
+}
+
+const PERFIL_LABEL: Record<MaquinaAlquiler['perfilCliente'], string> = {
+  B2B: 'Pensada para uso profesional/empresarial (naves, comunidades, empresas de servicios).',
+  B2C: 'Apta también para particulares, sin necesidad de formación previa.',
+  ambos: 'La alquilan tanto particulares como empresas, según el proyecto.',
+}
+
+// Deriva "consejos de uso" a partir de campos ya existentes (usos, uso, tensión, perfilCliente,
+// advertencia) en vez de inventar contenido técnico nuevo sin verificar.
+export function getMaquinaConsejos(maquina: MaquinaAlquiler): ConsejoMaquina[] {
+  const consejos: ConsejoMaquina[] = [
+    {
+      q: `¿Para qué se usa el/la ${maquina.titulo}?`,
+      a: `${maquina.descripcionCorta} Casos de uso habituales: ${maquina.usos.join(', ')}.`,
+    },
+    {
+      q: '¿Se puede usar en interior o en exterior?',
+      a: USO_LABEL[maquina.uso],
+    },
+    {
+      q: '¿Es para particulares o para empresas?',
+      a: PERFIL_LABEL[maquina.perfilCliente],
+    },
+  ]
+
+  if (maquina.tension) {
+    consejos.push({
+      q: '¿Qué alimentación necesita?',
+      a: `Funciona con ${maquina.tension.toLowerCase()}. Comprueba que tu instalación es compatible antes de reservar, o consúltanos y te asesoramos.`,
+    })
+  }
+
+  if (maquina.advertencia) {
+    consejos.push({ q: 'Antes de alquilarla, ten en cuenta:', a: maquina.advertencia })
+  }
+
+  return consejos
+}

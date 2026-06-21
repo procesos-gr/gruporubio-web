@@ -3,36 +3,10 @@
 import { useEffect, useRef, useState } from 'react';
 import * as d3 from 'd3';
 import * as topojson from 'topojson-client';
-import { Sparkles, Bug, ShoppingBag } from 'lucide-react';
 import { CLIENTES_MUNICIPIO } from '@/lib/clientes-municipio';
 
-// --- Badges de servicios para el tooltip (SVG inline, sin React) ---
-const TOOLTIP_SERVICIOS = [
-  {
-    bg: '#3B82F6',
-    path: `<path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"/>`,
-  },
-  {
-    bg: '#EF4444',
-    path: `<path d="M12 20c-3.3 0-6-2.7-6-6v-3a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v3c0 3.3-2.7 6-6 6z"/><path d="M12 20v-9"/><path d="M9 7a3 3 0 1 1 6 0"/><path d="M6 13H3"/><path d="M18 13h3"/><path d="M5.5 9.5C4.5 8.5 3.5 7 3.5 5"/><path d="M18.5 9.5c1-1 2-2.5 2-4.5"/><path d="M5 17.5C4 18.5 3 20 3 21"/><path d="M19 17.5c1 1 2 2.5 2 3.5"/>`,
-  },
-  {
-    bg: '#22C55E',
-    path: `<path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/>`,
-  },
-];
-
-function serviciosBadges(municId: number): string {
-  const n = municId % 7;
-  const indices = n === 0 ? [0] : n === 1 ? [0, 1] : [0, 1, 2];
-  return indices.map(i => {
-    const s = TOOLTIP_SERVICIOS[i];
-    return `<span style="width:20px;height:20px;border-radius:50%;background:${s.bg};display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden"><svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="overflow:hidden">${s.path}</svg></span>`;
-  }).join('');
-}
-
 // --- Constantes fácilmente ajustables ---
-const PALETA = ['#1e293b', '#2952a3', '#1d4ed8', '#2563eb', '#3b82f6'];
+const PALETA = ['#DCE3EC', '#93C5FD', '#3B82F6', '#1D4ED8', '#1E3A8A'];
 const TRAMOS = [1, 5, 20, 100];
 const ETIQUETAS = ['0', '1-4', '5-19', '20-99', '100+'];
 const ESPACIADO = 11; // px entre celdas
@@ -199,16 +173,17 @@ export function MapaClientes() {
             .attr('height', LADO)
             .attr('rx', 1.5)
             .style('fill', d => colorEscala(d.munic ? d.munic.clientes : 0))
+            .style('stroke', '#D1D5DB')
+            .style('stroke-width', 0.6)
             .style('cursor', d => d.munic && d.munic.clientes > 0 ? 'pointer' : 'default')
             .on('mousemove', (event: MouseEvent, d) => {
               if (!d.munic || d.munic.clientes === 0) { tooltip.style('opacity', 0); return; }
               const rect = node.getBoundingClientRect();
               const name = (d.munic.feature.properties as { name: string }).name;
-              const badges = serviciosBadges(Number(d.munic.feature.id));
               tooltip.style('opacity', 1)
                 .style('left', `${event.clientX - rect.left}px`)
                 .style('top', `${event.clientY - rect.top}px`)
-                .html(`<b>${name}</b><div class="mc-badges">${badges}</div>`);
+                .html(`<b>${name}</b>`);
             })
             .on('mouseleave', () => tooltip.style('opacity', 0));
         }
@@ -245,8 +220,7 @@ export function MapaClientes() {
           box-shadow: 0 6px 16px rgba(0,0,0,.2); white-space: nowrap; z-index: 2;
           text-align: center;
         }
-        .mc-tooltip b { font-weight: 700; display: block; margin-bottom: 6px; }
-        .mc-tooltip .mc-badges { display: flex; gap: 5px; justify-content: center; }
+        .mc-tooltip b { font-weight: 700; display: block; }
         .mc-leyenda {
           position: absolute; bottom: 16px; left: 16px; z-index: 1;
           background: rgba(255,255,255,.94);
@@ -306,23 +280,6 @@ export function MapaClientes() {
                   <div key={i} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4 }}>
                     <span style={{ width: 28, height: 13, borderRadius: 3, background: color, display: 'block' }} />
                     <span style={{ fontSize: 10, color: '#9CA3AF', lineHeight: 1 }}>{ETIQUETAS[i]}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Servicios */}
-            <div>
-              <span style={{ fontSize: 11, color: '#9CA3AF', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.06em', display: 'block', marginBottom: 8 }}>
-                Servicios presentes
-              </span>
-              <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
-                {(['Limpieza', 'Plagas', 'Tienda'] as const).map((label, i) => (
-                  <div key={label} style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-                    <span style={{ width: 22, height: 22, borderRadius: '50%', background: TOOLTIP_SERVICIOS[i].bg, display: 'inline-flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, overflow: 'hidden' }}>
-                      <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="#fff" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round" style={{ overflow: 'hidden' }} dangerouslySetInnerHTML={{ __html: TOOLTIP_SERVICIOS[i].path }} />
-                    </span>
-                    <span style={{ fontSize: 12, color: '#6B7280' }}>{label}</span>
                   </div>
                 ))}
               </div>

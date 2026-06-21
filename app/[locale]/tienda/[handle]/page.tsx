@@ -6,6 +6,7 @@ import { ProductReviews } from "@/components/tienda/ProductReviews"
 import { ProductCard } from "@/components/tienda/ProductCard"
 import { AdvisoryBanner } from "@/components/tienda/AdvisoryBanner"
 import { medusa } from "@/lib/medusa"
+import { buildAlternates } from "@/lib/seo"
 import { getTranslations } from "next-intl/server"
 import Link from "next/link"
 import { notFound } from "next/navigation"
@@ -39,8 +40,8 @@ type RelatedProduct = {
   variants?: MedusaVariant[]
 }
 
-export async function generateMetadata({ params }: { params: Promise<{ handle: string }> }) {
-  const { handle: rawHandle } = await params
+export async function generateMetadata({ params }: { params: Promise<{ locale: string; handle: string }> }) {
+  const { locale, handle: rawHandle } = await params
   const handle = decodeURIComponent(rawHandle)
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const result = await medusa.store.product.list({ handle, fields: "title,description,thumbnail" } as any).catch(() => null)
@@ -57,6 +58,7 @@ export async function generateMetadata({ params }: { params: Promise<{ handle: s
   return {
     title: `${product.title} — Grupo Rubio`,
     description,
+    alternates: buildAlternates(locale, `tienda/${handle}`),
     openGraph: {
       title: `${product.title} — Grupo Rubio`,
       description,
@@ -181,6 +183,29 @@ export default async function ProductPage({
       availability: "https://schema.org/InStock",
       url: `https://gruporubio.es/${locale}/tienda/${product.handle}`,
     } : undefined,
+    aggregateRating: reviewRating ? {
+      "@type": "AggregateRating",
+      ratingValue: reviewRating.average.toFixed(1),
+      reviewCount: reviewRating.count,
+    } : undefined,
+    review: reviewList.slice(0, 10).map((r) => ({
+      "@type": "Review",
+      author: { "@type": "Person", name: r.author },
+      reviewRating: { "@type": "Rating", ratingValue: r.rating },
+      reviewBody: r.text || undefined,
+      datePublished: r.date,
+    })),
+  }
+
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Inicio", item: `https://gruporubio.es/${locale}` },
+      { "@type": "ListItem", position: 2, name: t("breadcrumb_shop"), item: `https://gruporubio.es/${locale}/tienda` },
+      ...(category ? [{ "@type": "ListItem", position: 3, name: category.name, item: `https://gruporubio.es/${locale}/tienda/categoria/${category.handle}` }] : []),
+      { "@type": "ListItem", position: category ? 4 : 3, name: product.title, item: `https://gruporubio.es/${locale}/tienda/${product.handle}` },
+    ],
   }
 
   return (
@@ -188,6 +213,10 @@ export default async function ProductPage({
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(productSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
       <Navbar />
 

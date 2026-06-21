@@ -3,16 +3,21 @@ import Link from "next/link";
 import { Navbar } from "@/components/layout/Navbar";
 import Footer from "@/components/sections/Footer";
 import { ContactSection } from "@/components/sections/contact/contact-section";
+import { buildAlternates } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Contacto | Grupo Rubio — Limpieza y Plagas Navarra",
-  description: "Contacta con Grupo Rubio. Llámanos al 948 82 50 25 o escríbenos a administracion@gruporubio.net. Estamos en Tudela, Navarra.",
-  openGraph: {
-    title: "Contacto | Grupo Rubio",
-    description: "Habla con nuestro equipo. 948 82 50 25 · administracion@gruporubio.net · Tudela, Navarra.",
-    url: "https://gruporubio.es/es/contacto",
-  },
-};
+export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
+  const { locale } = await params;
+  return {
+    title: "Contacto | Grupo Rubio — Limpieza y Plagas Navarra",
+    description: "Contacta con Grupo Rubio. Llámanos al 948 82 50 25 o escríbenos a administracion@gruporubio.net. Estamos en Tudela, Navarra.",
+    alternates: buildAlternates(locale, "contacto"),
+    openGraph: {
+      title: "Contacto | Grupo Rubio",
+      description: "Habla con nuestro equipo. 948 82 50 25 · administracion@gruporubio.net · Tudela, Navarra.",
+      url: `https://gruporubio.es/${locale}/contacto`,
+    },
+  };
+}
 
 export default function ContactoPage() {
   return (

@@ -2,13 +2,27 @@
 
 import { useState, useEffect, useRef, useCallback, KeyboardEvent } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Search, Package, Wrench, Truck, X, Loader2 } from 'lucide-react';
+import { Search, Package, Wrench, Truck, X, Loader2, MapPin, ShieldCheck, Award } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { SERVICES } from '@/lib/services-data';
 import { getMedusa } from '@/lib/medusa';
 import { MAQUINARIA } from '@/lib/maquinaria-alquiler';
+
+const QUICK_CATEGORIES = [
+  { label: 'Limpieza industrial', href: '/servicios#limpieza' },
+  { label: 'Control de plagas', href: '/servicios#plagas' },
+  { label: 'Alquiler de maquinaria', href: '/alquiler' },
+  { label: 'Productos', href: '/tienda' },
+];
+
+const USP_ITEMS = [
+  { icon: ShieldCheck, label: 'Productos y maquinaria de uso profesional' },
+  { icon: MapPin, label: 'Servicio en Navarra, La Rioja y Aragón' },
+  { icon: Award, label: '+55 años de experiencia' },
+  { icon: Wrench, label: 'Técnicos propios y maquinaria Kärcher' },
+];
 
 interface SearchResult {
   type: 'service' | 'product' | 'rental';
@@ -168,32 +182,59 @@ export function Hero() {
   let globalIdx = -1;
 
   return (
-    <section style={{ padding: '120px 24px 110px', position: 'relative', borderRadius: 16 }}>
+    <section style={{ padding: '100px 24px 132px', position: 'relative', borderRadius: 16 }}>
       <div style={{ position: 'absolute', inset: 0, borderRadius: 16, overflow: 'hidden', zIndex: 0 }}>
-        <Image src="/images/hero/hero-banner-v4.webp" alt="" fill priority quality={85} className="object-cover object-center" />
+        <Image src="/images/hero/hero-banner-v6.png" alt="" fill priority quality={85} className="object-cover object-center" />
         <div style={{
           position: 'absolute', inset: 0,
           background: 'linear-gradient(to bottom, rgba(255,255,255,0.32) 0%, rgba(255,255,255,0.18) 60%, rgba(255,255,255,0.06) 100%)',
         }} />
+
+        {/* Tira inferior con USPs en scroll continuo */}
+        <div style={{
+          position: 'absolute', bottom: 0, left: 0, right: 0,
+          background: '#0B0F14',
+          borderTop: '1px solid rgba(255,255,255,0.08)',
+          overflow: 'hidden',
+          zIndex: 1,
+        }}>
+          <style>{`
+            @keyframes heroUspMarquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+            .hero-usp-track { animation: heroUspMarquee 32s linear infinite; }
+          `}</style>
+          <div className="hero-usp-track" style={{ display: 'flex', whiteSpace: 'nowrap', width: 'max-content' }}>
+            {[...USP_ITEMS, ...USP_ITEMS].map((item, i) => {
+              const Icon = item.icon;
+              return (
+                <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 9, padding: '13px 32px' }}>
+                  <Icon size={14} style={{ color: 'rgba(255,255,255,0.50)', flexShrink: 0 }} />
+                  <span style={{ fontSize: 12.5, fontWeight: 600, color: 'rgba(255,255,255,0.85)', letterSpacing: '0.01em' }}>
+                    {item.label}
+                  </span>
+                </div>
+              );
+            })}
+          </div>
+        </div>
       </div>
 
-      <div style={{ position: 'relative', zIndex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', maxWidth: 680, margin: '0 auto' }}>
+      <div style={{ position: 'relative', zIndex: 2, display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', maxWidth: 680, margin: '0 auto' }}>
+
+        <motion.p
+          initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, ease: 'easeOut' }}
+          style={{ fontSize: 12, fontWeight: 700, color: '#1e3a8a', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 10 }}
+        >
+          DESDE 1971 ofreciendo soluciones globales de higiene y sanidad ambiental
+        </motion.p>
 
         <motion.h1
           initial={{ opacity: 0, y: 22 }} animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.55, ease: 'easeOut' }}
-          style={{ fontSize: 'clamp(44px, 5.5vw, 62px)', fontWeight: 800, color: '#111827', lineHeight: 1.08, letterSpacing: '-2px', marginBottom: 20 }}
+          transition={{ duration: 0.55, ease: 'easeOut', delay: 0.05 }}
+          style={{ fontSize: 'clamp(34px, 4.2vw, 48px)', fontWeight: 800, color: '#111827', lineHeight: 1.08, letterSpacing: '-1.5px', marginBottom: 28 }}
         >
-          Tu espacio,<br />siempre impecable.
+          Desinfección de superficies<br />y ambientes en industrias alimentarias.
         </motion.h1>
-
-        <motion.p
-          initial={{ opacity: 0, y: 22 }} animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.55, ease: 'easeOut', delay: 0.12 }}
-          style={{ fontSize: 16, fontWeight: 700, color: '#111827', lineHeight: 1.55, maxWidth: 480, marginBottom: 40 }}
-        >
-          Servicios profesionales de limpieza, control de plagas y productos de higiene para hogares y empresas.
-        </motion.p>
 
         {/* Search bar */}
         <div ref={barRef} style={{ width: '100%', maxWidth: 560, position: 'relative' }}>
@@ -325,6 +366,27 @@ export function Hero() {
             )}
           </AnimatePresence>
         </div>
+
+        {/* Chips de categorías rápidas */}
+        <motion.div
+          initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, ease: 'easeOut', delay: 0.3 }}
+          style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10, flexWrap: 'wrap', marginTop: 14 }}
+        >
+          {QUICK_CATEGORIES.map(cat => (
+            <Link
+              key={cat.href}
+              href={cat.href}
+              style={{
+                fontSize: 13, fontWeight: 600, color: '#374151',
+                background: 'rgba(255,255,255,0.75)', border: '1px solid #E5E7EB',
+                borderRadius: 8, padding: '8px 16px', textDecoration: 'none',
+              }}
+            >
+              {cat.label}
+            </Link>
+          ))}
+        </motion.div>
 
       </div>
 

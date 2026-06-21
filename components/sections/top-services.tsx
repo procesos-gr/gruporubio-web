@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -6,9 +6,9 @@ import { ArrowUpRight } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 
-/* â”€â”€â”€ Types â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+/* --- Types ------------------------------------------------------- */
 
-type FilterKey = 'Limpieza Especializada' | 'Control de Plagas' | 'Seguridad Alimentaria' | 'Servicio TÃ©cnico y Maquinaria' | 'FormaciÃ³n Profesional';
+type FilterKey = 'Limpieza Especializada' | 'Control de Plagas' | 'Seguridad Alimentaria' | 'Servicio Técnico y Maquinaria' | 'Formación Profesional';
 
 interface ServiceCard {
   title: string;
@@ -17,16 +17,16 @@ interface ServiceCard {
   href: string;
 }
 
-/* â”€â”€â”€ Data â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+/* --- Data -------------------------------------------------------- */
 
-const FILTERS: FilterKey[] = ['Limpieza Especializada', 'Control de Plagas', 'Seguridad Alimentaria', 'Servicio TÃ©cnico y Maquinaria', 'FormaciÃ³n Profesional'];
+const FILTERS: FilterKey[] = ['Limpieza Especializada', 'Control de Plagas', 'Seguridad Alimentaria', 'Servicio Técnico y Maquinaria', 'Formación Profesional'];
 
 const VIEW_MORE: Record<FilterKey, string> = {
   'Limpieza Especializada': '/servicios',
   'Control de Plagas': '/servicios',
   'Seguridad Alimentaria': '/servicios',
-  'Servicio TÃ©cnico y Maquinaria': '/servicios',
-  'FormaciÃ³n Profesional': '/servicios',
+  'Servicio Técnico y Maquinaria': '/servicios',
+  'Formación Profesional': '/servicios',
 };
 
 const CARDS: Record<FilterKey, ServiceCard[]> = {
@@ -39,124 +39,124 @@ const CARDS: Record<FilterKey, ServiceCard[]> = {
     },
     {
       title: 'Limpiezas Industriales',
-      description: 'Limpieza especializada para entornos industriales y de alta exigencia con equipos de Ãºltima generaciÃ³n.',
+      description: 'Limpieza especializada para entornos industriales y de alta exigencia con equipos de última generación.',
       img: '/images/home/limpiezas-industriales-home.webp',
       href: '/servicios/limpiezas-industriales',
     },
     {
       title: 'Limpiezas en Altura',
-      description: 'Trabajos verticales y acceso a zonas de difÃ­cil alcance con total seguridad y equipaciÃ³n homologada.',
+      description: 'Trabajos verticales y acceso a zonas de difícil alcance con total seguridad y equipación homologada.',
       img: '/images/home/limpieza-alturas-v2.webp',
       href: '/servicios/limpiezas-en-altura',
     },
     {
       title: 'Tratamiento de Suelos',
-      description: 'Mantenimiento, pulido y protecciÃ³n de todo tipo de superficies y pavimentos industriales.',
+      description: 'Mantenimiento, pulido y protección de todo tipo de superficies y pavimentos industriales.',
       img: '/images/home/tratamiento-suelos-v2.webp',
       href: '/servicios/tratamientos-de-suelos',
     },
   ],
   'Control de Plagas': [
     {
-      title: 'DesratizaciÃ³n, DesinsectaciÃ³n y DesinfecciÃ³n',
-      description: 'Control integral de roedores e insectos con mÃ©todos certificados, seguros y respetuosos con el entorno.',
+      title: 'Desratización, Desinsectación y Desinfección',
+      description: 'Control integral de roedores e insectos con métodos certificados, seguros y respetuosos con el entorno.',
       img: '/images/home/ddd-v2.webp',
       href: '/servicios/ddd-desratizacion-desinsectacion-desinfeccion',
     },
     {
       title: 'Tratamiento Anti-Termitas',
-      description: 'DetecciÃ³n y eliminaciÃ³n de colonias de termitas con tratamientos de eficacia garantizada y larga duraciÃ³n.',
+      description: 'Detección y eliminación de colonias de termitas con tratamientos de eficacia garantizada y larga duración.',
       img: '/images/servicios/tratamiento-anti-termitas/1-hq.webp',
       href: '/servicios/tratamiento-anti-termitas',
     },
     {
       title: 'Tratamientos de Legionela',
-      description: 'AnÃ¡lisis, desinfecciÃ³n y mantenimiento preventivo de instalaciones de agua conforme a normativa vigente.',
+      description: 'Análisis, desinfección y mantenimiento preventivo de instalaciones de agua conforme a normativa vigente.',
       img: '/images/servicios/tratamientos-de-legionela/1-hq.webp',
       href: '/servicios/tratamientos-de-legionela',
     },
     {
-      title: 'OzonizaciÃ³n',
-      description: 'DesinfecciÃ³n ambiental profunda mediante ozono para espacios libres de patÃ³genos y malos olores.',
+      title: 'Ozonización',
+      description: 'Desinfección ambiental profunda mediante ozono para espacios libres de patógenos y malos olores.',
       img: '/images/servicios/ozonizacion/1-wide-b.webp',
       href: '/servicios/ozonizacion',
     },
   ],
   'Seguridad Alimentaria': [
     {
-      title: 'APPCC â€” ImplantaciÃ³n y VerificaciÃ³n',
-      description: 'ImplantaciÃ³n y gestiÃ³n de sistemas de control de puntos crÃ­ticos en la cadena alimentaria.',
+      title: 'APPCC — Implantación y Verificación',
+      description: 'Implantación y gestión de sistemas de control de puntos críticos en la cadena alimentaria.',
       img: '/images/servicios/appcc-implantacion-y-verificacion/1-hq.webp',
       href: '/servicios/appcc-implantacion-y-verificacion',
     },
     {
-      title: 'FormaciÃ³n de Manipulador de Alimentos',
-      description: 'Cursos homologados de higiene alimentaria para equipos de trabajo en hostelerÃ­a e industria.',
+      title: 'Formación de Manipulador de Alimentos',
+      description: 'Cursos homologados de higiene alimentaria para equipos de trabajo en hostelería e industria.',
       img: '/images/servicios/formacion-de-manipulador-de-alimentos/1-hq-v2.webp',
       href: '/servicios/formacion-de-manipulador-de-alimentos',
     },
     {
       title: 'Tratamientos de Legionela',
-      description: 'Control tÃ©rmico y quÃ­mico de redes hÃ­dricas para prevenir la bacteria Legionella. Cumplimiento RD 861/2003.',
+      description: 'Control térmico y químico de redes hídricas para prevenir la bacteria Legionella. Cumplimiento RD 861/2003.',
       img: '/images/servicios/tratamientos-de-legionela/1-hq.webp',
       href: '/servicios/tratamientos-de-legionela',
     },
   ],
-  'Servicio TÃ©cnico y Maquinaria': [
+  'Servicio Técnico y Maquinaria': [
     {
       title: 'Alquiler de Maquinaria',
-      description: 'Equipos de limpieza profesionales disponibles por dÃ­as, semanas o meses sin compromisos de compra.',
+      description: 'Equipos de limpieza profesionales disponibles por días, semanas o meses sin compromisos de compra.',
       img: '/images/servicios/alquiler-de-maquinaria/1-hq.webp',
       href: '/servicios/alquiler-de-maquinaria',
     },
     {
-      title: 'Servicio TÃ©cnico Oficial KÃ¤rcher',
-      description: 'ReparaciÃ³n y mantenimiento oficial de equipos KÃ¤rcher realizado por tÃ©cnicos certificados.',
+      title: 'Servicio Técnico Oficial Kärcher',
+      description: 'Reparación y mantenimiento oficial de equipos Kärcher realizado por técnicos certificados.',
       img: '/images/servicios/servicio-tecnico-oficial-karcher/1-hq.webp',
       href: '/servicios/servicio-tecnico-oficial-karcher',
     },
     {
       title: 'Reparaciones y Mantenimientos',
-      description: 'Servicio de reparaciÃ³n rÃ¡pida para toda clase de maquinaria de limpieza profesional de cualquier marca.',
+      description: 'Servicio de reparación rápida para toda clase de maquinaria de limpieza profesional de cualquier marca.',
       img: '/images/home/reparaciones-mantenimientos-v2.webp',
       href: '/servicios/reparaciones-y-mantenimientos',
     },
     {
       title: 'Tienda de Productos Profesionales',
-      description: 'CatÃ¡logo completo de maquinaria, accesorios y consumibles de limpieza profesional. EnvÃ­o rÃ¡pido.',
+      description: 'Catálogo completo de maquinaria, accesorios y consumibles de limpieza profesional. Envío rápido.',
       img: '/images/home/tienda-v2.webp',
       href: '/tienda',
     },
   ],
-  'FormaciÃ³n Profesional': [
+  'Formación Profesional': [
     {
-      title: 'Centro de FormaciÃ³n',
-      description: 'Cursos homologados en bioseguridad, limpieza especializada y protocolos sanitarios. FormaciÃ³n subvencionada disponible.',
+      title: 'Centro de Formación',
+      description: 'Cursos homologados en bioseguridad, limpieza especializada y protocolos sanitarios. Formación subvencionada disponible.',
       img: 'https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=800&h=520&fit=crop&auto=format',
       href: '/servicios/centro-de-formacion',
     },
     {
-      title: 'FormaciÃ³n de Manipulador de Alimentos',
-      description: 'CertificaciÃ³n oficial para el carnÃ© de manipulaciÃ³n de alimentos segÃºn Reglamento 852/2004.',
+      title: 'Formación de Manipulador de Alimentos',
+      description: 'Certificación oficial para el carné de manipulación de alimentos según Reglamento 852/2004.',
       img: '/images/servicios/formacion-de-manipulador-de-alimentos/1-hq-v2.webp',
       href: '/servicios/formacion-de-manipulador-de-alimentos',
     },
     {
-      title: 'APPCC â€” ImplantaciÃ³n y VerificaciÃ³n',
-      description: 'DiseÃ±o y validaciÃ³n documental del sistema APPCC para cumplimiento normativo integral en tu empresa.',
+      title: 'APPCC — Implantación y Verificación',
+      description: 'Diseño y validación documental del sistema APPCC para cumplimiento normativo integral en tu empresa.',
       img: '/images/servicios/appcc-implantacion-y-verificacion/1-hq.webp',
       href: '/servicios/appcc-implantacion-y-verificacion',
     },
     {
-      title: 'AcreditaciÃ³n TÃ©cnica de Limpieza',
-      description: 'MÃ³dulo de 100h para operarios en activo. Competencias avanzadas en maquinaria, quÃ­mica y seguridad laboral.',
+      title: 'Acreditación Técnica de Limpieza',
+      description: 'Módulo de 100h para operarios en activo. Competencias avanzadas en maquinaria, química y seguridad laboral.',
       img: 'https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=800&h=520&fit=crop&auto=format',
       href: '/servicios/centro-de-formacion',
     },
   ],
 };
 
-/* â”€â”€â”€ Section: showcase interactivo (lista + visual que cambia) â”€â”€â”€â”€â”€â”€â”€â”€ */
+/* --- Section: showcase interactivo (lista + visual que cambia) --- */
 
 export function TopServices() {
   const [active, setActive] = useState<FilterKey>('Limpieza Especializada');
@@ -169,7 +169,7 @@ export function TopServices() {
     <section style={{ background: '#F7F8FB', padding: '88px 24px' }}>
       <div style={{ maxWidth: 1200, margin: '0 auto' }}>
 
-        {/* â”€â”€ Header â”€â”€ */}
+        {/* -- Header -- */}
         <div
           style={{
             display: 'flex',
@@ -221,7 +221,7 @@ export function TopServices() {
           </div>
         </div>
 
-        {/* â”€â”€ Showcase split â”€â”€ */}
+        {/* -- Showcase split -- */}
         <style>{`
           .ts-showcase {
             display: grid;
@@ -235,7 +235,7 @@ export function TopServices() {
           }
         `}</style>
         <div className="ts-showcase">
-          {/* Left: lista de servicios de la categorÃ­a activa */}
+          {/* Left: lista de servicios de la categoría activa */}
           <AnimatePresence mode="wait">
             <motion.div
               key={active}

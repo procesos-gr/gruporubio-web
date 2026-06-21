@@ -972,6 +972,22 @@ export function getRelatedServices(slugs: string[]): ServiceData[] {
   return slugs.map((s) => SERVICES.find((sv) => sv.slug === s)).filter(Boolean) as ServiceData[];
 }
 
+export interface ServiceFAQ {
+  q: string;
+  a: string;
+}
+
+// Deriva un FAQ por servicio a partir de los campos ya redactados (forWho, howItWorks,
+// whyUs, extraFact), para no duplicar contenido a mano en 30+ servicios.
+export function getServiceFAQs(service: ServiceData): ServiceFAQ[] {
+  return [
+    { q: `¿Para quién es el servicio de "${service.title}"?`, a: service.forWho },
+    { q: `¿Cómo funciona el servicio de "${service.title}"?`, a: service.howItWorks },
+    { q: `¿Por qué elegir a Grupo Rubio para este servicio?`, a: service.whyUs },
+    { q: `¿Sabías esto sobre "${service.title}"?`, a: service.extraFact },
+  ];
+}
+
 export const CATEGORY_LABELS: Record<ServiceCategory, string> = {
   limpieza: "Limpieza Especializada",
   plagas: "Control de Plagas",

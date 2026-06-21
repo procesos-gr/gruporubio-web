@@ -375,7 +375,7 @@ export function Navbar() {
 
           {/* CTA */}
           <Link
-            href="/presupuesto"
+            href="/alquiler"
             className="nav-btn-cta"
             style={{
               display: 'inline-flex', alignItems: 'center', gap: 6,
@@ -390,7 +390,7 @@ export function Navbar() {
               marginLeft: 8,
             }}
           >
-            Solicitar presupuesto
+            <Truck size={14} /> Catálogo de alquiler
           </Link>
 
           {/* Tienda — accent button */}
@@ -525,7 +525,7 @@ export function Navbar() {
               </div>
             )}
 
-            <Link href="/alquiler" style={mobileLinkStyle}>Alquiler de maquinaria</Link>
+            <Link href="/presupuesto" style={mobileLinkStyle}>Solicitar presupuesto</Link>
             <Link href="/nosotros" style={mobileLinkStyle}>Nosotros</Link>
             <Link href="/contacto" style={mobileLinkStyle}>Contacto</Link>
             {/* Mi cuenta — oculto temporalmente */}
@@ -533,14 +533,14 @@ export function Navbar() {
             {/* CTAs */}
             <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginTop: 14 }}>
               <Link
-                href="/presupuesto"
+                href="/alquiler"
                 style={{
                   display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6,
                   borderRadius: 8, background: '#111827', color: '#ffffff',
                   fontSize: 14, fontWeight: 600, padding: '13px 20px', textDecoration: 'none',
                 }}
               >
-                Solicitar presupuesto
+                <Truck size={14} /> Catálogo de alquiler
               </Link>
               <Link
                 href="/tienda"
@@ -655,7 +655,7 @@ export function Navbar() {
           {/* Bottom bar */}
           <div style={{ borderTop: '1px solid #F3F4F6', paddingTop: 14, marginTop: 20, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
             <Link
-              href="/alquiler"
+              href="/presupuesto"
               onClick={() => setOpen(false)}
               style={{
                 display: 'inline-flex', alignItems: 'center', gap: 7,
@@ -667,7 +667,7 @@ export function Navbar() {
                 textDecoration: 'none',
               }}
             >
-              <Truck size={12} /> Catálogo de alquiler
+              Solicitar presupuesto
             </Link>
             <Link
               href="/servicios"

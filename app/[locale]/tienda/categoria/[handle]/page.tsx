@@ -3,6 +3,7 @@ import Footer from "@/components/sections/Footer"
 import { ProductCard } from "@/components/tienda/ProductCard"
 import { AdvisoryBanner } from "@/components/tienda/AdvisoryBanner"
 import { medusa } from "@/lib/medusa"
+import { buildAlternates } from "@/lib/seo"
 import { notFound } from "next/navigation"
 import Link from "next/link"
 import {
@@ -72,8 +73,8 @@ function getFormats(product: Product): string[] {
     .filter((t): t is string => !!t && t.toLowerCase() !== "default")
 }
 
-export async function generateMetadata({ params }: { params: Promise<{ handle: string }> }) {
-  const { handle: rawHandle } = await params
+export async function generateMetadata({ params }: { params: Promise<{ locale: string; handle: string }> }) {
+  const { locale, handle: rawHandle } = await params
   const handle = decodeURIComponent(rawHandle)
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const result = await medusa.store.category.list({ handle: [handle] } as any).catch(() => null)
@@ -81,6 +82,7 @@ export async function generateMetadata({ params }: { params: Promise<{ handle: s
   return {
     title: category ? `${category.name} — Grupo Rubio` : "Categoría — Grupo Rubio",
     description: category?.description || "Productos profesionales de limpieza e higiene Grupo Rubio.",
+    alternates: buildAlternates(locale, `tienda/categoria/${handle}`),
   }
 }
 

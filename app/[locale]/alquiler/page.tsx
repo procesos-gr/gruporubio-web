@@ -2,13 +2,18 @@ import { Navbar } from "@/components/layout/Navbar"
 import Footer from "@/components/sections/Footer"
 import { MaquinaCard } from "@/components/alquiler/MaquinaCard"
 import { MAQUINARIA, CATEGORIAS } from "@/lib/maquinaria-alquiler"
+import { buildAlternates } from "@/lib/seo"
 import Link from "next/link"
 import { ArrowRight, Clock, Phone, ShieldCheck } from "lucide-react"
 
-export const metadata = {
-  title: "Alquiler de Maquinaria Industrial — Grupo Rubio",
-  description:
-    "Alquiler de maquinaria de limpieza industrial profesional en Navarra. Fregadoras, hidrolimpiadoras, barredoras, aspiradores y más.",
+export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale } = await params
+  return {
+    title: "Alquiler de Maquinaria Industrial — Grupo Rubio",
+    description:
+      "Alquiler de maquinaria de limpieza industrial profesional en Navarra. Fregadoras, hidrolimpiadoras, barredoras, aspiradores y más.",
+    alternates: buildAlternates(locale, "alquiler"),
+  }
 }
 
 export default async function AlquilerPage({
