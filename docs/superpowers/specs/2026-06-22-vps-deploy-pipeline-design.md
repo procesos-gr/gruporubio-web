@@ -1,7 +1,9 @@
 # Pipeline de despliegue automático VPS (web + medusa)
 
 **Fecha:** 2026-06-22
-**Estado:** Aprobado, pendiente de implementación
+**Estado:** Implementado (2026-06-22)
+
+**Nota de implementación:** el repo de medusa se migró de `modelaiprob-tech/gruporubio-medusa` (cuenta personal) a `procesos-gr/gruporubio-medusa` durante esta sesión, al detectar que nunca había existido bajo la cuenta de la empresa. La rama de deploy de medusa es `main` (no existe `feature/tienda-medusa` en ese repo). El paso de migraciones usa la ruta completa `/app/node_modules/.bin/medusa db:migrate` (el binario no está en el `PATH` del contenedor). La clave de CI se pasa codificada en base64 en una sola línea (secret `VPS_CI_KEY_B64`) en vez de como bloque multilínea, para evitar errores de copy-paste; el workflow la decodifica y la escribe dentro de `github.workspace` (no `/tmp`, que no está montado en el contenedor de `appleboy/ssh-action`) con permisos `644`.
 
 ## Contexto
 
