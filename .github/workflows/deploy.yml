@@ -11,7 +11,7 @@ jobs:
       - name: Decode SSH key
         run: |
           echo "${{ secrets.VPS_CI_KEY_B64 }}" | base64 -d > "${{ github.workspace }}/vps_ci_key"
-          chmod 600 "${{ github.workspace }}/vps_ci_key"
+          chmod 644 "${{ github.workspace }}/vps_ci_key"
       - name: Trigger deploy via SSH
         uses: appleboy/ssh-action@v1.0.3
         with:
