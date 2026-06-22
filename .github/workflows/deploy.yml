@@ -8,10 +8,14 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
+      - name: Decode SSH key
+        run: |
+          echo "${{ secrets.VPS_CI_KEY_B64 }}" | base64 -d > /tmp/vps_ci_key
+          chmod 600 /tmp/vps_ci_key
       - name: Trigger deploy via SSH
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.VPS_HOST }}
           username: root
-          key: ${{ secrets.VPS_CI_KEY }}
+          key_path: /tmp/vps_ci_key
           script: echo "deploy triggered"
