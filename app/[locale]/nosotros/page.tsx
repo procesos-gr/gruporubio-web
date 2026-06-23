@@ -133,7 +133,7 @@ export default function NosotrosPage() {
       <Navbar />
 
       {/* ── Header oscuro ── */}
-      <div style={{ background: "#111827", padding: "100px 32px 64px" }}>
+      <div style={{ background: "#111827", padding: "108px 32px 64px" }}>
         <div style={{ maxWidth: 1100, margin: "0 auto" }}>
           <nav style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 24 }}>
             <Link href="/" style={{ fontSize: 13, color: "rgba(255,255,255,0.45)", textDecoration: "none" }}>Inicio</Link>

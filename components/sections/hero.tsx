@@ -182,7 +182,7 @@ export function Hero() {
   let globalIdx = -1;
 
   return (
-    <section style={{ padding: '100px 24px 132px', position: 'relative', borderRadius: 16 }}>
+    <section style={{ padding: '108px 24px 132px', position: 'relative', borderRadius: 16 }}>
       <div style={{ position: 'absolute', inset: 0, borderRadius: 16, overflow: 'hidden', zIndex: 0 }}>
         <Image src="/images/hero/hero-banner-v6.png" alt="" fill priority quality={85} className="object-cover object-center" />
         <div style={{
