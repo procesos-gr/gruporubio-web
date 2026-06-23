@@ -25,7 +25,7 @@ export default function ContactoPage() {
       <Navbar />
 
       {/* ── Header ── */}
-      <div style={{ background: "#111827", padding: "120px 32px 64px" }}>
+      <div style={{ background: "#111827", padding: "128px 32px 64px" }}>
         <div style={{ maxWidth: 1100, margin: "0 auto" }}>
           <nav style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 24 }}>
             <Link href="/" style={{ fontSize: 13, color: "rgba(255,255,255,0.45)", textDecoration: "none" }}>
