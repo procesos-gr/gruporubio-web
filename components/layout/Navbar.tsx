@@ -202,11 +202,9 @@ export function Navbar() {
           background: showDark ? 'rgba(255,255,255,0.96)' : 'transparent',
           backdropFilter: showDark ? 'blur(14px)' : 'none',
           WebkitBackdropFilter: showDark ? 'blur(14px)' : 'none',
-          boxShadow: (scrolled && !open && !mobileOpen)
-            ? '0 2px 24px rgba(0,0,0,0.07)'
-            : (forceWhiteBg && !open && !mobileOpen)
-              ? '0 1px 0 rgba(0,0,0,0.06)'
-              : 'none',
+          boxShadow: ((scrolled || forceWhiteBg) && !open && !mobileOpen)
+            ? '0 0 0 1px rgba(15,23,42,0.05), 0 10px 32px rgba(15,23,42,0.12)'
+            : 'none',
           transition: 'background 0.3s ease, box-shadow 0.3s ease, border-radius 0.15s ease, top 0.3s ease',
         }}
       >
