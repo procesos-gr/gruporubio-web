@@ -192,7 +192,7 @@ export function Navbar() {
         style={{
           position: 'fixed',
           top: 16, left: 16, right: 16,
-          height: 116,
+          height: 104,
           zIndex: 50,
           borderRadius: (open || mobileOpen) ? '12px 12px 0 0' : 12,
           display: 'flex',

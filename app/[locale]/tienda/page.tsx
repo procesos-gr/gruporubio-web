@@ -88,7 +88,7 @@ export default async function TiendaPage({ params }: { params: Promise<{ locale:
 
             <div className="tienda-hero-content" style={{
               position: "relative", zIndex: 1,
-              padding: "148px 24px 100px",
+              padding: "136px 24px 100px",
               display: "flex", flexDirection: "column",
               alignItems: "center", textAlign: "center",
             }}>
