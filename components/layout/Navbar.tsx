@@ -139,7 +139,9 @@ export function Navbar() {
   // En tienda el navbar reposa sobre fondo blanco → siempre estado "scrolled"
   const forceWhiteBg = pathname.includes('/tienda');
 
-  const showDark = scrolled || open || mobileOpen || forceWhiteBg;
+  // Navbar siempre con fondo visible — evita que el logo quede "suelto"
+  // sobre el degradado del hero cuando está arriba sin scroll.
+  const showDark = true;
 
   // Re-evaluate scroll state on every navigation (fixes back-button transparency bug)
   useEffect(() => {
