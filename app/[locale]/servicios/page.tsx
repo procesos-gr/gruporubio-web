@@ -45,7 +45,7 @@ export default function ServiciosPage() {
 
       {/* ── Header ── */}
       <HashScrollCenter />
-      <div style={{ background: "#111827", padding: "108px 32px 64px" }}>
+      <div style={{ background: "#111827", padding: "120px 32px 64px" }}>
         <div style={{ maxWidth: 1100, margin: "0 auto" }}>
           {/* Breadcrumb */}
           <nav style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 24 }}>
