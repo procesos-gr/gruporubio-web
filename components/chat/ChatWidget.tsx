@@ -241,7 +241,7 @@ export function ChatWidget() {
           background: '#0f172a',
           color: '#ffffff', border: 'none', cursor: 'pointer',
           display: 'flex', alignItems: 'center', justifyContent: 'center',
-          boxShadow: '0 4px 24px rgba(0,0,0,0.35)',
+          boxShadow: '0 0 0 4px #ffffff, 0 4px 24px rgba(0,0,0,0.35)',
           zIndex: 9990,
         }}
       >
