@@ -45,6 +45,10 @@ export function ProductCard({
 }: Props) {
   const [quickViewOpen, setQuickViewOpen] = useState(false)
 
+  const formattedPrice = minPrice != null
+    ? new Intl.NumberFormat(locale, { style: "currency", currency }).format(minPrice / 100)
+    : null
+
   return (
     <>
       <style>{cardStyles}</style>
@@ -144,16 +148,24 @@ export function ProductCard({
               )}
             </div>
 
-            {/* Título mínimo, para identificar el producto en el grid */}
+            {/* Título + precio, para comparar de un vistazo en el grid */}
             <div style={{ padding: "10px 12px 12px" }}>
               <p style={{
                 fontSize: 13, fontWeight: 600, color: "#111827",
                 lineHeight: 1.35, letterSpacing: "-0.1px",
                 overflow: "hidden", textOverflow: "ellipsis",
                 display: "-webkit-box", WebkitLineClamp: 1, WebkitBoxOrient: "vertical",
+                marginBottom: 4,
               }}>
                 {title}
               </p>
+              {formattedPrice ? (
+                <p style={{ fontSize: 14, fontWeight: 800, color: "#111827", letterSpacing: "-0.2px" }}>
+                  {formattedPrice}
+                </p>
+              ) : (
+                <p style={{ fontSize: 12, color: "#9CA3AF" }}>Consultar</p>
+              )}
             </div>
           </div>
         </Link>
