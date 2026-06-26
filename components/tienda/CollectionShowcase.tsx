@@ -19,7 +19,7 @@ const COLLECTIONS = [
 
 export function CollectionShowcase({ locale }: { locale: string }) {
   return (
-    <section style={{ background: "#FFFFFF", padding: "72px 32px 64px" }}>
+    <section style={{ background: "#FFFFFF", padding: "32px 32px 64px" }}>
       <style>{`
         .collection-grid { grid-template-columns: repeat(4, 1fr); }
         @media (max-width: 900px) {
