@@ -25,14 +25,14 @@ export default function AvisoLegalPage() {
             <li><strong>Domicilio social:</strong> Glorieta Merindad de Ultrapuertos 1, 31500, Tudela, Navarra</li>
             <li><strong>Teléfono:</strong> 948 82 50 25</li>
             <li><strong>Correo electrónico:</strong> administracion@gruporubio.net</li>
-            <li><strong>Sitio web:</strong> gruporubio.es</li>
+            <li><strong>Sitio web:</strong> gruporubio.net</li>
             <li><strong>Actividad:</strong> Servicios de limpieza profesional, control de plagas e higiene ambiental</li>
           </ul>
         </section>
 
         <section style={{ marginBottom: 32 }}>
           <h2 style={{ fontSize: 18, fontWeight: 600, marginBottom: 12 }}>2. Objeto y ámbito de aplicación</h2>
-          <p>El presente Aviso Legal regula el acceso y uso del sitio web gruporubio.es, titularidad de Grupo Rubio. El acceso y uso del sitio implica la aceptación plena y sin reservas de las presentes condiciones.</p>
+          <p>El presente Aviso Legal regula el acceso y uso del sitio web gruporubio.net, titularidad de Grupo Rubio. El acceso y uso del sitio implica la aceptación plena y sin reservas de las presentes condiciones.</p>
         </section>
 
         <section style={{ marginBottom: 32 }}>
