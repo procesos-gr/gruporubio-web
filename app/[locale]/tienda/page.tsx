@@ -194,12 +194,11 @@ export default async function TiendaPage({
 
       </div>
 
-      {/* ── BUSCADOR ── sincronizado con ?q= */}
-      <TiendaSearch locale={locale} initialQuery={query ?? ""} />
-
       {query ? (
-        /* ── MODO BÚSQUEDA ── resultados en lugar del contenido de portada */
+        /* ── MODO BÚSQUEDA ── resultados en lugar del contenido de portada
+             (el buscador solo aparece aquí, para refinar; en portada no hay barra) */
         <div style={{ maxWidth: 1160, margin: "0 auto", padding: "36px 32px 72px" }}>
+          <TiendaSearch locale={locale} initialQuery={query} />
           <div style={{ display: "flex", alignItems: "baseline", gap: 12, marginBottom: 24, flexWrap: "wrap" }}>
             <h2 style={{ fontSize: 20, fontWeight: 800, color: "#111827", letterSpacing: "-0.5px", margin: 0 }}>
               Resultados para &ldquo;{query}&rdquo;
