@@ -12,6 +12,7 @@ import Footer from "@/components/sections/Footer"
 import { useTranslations } from "next-intl"
 import Link from "next/link"
 import { Truck, MapPin, Loader2 } from "lucide-react"
+import { analytics, centsToEur } from "@/lib/analytics"
 
 type ShippingOption = {
   id: string
@@ -65,6 +66,19 @@ export default function CheckoutPage() {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+
+  // begin_checkout una sola vez por visita, cuando el carrito ya está hidratado
+  const [checkoutTracked, setCheckoutTracked] = useState(false)
+  useEffect(() => {
+    if (!cartReady || checkoutTracked || items.length === 0) return
+    analytics.beginCheckout(centsToEur(total), items.map(i => ({
+      item_id: i.variant_id,
+      item_name: i.title,
+      price: centsToEur(i.unit_price),
+      quantity: i.quantity,
+    })))
+    setCheckoutTracked(true)
+  }, [cartReady, checkoutTracked, items, total])
 
   useEffect(() => {
     if (!cartReady) return

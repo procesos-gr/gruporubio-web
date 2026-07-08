@@ -2,6 +2,7 @@ import { Navbar } from "@/components/layout/Navbar"
 import Footer from "@/components/sections/Footer"
 import { ProductGallery } from "@/components/tienda/ProductGallery"
 import { AddToCartButton } from "@/components/tienda/AddToCartButton"
+import { TrackViewItem } from "@/components/analytics/TrackViewItem"
 import { ProductReviews } from "@/components/tienda/ProductReviews"
 import { ProductCard } from "@/components/tienda/ProductCard"
 import { AdvisoryBanner } from "@/components/tienda/AdvisoryBanner"
@@ -217,6 +218,15 @@ export default async function ProductPage({
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
+      <TrackViewItem
+        value={minPrice != null ? minPrice / 100 : 0}
+        item={{
+          item_id: product.id,
+          item_name: product.title ?? "",
+          price: minPrice != null ? minPrice / 100 : undefined,
+          item_category: category?.name,
+        }}
       />
       <Navbar />
 

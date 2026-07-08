@@ -3,6 +3,7 @@
 import { useState, FormEvent } from "react"
 import { Search, X } from "lucide-react"
 import { useRouter } from "next/navigation"
+import { analytics } from "@/lib/analytics"
 
 type Props = {
   locale: string
@@ -17,6 +18,7 @@ export function TiendaSearch({ locale, initialQuery = "" }: Props) {
   function submit(e: FormEvent) {
     e.preventDefault()
     const q = value.trim()
+    if (q) analytics.search(q)
     router.push(q ? `/${locale}/tienda?q=${encodeURIComponent(q)}` : `/${locale}/tienda`)
   }
 

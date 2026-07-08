@@ -1,6 +1,7 @@
 import { create } from "zustand"
 import { persist } from "zustand/middleware"
 import { medusa } from "@/lib/medusa"
+import { analytics, centsToEur } from "@/lib/analytics"
 
 export type LineItem = {
   id: string
@@ -114,6 +115,15 @@ export const useCartStore = create<CartStore>()(
             total: (cart as { total?: number }).total ?? 0,
             itemCount: items.reduce((s, i) => s + i.quantity, 0),
           })
+          const added = items.find(i => i.variant_id === variantId)
+          if (added) {
+            analytics.addToCart(centsToEur(added.unit_price * quantity), [{
+              item_id: added.variant_id,
+              item_name: added.title,
+              price: centsToEur(added.unit_price),
+              quantity,
+            }])
+          }
         } finally {
           set({ isLoading: false })
         }
@@ -137,11 +147,20 @@ export const useCartStore = create<CartStore>()(
       },
 
       removeItem: async (lineItemId) => {
-        const { cartId } = get()
+        const { cartId, items: prevItems } = get()
         if (!cartId) return
         set({ isLoading: true })
         try {
           await medusa.store.cart.deleteLineItem(cartId, lineItemId)
+          const removed = prevItems.find(i => i.id === lineItemId)
+          if (removed) {
+            analytics.removeFromCart(centsToEur(removed.total), [{
+              item_id: removed.variant_id,
+              item_name: removed.title,
+              price: centsToEur(removed.unit_price),
+              quantity: removed.quantity,
+            }])
+          }
           const { cart } = await medusa.store.cart.retrieve(cartId, {
             fields: "+items,+items.variant,+items.thumbnail,+items.total,+items.unit_price,+items.subtotal",
           } as Parameters<typeof medusa.store.cart.retrieve>[1])

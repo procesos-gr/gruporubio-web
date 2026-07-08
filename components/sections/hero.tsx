@@ -10,6 +10,7 @@ import { SERVICES } from '@/lib/services-data';
 import { getMedusa } from '@/lib/medusa';
 import { MAQUINARIA } from '@/lib/maquinaria-alquiler';
 import { searchAll, isSearchConfigured, type SearchResult } from '@/lib/search';
+import { analytics } from '@/lib/analytics';
 
 const QUICK_CATEGORIES = [
   { label: 'Limpieza industrial', href: '/servicios#limpieza' },
@@ -174,6 +175,7 @@ export function Hero() {
 
   function handleSearch() {
     if (!query.trim()) return;
+    analytics.search(query.trim());
     // Si hay resultados de servicio, ir al primero; si no, buscar en tienda
     const firstService = results.find(r => r.type === 'service');
     const firstProduct = results.find(r => r.type === 'product');

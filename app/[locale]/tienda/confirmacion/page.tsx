@@ -7,6 +7,7 @@ import Footer from "@/components/sections/Footer"
 import { ReviewForm } from "@/components/tienda/ReviewForm"
 import { medusa } from "@/lib/medusa"
 import { useCartStore } from "@/lib/store/cart"
+import { analytics, centsToEur } from "@/lib/analytics"
 import { CheckCircle, Star } from "lucide-react"
 import Link from "next/link"
 
@@ -29,6 +30,20 @@ export default function ConfirmacionPage() {
   const [order, setOrder] = useState<Order | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+
+  // purchase una sola vez por pedido (sessionStorage evita duplicados al recargar)
+  useEffect(() => {
+    if (!order) return
+    const key = `ga4_purchase_${order.id}`
+    if (sessionStorage.getItem(key)) return
+    analytics.purchase(order.id, centsToEur(order.total), (order.items ?? []).map(i => ({
+      item_id: i.id,
+      item_name: i.title,
+      price: centsToEur(i.unit_price),
+      quantity: i.quantity,
+    })))
+    sessionStorage.setItem(key, "1")
+  }, [order])
   const [openReviewFor, setOpenReviewFor] = useState<string | null>(null)
   const [reviewedItems, setReviewedItems] = useState<Set<string>>(new Set())
 
