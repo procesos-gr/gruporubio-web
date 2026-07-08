@@ -306,7 +306,7 @@ export const MAQUINARIA: MaquinaAlquiler[] = [
     marca: 'Kärcher',
     categoria: 'Limpieza textil',
     categoriaSlug: 'textil',
-    imagen: 'https://images.pexels.com/photos/38325/pexels-photo-38325.jpeg?auto=compress&cs=tinysrgb&w=640&h=420&dpr=1',
+    imagen: 'https://images.pexels.com/photos/9462139/pexels-photo-9462139.jpeg?auto=compress&cs=tinysrgb&w=640&h=420&dpr=1',
     descripcionCorta: 'Kärcher Puzzi — limpieza profunda de moquetas, tapicería y asientos. Secado rápido.',
     descripcion:
       'Sistema Kärcher Puzzi de inyección-extracción para limpieza en profundidad de moquetas, alfombras, tapizados, asientos y superficies textiles. Elimina manchas incrustadas, olores y ácaros. Alta potencia de extracción para secado rápido. Potencia nominal 1.200 W, alimentación 220-240V (compatible con toma estándar). Compatible con detergentes textiles y pastillas antiespumantes de la tienda Grupo Rubio.',

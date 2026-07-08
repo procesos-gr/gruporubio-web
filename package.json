@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "search:sync-content": "node --env-file-if-exists=.env.local scripts/sync-search-content.ts"
+    "search:sync-content": "node --env-file-if-exists=.env.local scripts/sync-search-content.ts",
+    "img:blur": "node scripts/generate-blur-map.mjs"
   },
   "dependencies": {
     "@ai-sdk/anthropic": "^3.0.83",

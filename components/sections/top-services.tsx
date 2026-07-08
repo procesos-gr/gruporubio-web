@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowUpRight } from 'lucide-react';
 import Image from 'next/image';
+import { blurProps } from '@/lib/img';
 import Link from 'next/link';
 
 /* --- Types ------------------------------------------------------- */
@@ -40,19 +41,19 @@ const CARDS: Record<FilterKey, ServiceCard[]> = {
     {
       title: 'Limpiezas Industriales',
       description: 'Limpieza especializada para entornos industriales y de alta exigencia con equipos de última generación.',
-      img: '/images/home/limpiezas-industriales-home.webp',
+      img: '/images/home/limpiezas-industriales-home-b.webp',
       href: '/servicios/limpiezas-industriales',
     },
     {
       title: 'Limpiezas en Altura',
       description: 'Trabajos verticales y acceso a zonas de difícil alcance con total seguridad y equipación homologada.',
-      img: '/images/home/limpieza-alturas-v2.webp',
+      img: '/images/home/limpieza-alturas-v3.webp',
       href: '/servicios/limpiezas-en-altura',
     },
     {
       title: 'Tratamiento de Suelos',
       description: 'Mantenimiento, pulido y protección de todo tipo de superficies y pavimentos industriales.',
-      img: '/images/home/tratamiento-suelos-v2.webp',
+      img: '/images/home/tratamiento-suelos-v3.webp',
       href: '/servicios/tratamientos-de-suelos',
     },
   ],
@@ -72,7 +73,7 @@ const CARDS: Record<FilterKey, ServiceCard[]> = {
     {
       title: 'Tratamientos de Legionela',
       description: 'Análisis, desinfección y mantenimiento preventivo de instalaciones de agua conforme a normativa vigente.',
-      img: '/images/servicios/tratamientos-de-legionela/1-hq.webp',
+      img: '/images/servicios/tratamientos-de-legionela/1-hq-b.webp',
       href: '/servicios/tratamientos-de-legionela',
     },
     {
@@ -92,13 +93,13 @@ const CARDS: Record<FilterKey, ServiceCard[]> = {
     {
       title: 'Formación de Manipulador de Alimentos',
       description: 'Cursos homologados de higiene alimentaria para equipos de trabajo en hostelería e industria.',
-      img: '/images/servicios/formacion-de-manipulador-de-alimentos/1-hq-v2.webp',
+      img: '/images/servicios/formacion-de-manipulador-de-alimentos/1-hq-v3.webp',
       href: '/servicios/formacion-de-manipulador-de-alimentos',
     },
     {
       title: 'Tratamientos de Legionela',
       description: 'Control térmico y químico de redes hídricas para prevenir la bacteria Legionella. Cumplimiento RD 861/2003.',
-      img: '/images/servicios/tratamientos-de-legionela/1-hq.webp',
+      img: '/images/servicios/tratamientos-de-legionela/1-hq-b.webp',
       href: '/servicios/tratamientos-de-legionela',
     },
   ],
@@ -112,7 +113,7 @@ const CARDS: Record<FilterKey, ServiceCard[]> = {
     {
       title: 'Servicio Técnico Oficial Kärcher',
       description: 'Reparación y mantenimiento oficial de equipos Kärcher realizado por técnicos certificados.',
-      img: '/images/servicios/servicio-tecnico-oficial-karcher/1-hq.webp',
+      img: '/images/servicios/servicio-tecnico-oficial-karcher/1-hq-b.webp',
       href: '/servicios/servicio-tecnico-oficial-karcher',
     },
     {
@@ -138,7 +139,7 @@ const CARDS: Record<FilterKey, ServiceCard[]> = {
     {
       title: 'Formación de Manipulador de Alimentos',
       description: 'Certificación oficial para el carné de manipulación de alimentos según Reglamento 852/2004.',
-      img: '/images/servicios/formacion-de-manipulador-de-alimentos/1-hq-v2.webp',
+      img: '/images/servicios/formacion-de-manipulador-de-alimentos/1-hq-v3.webp',
       href: '/servicios/formacion-de-manipulador-de-alimentos',
     },
     {
@@ -348,6 +349,7 @@ export function TopServices() {
                     sizes="(max-width: 768px) 90vw, 55vw"
                     className="object-cover object-center"
                     quality={90}
+                    {...blurProps(selected.img)}
                   />
                 </motion.div>
               </AnimatePresence>

@@ -3,6 +3,7 @@
 import { useCallback } from "react"
 import { ChevronLeft, ChevronRight } from "lucide-react"
 import Link from "next/link"
+import Image from "next/image"
 import useEmblaCarousel from "embla-carousel-react"
 
 type Variant = {
@@ -106,9 +107,8 @@ export function TiendaStorefront({ products, locale }: Props) {
                       >
                         <div style={{ position: "relative", aspectRatio: "1/1", background: "#F8FAFC" }}>
                           {product.thumbnail ? (
-                            // eslint-disable-next-line @next/next/no-img-element
-                            <img src={product.thumbnail} alt={product.title}
-                              style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                            <Image src={product.thumbnail} alt={product.title}
+                              fill sizes="200px" style={{ objectFit: "cover" }} />
                           ) : (
                             <div style={{ width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 32, opacity: 0.2 }}>🧴</div>
                           )}

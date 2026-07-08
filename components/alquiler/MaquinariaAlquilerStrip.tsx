@@ -2,6 +2,7 @@
 
 import Link from 'next/link'
 import Image from 'next/image'
+import { blurProps } from '@/lib/img'
 import { ArrowRight } from 'lucide-react'
 import { MAQUINARIA } from '@/lib/maquinaria-alquiler'
 
@@ -79,6 +80,7 @@ export function MaquinariaAlquilerStrip({ locale }: { locale: string }) {
                       fill
                       style={{ objectFit: 'cover' }}
                       sizes="(max-width: 640px) 50vw, 25vw"
+                      {...blurProps(m.imagen)}
                     />
                   </div>
 

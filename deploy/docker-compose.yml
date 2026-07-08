@@ -71,6 +71,10 @@ services:
       dockerfile: Dockerfile
     restart: unless-stopped
     env_file: .env.web
+    volumes:
+      # Caché del optimizador de imágenes: persiste entre deploys para que
+      # la transformación lenta de cada imagen solo ocurra una vez
+      - web_image_cache:/app/.next/cache/images
     ports:
       - "3000:3000"
     depends_on:
@@ -94,3 +98,4 @@ volumes:
   postgres_data:
   redis_data:
   meili_data:
+  web_image_cache:

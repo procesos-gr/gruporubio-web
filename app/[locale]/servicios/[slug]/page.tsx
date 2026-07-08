@@ -8,6 +8,7 @@ import { ServiceFAQAccordion } from "@/components/sections/services/service-faq"
 import { buildAlternates } from "@/lib/seo";
 import { MaquinariaAlquilerStrip } from "@/components/alquiler/MaquinariaAlquilerStrip";
 import Image from "next/image";
+import { blurProps } from "@/lib/img";
 import { Phone, CheckCircle2, ArrowRight, ImageIcon } from "lucide-react";
 import type { Metadata } from "next";
 
@@ -67,7 +68,7 @@ function ServiceImg({ src, alt, ratio, position, priority }: { src?: string; alt
   if (!src) return <ImgSlot ratio={ratio} />;
   return (
     <div style={{ width: "100%", aspectRatio: ratio, borderRadius: 8, overflow: "hidden", position: "relative", flexShrink: 0 }}>
-      <Image src={src} alt={alt} fill priority={priority} className="object-cover" style={position ? { objectPosition: position } : undefined} />
+      <Image src={src} alt={alt} fill priority={priority} sizes="(max-width: 900px) 92vw, 46vw" className="object-cover" style={position ? { objectPosition: position } : undefined} {...blurProps(src)} />
     </div>
   );
 }

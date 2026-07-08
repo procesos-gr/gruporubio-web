@@ -2,6 +2,7 @@
 
 import Image from "next/image"
 import { CheckCircle2 } from "lucide-react"
+import { blurProps } from "@/lib/img"
 
 const POINTS = [
   "Probado antes en nuestros propios servicios de limpieza y control de plagas",
@@ -45,12 +46,13 @@ export function BrandStory() {
               zIndex: 1,
             }}>
               <Image
-                src="/images/tienda/brand-story/large.png"
+                src="/images/tienda/brand-story/large-b.webp"
                 alt="Productos de limpieza profesional Grupo Rubio"
                 fill
                 quality={92}
                 style={{ objectFit: "cover" }}
                 sizes="(max-width: 900px) 70vw, 420px"
+                {...blurProps("/images/tienda/brand-story/large-b.webp")}
               />
             </div>
 
@@ -64,12 +66,13 @@ export function BrandStory() {
               zIndex: 2,
             }}>
               <Image
-                src="/images/tienda/brand-story/small-2.jpg"
+                src="/images/tienda/brand-story/small-2-b.webp"
                 alt="Bayetas y esponjas de limpieza"
                 fill
                 quality={92}
                 style={{ objectFit: "cover" }}
                 sizes="(max-width: 900px) 45vw, 270px"
+                {...blurProps("/images/tienda/brand-story/small-2-b.webp")}
               />
             </div>
 
@@ -83,12 +86,13 @@ export function BrandStory() {
               zIndex: 3,
             }}>
               <Image
-                src="/images/tienda/brand-story/small-1.jpg"
+                src="/images/tienda/brand-story/small-1-b.webp"
                 alt="Producto de limpieza en uso"
                 fill
                 quality={92}
                 style={{ objectFit: "cover" }}
                 sizes="(max-width: 900px) 50vw, 300px"
+                {...blurProps("/images/tienda/brand-story/small-1-b.webp")}
               />
             </div>
           </div>

@@ -6,6 +6,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowUpRight } from 'lucide-react';
 import { GOOGLE_REVIEWS_URL } from '@/lib/company-info';
+import { blurProps } from '@/lib/img';
 
 const CARD_RADIUS = 12;
 
@@ -227,6 +228,7 @@ export function PhotoGrid() {
             quality={90}
             className="object-cover object-center transition-transform duration-500 ease-out group-hover:scale-[1.04]"
             sizes="(max-width: 768px) 90vw, 44vw"
+            {...blurProps('/images/home/limpieza-profesional-fullbody.webp')}
           />
           <CardOverlay title={"Limpieza\nProfesional"} large />
         </div>
@@ -246,6 +248,7 @@ export function PhotoGrid() {
             quality={90}
             className="object-cover object-center transition-transform duration-500 ease-out group-hover:scale-[1.04]"
             sizes="(max-width: 768px) 90vw, 24vw"
+            {...blurProps('/images/home/control-de-plagas.webp')}
           />
           <CardOverlay title={"Control\nde Plagas"} />
         </div>
@@ -270,6 +273,7 @@ export function PhotoGrid() {
             quality={90}
             className="object-cover object-center transition-transform duration-500 ease-out group-hover:scale-[1.04]"
             sizes="(max-width: 768px) 90vw, 32vw"
+            {...blurProps('/images/home/tienda-v2.webp')}
           />
           <CardOverlay title={"Nuestra\nTienda"} />
         </div>

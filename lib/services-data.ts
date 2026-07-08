@@ -48,7 +48,7 @@ export const SERVICES: ServiceData[] = [
     extraFact:
       "Un plan de limpieza industrial profesional no solo previene accidentes, sino que reduce el desgaste abrasivo en la propia maquinaria de producción del cliente, incrementando el tiempo de actividad y mejorando la salud respiratoria del personal.",
     pexelsQuery: "industrial cleaning factory floor professional",
-    image: "/images/servicios/limpiezas-industriales/1.webp",
+    image: "/images/servicios/limpiezas-industriales/1-b.webp",
     image2: "/images/servicios/limpiezas-industriales/2.webp",
     relatedSlugs: [
       "servicios-globales-de-higiene",
@@ -107,7 +107,7 @@ export const SERVICES: ServiceData[] = [
     extraFact:
       "La ozonización preventiva reduce la incidencia de conjuntivitis, cefaleas, faringitis y procesos alérgicos respiratorios en las plantillas laborales.",
     pexelsQuery: "air purification ozone clean environment office",
-    image: "/images/servicios/ozonizacion/1-hq.webp",
+    image: "/images/servicios/ozonizacion/1-hq-b.webp",
     image2: "/images/servicios/ozonizacion/2.webp",
     relatedSlugs: [
       "limpiezas-de-siniestros",
@@ -259,7 +259,7 @@ export const SERVICES: ServiceData[] = [
       "El servicio tiene flexibilidad total: puede activarse como intervención de choque puntual o estructurarse como plan de mantenimiento periódico para conservación a largo plazo.",
     pexelsQuery: "window cleaning highrise building facade professional",
     image: "/images/servicios/limpiezas-en-altura/1.webp",
-    image2: "/images/servicios/limpiezas-en-altura/2.webp",
+    image2: "/images/servicios/limpiezas-en-altura/2-b.webp",
     relatedSlugs: [
       "limpiezas-de-fachadas-y-grafitis",
       "mantenimiento-y-conservacion",
@@ -345,7 +345,7 @@ export const SERVICES: ServiceData[] = [
       "La tienda especializada en Tudela provee más de 135 referencias de productos químicos y 241 útiles de limpieza profesionales para apoyar la logística de estos servicios.",
     pexelsQuery: "hygiene services professional cleaning team commercial",
     image: "/images/servicios/servicios-globales-de-higiene/1.webp",
-    image2: "/images/servicios/servicios-globales-de-higiene/2.webp",
+    image2: "/images/servicios/servicios-globales-de-higiene/2-b.webp",
     relatedSlugs: [
       "mantenimiento-y-conservacion",
       "limpiezas-industriales",
@@ -546,7 +546,7 @@ export const SERVICES: ServiceData[] = [
     extraFact:
       "Anobium Punctatum es el agente detrás del 75% de los daños en maderas estructurales y ornamentales, devorando tanto coníferas blandas como frondosas duras.",
     pexelsQuery: "woodworm beetle wood damage antique furniture treatment",
-    image: "/images/servicios/desinsectacion-de-carcoma/1-hq.webp",
+    image: "/images/servicios/desinsectacion-de-carcoma/1-hq-b.webp",
     image2: "/images/servicios/desinsectacion-de-carcoma/2.webp",
     relatedSlugs: [
       "tratamiento-anti-termitas",
@@ -716,8 +716,8 @@ export const SERVICES: ServiceData[] = [
     extraFact:
       "Beber agua infectada no causa la enfermedad. El contagio se produce cuando la bacteria viaja en aerosol de una ducha o torre de enfriamiento e inhala directamente hasta los alvéolos pulmonares.",
     pexelsQuery: "water treatment legionella plumbing system hotel",
-    image: "/images/servicios/tratamientos-de-legionela/1-hq.webp",
-    image2: "/images/servicios/tratamientos-de-legionela/2-hq.webp",
+    image: "/images/servicios/tratamientos-de-legionela/1-hq-b.webp",
+    image2: "/images/servicios/tratamientos-de-legionela/2-hq-b.webp",
     relatedSlugs: [
       "ddd-desratizacion-desinsectacion-desinfeccion",
       "mantenimiento-y-conservacion",
@@ -804,7 +804,7 @@ export const SERVICES: ServiceData[] = [
     extraFact:
       "El mayor vector de alteración biológica en plantas de procesado es la falta de praxis higiénica personal. Esta capacitación formal es la primera línea defensiva contra brotes epidemiológicos.",
     pexelsQuery: "food safety training hygiene food handler certificate",
-    image: "/images/servicios/formacion-de-manipulador-de-alimentos/1-hq-v2.webp",
+    image: "/images/servicios/formacion-de-manipulador-de-alimentos/1-hq-v3.webp",
     image2: "/images/servicios/formacion-de-manipulador-de-alimentos/2.webp",
     relatedSlugs: [
       "appcc-implantacion-y-verificacion",
@@ -894,7 +894,7 @@ export const SERVICES: ServiceData[] = [
     extraFact:
       "La proyección de hielo seco (Dry Ice) permite limpiar cuadros eléctricos conectados y motores en funcionamiento sin peligro de electrocución ni corrosión galvánica.",
     pexelsQuery: "Karcher pressure washer repair technical service professional",
-    image: "/images/servicios/servicio-tecnico-oficial-karcher/1-hq.webp",
+    image: "/images/servicios/servicio-tecnico-oficial-karcher/1-hq-b.webp",
     noImage2: true,
     relatedSlugs: [
       "alquiler-de-maquinaria",
@@ -954,7 +954,7 @@ export const SERVICES: ServiceData[] = [
     extraFact:
       "La formación propia permite someter a nuestros operativos a programas de reciclaje técnico exigente, garantizando que las operaciones con maquinaria pesada o biocidas mantengan índices de siniestralidad excepcionalmente reducidos.",
     pexelsQuery: "professional training course certification hygiene safety",
-    image: "/images/servicios/formacion-de-manipulador-de-alimentos/1-hq-v2.webp",
+    image: "/images/servicios/formacion-de-manipulador-de-alimentos/1-hq-v3.webp",
     noImage2: true,
     relatedSlugs: [
       "formacion-de-manipulador-de-alimentos",

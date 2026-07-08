@@ -9,7 +9,10 @@ const nextConfig: NextConfig = {
   // output: standalone solo para builds Docker (no compatible con Vercel)
   ...(process.env.DOCKER_BUILD === "true" ? { output: "standalone" } : {}),
   images: {
-    qualities: [75, 85, 86, 88, 90],
+    qualities: [75, 85, 86, 88, 90, 92, 95],
+    // 31 días: seguro porque la regla del proyecto es nombre de archivo NUEVO
+    // al reemplazar una imagen (nunca se reutiliza la misma ruta)
+    minimumCacheTTL: 2678400,
     remotePatterns: [
       { protocol: 'https', hostname: 'images.unsplash.com' },
       { protocol: 'https', hostname: 'images.pexels.com' },

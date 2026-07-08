@@ -10,6 +10,7 @@ import { ReviewsCarousel } from "@/components/sections/reviews-carousel"
 import { medusa } from "@/lib/medusa"
 import { searchProducts, isSearchConfigured } from "@/lib/search"
 import { buildAlternates } from "@/lib/seo"
+import { blurProps } from "@/lib/img"
 import Image from "next/image"
 import Link from "next/link"
 import { ThumbsUp, ShieldCheck, Users, SearchX } from "lucide-react"
@@ -118,12 +119,14 @@ export default async function TiendaPage({
 
           <section style={{ position: "relative", height: 460 }}>
             <Image
-              src="/images/tienda/banner-gpt2-v1-flotantes.jpg"
+              src="/images/tienda/banner-gpt2-v1-flotantes-b.webp"
               alt="Productos de limpieza profesional"
               fill
               priority
               quality={95}
+              sizes="100vw"
               style={{ objectFit: "cover", objectPosition: "center 40%" }}
+              {...blurProps("/images/tienda/banner-gpt2-v1-flotantes-b.webp")}
             />
 
             {/* ── TEXTO IZQUIERDA ── */}

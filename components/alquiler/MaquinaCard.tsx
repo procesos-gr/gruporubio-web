@@ -4,6 +4,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { ArrowRight } from 'lucide-react'
 import type { MaquinaAlquiler } from '@/lib/maquinaria-alquiler'
+import { blurProps } from '@/lib/img'
 
 const CATEGORIA_COLOR: Record<string, string> = {
   Fregadoras:              '#1D4ED8',
@@ -46,6 +47,7 @@ export function MaquinaCard({ maquina, locale }: { maquina: MaquinaAlquiler; loc
             fill
             style={{ objectFit: 'cover' }}
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+            {...blurProps(maquina.imagen)}
           />
           {/* Category pill over image */}
           <span

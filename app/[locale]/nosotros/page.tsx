@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { blurProps } from "@/lib/img";
 import { Navbar } from "@/components/layout/Navbar";
 import Footer from "@/components/sections/Footer";
 import { ArrowRight, Phone, Image as ImageIcon } from "lucide-react";
@@ -57,7 +58,7 @@ const DIVISIONS = [
     tag: "01",
     desc: "Desde limpieza de oficinas y comunidades hasta limpiezas industriales, en altura, post-siniestro y tratamiento de suelos. Maquinaria propia de última generación.",
     href: "/servicios#limpieza",
-    img: "/images/home/limpiezas-industriales-home.webp",
+    img: "/images/home/limpiezas-industriales-home-b.webp",
   },
   {
     id: "plagas",
@@ -73,7 +74,7 @@ const DIVISIONS = [
     tag: "03",
     desc: "Patente propia de hardware urbano inteligente para el control automatizado de plagas en Smart Cities. Presentado en Ayuntalia 2025. Primer sistema de este tipo en Europa.",
     href: "/servicios",
-    img: "/images/nosotros/xanael-innovacion.webp",
+    img: "/images/nosotros/xanael-innovacion-b.webp",
   },
   {
     id: "appcc",
@@ -89,7 +90,7 @@ const DIVISIONS = [
     tag: "05",
     desc: "Venta de química profesional, celulosa, EPIs y maquinaria. Servicio Técnico Oficial Kärcher para toda la región. Alquiler de equipos industriales.",
     href: "/servicios#maquinaria",
-    img: "/images/servicios/servicio-tecnico-oficial-karcher/1-hq.webp",
+    img: "/images/servicios/servicio-tecnico-oficial-karcher/1-hq-b.webp",
   },
   {
     id: "formacion",
@@ -97,7 +98,7 @@ const DIVISIONS = [
     tag: "06",
     desc: "Formación reglada para manipuladores de alimentos, certificados de profesionalidad y cursos técnicos. Acreditados por el Consorcio Eder.",
     href: "/servicios#formacion",
-    img: "/images/servicios/formacion-de-manipulador-de-alimentos/1-hq-v2.webp",
+    img: "/images/servicios/formacion-de-manipulador-de-alimentos/1-hq-v3.webp",
   },
 ];
 
@@ -105,12 +106,12 @@ const RSC = [
   {
     title: "COVID-19 · 2020",
     text: "Desinfección gratuita de ambulancias, vehículos de bomberos y patrullas policiales durante el estado de alarma.",
-    imgSrc: "/images/nosotros/rsc-covid.webp",
+    imgSrc: "/images/nosotros/rsc-covid-b.webp",
   },
   {
     title: "SDR Arenas · Baloncesto base",
     text: "Patrocinador principal del club desde categorías Mini hasta Senior bajo el nombre Grupo Rubio GIMA Arenas.",
-    imgSrc: "/images/nosotros/rsc-arenas.webp",
+    imgSrc: "/images/nosotros/rsc-arenas-b.webp",
   },
   {
     title: "Formación y empleo comarcal",
@@ -202,6 +203,7 @@ export default function NosotrosPage() {
                   fill
                   priority
                   sizes="(max-width: 1024px) 90vw, 510px"
+                  {...blurProps("/images/nosotros/instalaciones-grupo-rubio.webp")}
                   className="object-cover object-center"
                   quality={88}
                 />
@@ -255,10 +257,11 @@ export default function NosotrosPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
             <div style={{ position: "relative", height: 340, borderRadius: 8, overflow: "hidden" }}>
               <Image
-                src="/images/nosotros/hermanos-rubio-stand.webp"
+                src="/images/nosotros/hermanos-rubio-stand-b.webp"
                 alt="Carlos, Iñaki y José Javier Rubio Carrera en el stand de Xanael"
                 fill
                 sizes="(max-width: 1024px) 90vw, 538px"
+                {...blurProps("/images/nosotros/hermanos-rubio-stand-b.webp")}
                 className="object-cover"
                 style={{ objectPosition: "50% 62%" }}
                 quality={88}
@@ -353,6 +356,7 @@ export default function NosotrosPage() {
                     alt={current.title}
                     fill
                     sizes="(max-width: 1024px) 90vw, 760px"
+                    {...blurProps(current.img)}
                     className="object-cover object-center"
                     quality={86}
                   />
@@ -409,6 +413,7 @@ export default function NosotrosPage() {
                       alt={item.title}
                       fill
                       sizes="(max-width: 1024px) 90vw, 538px"
+                      {...blurProps(item.imgSrc)}
                       className="object-cover object-center"
                       quality={85}
                     />

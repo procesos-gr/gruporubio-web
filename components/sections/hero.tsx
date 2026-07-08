@@ -11,6 +11,7 @@ import { getMedusa } from '@/lib/medusa';
 import { MAQUINARIA } from '@/lib/maquinaria-alquiler';
 import { searchAll, isSearchConfigured, type SearchResult } from '@/lib/search';
 import { analytics } from '@/lib/analytics';
+import { blurProps } from '@/lib/img';
 
 const QUICK_CATEGORIES = [
   { label: 'Limpieza industrial', href: '/servicios#limpieza' },
@@ -205,7 +206,7 @@ export function Hero() {
   return (
     <section style={{ padding: '108px 24px 132px', position: 'relative', borderRadius: 16 }}>
       <div style={{ position: 'absolute', inset: 0, borderRadius: 16, overflow: 'hidden', zIndex: 0 }}>
-        <Image src="/images/hero/hero-banner-v6.png" alt="" fill priority quality={85} className="object-cover object-center" />
+        <Image src="/images/hero/hero-banner-v7.webp" alt="" fill priority quality={85} sizes="100vw" className="object-cover object-center" {...blurProps('/images/hero/hero-banner-v7.webp')} />
         <div style={{
           position: 'absolute', inset: 0,
           background: 'linear-gradient(to bottom, rgba(255,255,255,0.32) 0%, rgba(255,255,255,0.18) 60%, rgba(255,255,255,0.06) 100%)',

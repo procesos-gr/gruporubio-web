@@ -8,7 +8,7 @@ const logos = [
   { src: "/images/clients/logo-ayuntamiento-tudela.png", alt: "Ayuntamiento de Tudela" },
   { src: "/images/clients/logo-aspil.png", alt: "Aspil" },
   { src: "/images/clients/logo-uvesa.png", alt: "Uvesa" },
-  { src: "/images/clients/logo-urzante.png", alt: "Urzante" },
+  { src: "/images/clients/logo-urzante-b.webp", alt: "Urzante" },
   { src: "/images/clients/sendaviva.png", alt: "Sendaviva" },
   { src: "/images/clients/remigio.png", alt: "Hotel Remigio" },
   { src: "/images/clients/samanes.png", alt: "Samanes" },
