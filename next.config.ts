@@ -1,5 +1,6 @@
 import type { NextConfig } from "next";
 import createNextIntlPlugin from "next-intl/plugin";
+import { withSentryConfig } from "@sentry/nextjs";
 
 const withNextIntl = createNextIntlPlugin("./i18n/request.ts");
 
@@ -18,4 +19,13 @@ const nextConfig: NextConfig = {
   },
 };
 
-export default withNextIntl(nextConfig);
+export default withSentryConfig(withNextIntl(nextConfig), {
+  org: process.env.SENTRY_ORG,
+  project: process.env.SENTRY_PROJECT,
+  authToken: process.env.SENTRY_AUTH_TOKEN,
+  silent: true,
+  // Los sourcemaps solo se suben si hay SENTRY_AUTH_TOKEN en el build
+  sourcemaps: { disable: !process.env.SENTRY_AUTH_TOKEN },
+  // Proxy interno /monitoring para que los adblockers no bloqueen los eventos
+  tunnelRoute: "/monitoring",
+});

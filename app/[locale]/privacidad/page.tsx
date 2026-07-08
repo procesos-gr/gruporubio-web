@@ -54,7 +54,7 @@ export default function PrivacidadPage() {
 
         <section style={{ marginBottom: 32 }}>
           <h2 style={{ fontSize: 18, fontWeight: 600, marginBottom: 12 }}>5. Destinatarios de los datos</h2>
-          <p>No cedemos tus datos a terceros, salvo obligación legal. Utilizamos proveedores de servicios tecnológicos que actúan como encargados del tratamiento (alojamiento web, servicio de correo electrónico, pasarela de pago Stripe). Estos proveedores operan bajo contratos de confidencialidad y no pueden usar tus datos para sus propios fines.</p>
+          <p>No cedemos tus datos a terceros, salvo obligación legal. Utilizamos proveedores de servicios tecnológicos que actúan como encargados del tratamiento (alojamiento web, servicio de correo electrónico, pasarela de pago Stripe y Sentry como servicio técnico de monitorización de errores, que procesa datos técnicos del navegador sin datos identificativos). Estos proveedores operan bajo contratos de confidencialidad y no pueden usar tus datos para sus propios fines.</p>
         </section>
 
         <section style={{ marginBottom: 32 }}>
