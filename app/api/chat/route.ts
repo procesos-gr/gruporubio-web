@@ -5,6 +5,7 @@ import { buildSystemPrompt } from "@/lib/chatbot/knowledge";
 import { checkRateLimit } from "@/lib/chatbot/rate-limit";
 import { logChatEvent } from "@/lib/chatbot/logger";
 import { getMedusa } from "@/lib/medusa";
+import { searchProducts, isSearchConfigured } from "@/lib/search";
 
 export const runtime = "nodejs";
 export const maxDuration = 30;
@@ -34,9 +35,29 @@ const buscarProductos = tool({
   execute: async ({ query }) => {
     try {
       const client = getMedusa();
-      let { products } = await client.store.product.list(
-        query?.trim() ? { q: query, limit: 5 } : { limit: 8 }
-      );
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      let products: any[] | undefined;
+
+      // Meilisearch primero (tolera typos tipo "desinfektante"); si falla o
+      // no está configurado, cae al buscador básico de Medusa.
+      if (query?.trim() && isSearchConfigured()) {
+        try {
+          const hits = await searchProducts(query, 5);
+          products = hits.map((h) => ({
+            title: h.title,
+            handle: h.handle,
+            collection: h.collection_title ? { title: h.collection_title } : undefined,
+          }));
+        } catch {
+          products = undefined;
+        }
+      }
+
+      if (!products) {
+        ({ products } = await client.store.product.list(
+          query?.trim() ? { q: query, limit: 5 } : { limit: 8 }
+        ));
+      }
       let exactMatch = true;
       // Sin resultados para esa búsqueda → devolver el catálogo actual para
       // que el bot pueda ofrecer alternativas reales en vez de un "no hay".

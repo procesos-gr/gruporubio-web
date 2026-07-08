@@ -4,11 +4,15 @@ import { TiendaStorefront, type StoreProduct } from "@/components/tienda/TiendaS
 import { CollectionShowcase } from "@/components/tienda/CollectionShowcase"
 import { BrandStory } from "@/components/tienda/BrandStory"
 import { AdvisoryBanner } from "@/components/tienda/AdvisoryBanner"
+import { TiendaSearch } from "@/components/tienda/TiendaSearch"
+import { ProductGrid } from "@/components/tienda/ProductGrid"
 import { ReviewsCarousel } from "@/components/sections/reviews-carousel"
 import { medusa } from "@/lib/medusa"
+import { searchProducts, isSearchConfigured } from "@/lib/search"
 import { buildAlternates } from "@/lib/seo"
 import Image from "next/image"
-import { ThumbsUp, ShieldCheck, Users } from "lucide-react"
+import Link from "next/link"
+import { ThumbsUp, ShieldCheck, Users, SearchX } from "lucide-react"
 const REGION_ID = process.env.NEXT_PUBLIC_MEDUSA_REGION_ID!
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
@@ -20,22 +24,75 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   }
 }
 
-export default async function TiendaPage({ params }: { params: Promise<{ locale: string }> }) {
-  const { locale } = (await params)
+const PRODUCT_FIELDS = "+variants.calculated_price,+collection.id,+collection.title,+collection.handle"
 
-  let products: StoreProduct[] = []
+// Busca productos para /tienda?q= — Meilisearch (typo-tolerante) con
+// fallback al ILIKE básico de Medusa si el buscador no está disponible.
+async function searchStoreProducts(q: string): Promise<StoreProduct[]> {
+  try {
+    if (isSearchConfigured()) {
+      const hits = await searchProducts(q, 24)
+      if (hits.length === 0) return []
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const result = await medusa.store.product.list({
+        id: hits.map(h => h.id),
+        region_id: REGION_ID,
+        fields: PRODUCT_FIELDS,
+        limit: 24,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } as any)
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const byId = new Map(((result.products ?? []) as any[]).map(p => [p.id, p]))
+      // conserva el orden de relevancia de Meilisearch
+      return hits.map(h => byId.get(h.id)).filter(Boolean) as StoreProduct[]
+    }
+  } catch {
+    // cae al fallback de abajo
+  }
   try {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const result = await medusa.store.product.list({
+      q,
       region_id: REGION_ID,
-      fields: "+variants.calculated_price,+collection.id,+collection.title,+collection.handle",
-      limit: 100,
+      fields: PRODUCT_FIELDS,
+      limit: 24,
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } as any)
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    products = (result.products ?? []) as any[]
+    return (result.products ?? []) as any[]
   } catch {
-    products = []
+    return []
+  }
+}
+
+export default async function TiendaPage({
+  params,
+  searchParams,
+}: {
+  params: Promise<{ locale: string }>
+  searchParams: Promise<{ q?: string }>
+}) {
+  const { locale } = (await params)
+  const { q } = (await searchParams)
+  const query = q?.trim() || null
+
+  const searchResults = query ? await searchStoreProducts(query) : null
+
+  let products: StoreProduct[] = []
+  if (!query) {
+    try {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const result = await medusa.store.product.list({
+        region_id: REGION_ID,
+        fields: PRODUCT_FIELDS,
+        limit: 100,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } as any)
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      products = (result.products ?? []) as any[]
+    } catch {
+      products = []
+    }
   }
 
   return (
@@ -134,17 +191,53 @@ export default async function TiendaPage({ params }: { params: Promise<{ locale:
 
       </div>
 
-      {/* ── NUESTRA COLECCIÓN ── 8 categorías con simbología profesional ── */}
-      <CollectionShowcase locale={locale} />
+      {/* ── BUSCADOR ── sincronizado con ?q= */}
+      <TiendaSearch locale={locale} initialQuery={query ?? ""} />
 
-      {/* ── BRAND STORY ── puzzle de imágenes + texto de confianza ── */}
-      <BrandStory />
+      {query ? (
+        /* ── MODO BÚSQUEDA ── resultados en lugar del contenido de portada */
+        <div style={{ maxWidth: 1160, margin: "0 auto", padding: "36px 32px 72px" }}>
+          <div style={{ display: "flex", alignItems: "baseline", gap: 12, marginBottom: 24, flexWrap: "wrap" }}>
+            <h2 style={{ fontSize: 20, fontWeight: 800, color: "#111827", letterSpacing: "-0.5px", margin: 0 }}>
+              Resultados para &ldquo;{query}&rdquo;
+            </h2>
+            <span style={{ fontSize: 13, color: "#9CA3AF" }}>
+              {searchResults?.length ?? 0} {(searchResults?.length ?? 0) === 1 ? "producto" : "productos"}
+            </span>
+            <Link href={`/${locale}/tienda`} style={{ fontSize: 13, fontWeight: 600, color: "#1e3a8a", textDecoration: "none", marginLeft: "auto" }}>
+              Ver toda la tienda
+            </Link>
+          </div>
 
-      {/* ── MÁS VENDIDOS ── */}
-      <TiendaStorefront products={products} locale={locale} />
+          {searchResults && searchResults.length > 0 ? (
+            <ProductGrid products={searchResults} locale={locale} />
+          ) : (
+            <div style={{ textAlign: "center", padding: "64px 32px", color: "#6B7280" }}>
+              <SearchX size={36} color="#D1D5DB" style={{ marginBottom: 14 }} />
+              <p style={{ fontSize: 16, fontWeight: 600, color: "#374151", marginBottom: 6 }}>
+                Sin resultados para &ldquo;{query}&rdquo;
+              </p>
+              <p style={{ fontSize: 14 }}>
+                Prueba con otro término o consulta el catálogo completo de la tienda.
+              </p>
+            </div>
+          )}
+        </div>
+      ) : (
+        <>
+          {/* ── NUESTRA COLECCIÓN ── 8 categorías con simbología profesional ── */}
+          <CollectionShowcase locale={locale} />
 
-      {/* ── GOOGLE REVIEWS ── */}
-      <ReviewsCarousel />
+          {/* ── BRAND STORY ── puzzle de imágenes + texto de confianza ── */}
+          <BrandStory />
+
+          {/* ── MÁS VENDIDOS ── */}
+          <TiendaStorefront products={products} locale={locale} />
+
+          {/* ── GOOGLE REVIEWS ── */}
+          <ReviewsCarousel />
+        </>
+      )}
 
       {/* ── BANNER ASESORAMIENTO GUIADO ── */}
       <AdvisoryBanner locale={locale} />

@@ -9,6 +9,7 @@ import { useRouter } from 'next/navigation';
 import { SERVICES } from '@/lib/services-data';
 import { getMedusa } from '@/lib/medusa';
 import { MAQUINARIA } from '@/lib/maquinaria-alquiler';
+import { searchAll, isSearchConfigured, type SearchResult } from '@/lib/search';
 
 const QUICK_CATEGORIES = [
   { label: 'Limpieza industrial', href: '/servicios#limpieza' },
@@ -23,13 +24,6 @@ const USP_ITEMS = [
   { icon: Award, label: '+55 años de experiencia' },
   { icon: Wrench, label: 'Técnicos propios y maquinaria Kärcher' },
 ];
-
-interface SearchResult {
-  type: 'service' | 'product' | 'rental';
-  title: string;
-  subtitle: string;
-  href: string;
-}
 
 function norm(text: string) {
   return text.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
@@ -46,18 +40,19 @@ function useSearch(query: string) {
   const [results, setResults] = useState<SearchResult[]>([]);
   const [loading, setLoading] = useState(false);
   const [medusaProducts, setMedusaProducts] = useState<MedusaProduct[]>([]);
+  const reqIdRef = useRef(0);
 
-  // Carga productos de Medusa una sola vez al montar
+  // Sin Meilisearch configurado, carga productos de Medusa una sola vez al
+  // montar para que el filtrado local pueda incluirlos
   useEffect(() => {
+    if (isSearchConfigured()) return;
     getMedusa().store.product.list({ limit: 100 } as Parameters<ReturnType<typeof getMedusa>['store']['product']['list']>[0])
       .then(({ products }) => setMedusaProducts(products ?? []))
       .catch(() => {});
   }, []);
 
-  const search = useCallback((q: string) => {
-    if (!q.trim()) { setResults([]); return; }
-    setLoading(true);
-
+  // Filtrado local por substring — fallback si Meilisearch no responde
+  const searchLocal = useCallback((q: string): SearchResult[] => {
     const words = norm(q).split(/\s+/).filter(Boolean);
 
     const serviceResults: SearchResult[] = SERVICES
@@ -87,12 +82,36 @@ function useSearch(query: string) {
         href: p.handle ? `/tienda/${p.handle}` : '/tienda',
       }));
 
-    setResults([...serviceResults, ...rentalResults, ...productResults].slice(0, 9));
-    setLoading(false);
+    return [...serviceResults, ...rentalResults, ...productResults].slice(0, 9);
   }, [medusaProducts]);
 
+  const search = useCallback(async (q: string) => {
+    if (!q.trim()) { setResults([]); setLoading(false); return; }
+    const reqId = ++reqIdRef.current;
+    setLoading(true);
+
+    let next: SearchResult[];
+    try {
+      if (!isSearchConfigured()) throw new Error('meilisearch no configurado');
+      const hits = await searchAll(q, { contentLimit: 8, productsLimit: 4 });
+      next = [
+        ...hits.filter(h => h.type === 'service').slice(0, 5),
+        ...hits.filter(h => h.type === 'rental').slice(0, 3),
+        ...hits.filter(h => h.type === 'product').slice(0, 4),
+      ].slice(0, 9);
+    } catch {
+      next = searchLocal(q);
+    }
+
+    // Solo aplica el resultado si sigue siendo la petición más reciente
+    if (reqId === reqIdRef.current) {
+      setResults(next);
+      setLoading(false);
+    }
+  }, [searchLocal]);
+
   useEffect(() => {
-    const timer = setTimeout(() => search(query), 150);
+    const timer = setTimeout(() => { void search(query); }, 150);
     return () => clearTimeout(timer);
   }, [query, search]);
 
