@@ -13,6 +13,10 @@ const nextConfig: NextConfig = {
     // 31 días: seguro porque la regla del proyecto es nombre de archivo NUEVO
     // al reemplazar una imagen (nunca se reutiliza la misma ruta)
     minimumCacheTTL: 2678400,
+    // Solo en dev: permite que el optimizador cargue imágenes de Medusa en
+    // localhost:9000 (IP privada). En prod Medusa está en dominio público, así
+    // que el guard SSRF de Next sigue activo.
+    ...(process.env.NODE_ENV !== "production" ? { dangerouslyAllowLocalIP: true } : {}),
     remotePatterns: [
       { protocol: 'https', hostname: 'images.unsplash.com' },
       { protocol: 'https', hostname: 'images.pexels.com' },
