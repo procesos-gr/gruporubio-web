@@ -5,7 +5,7 @@ import { MessageCircle, ArrowRight } from "lucide-react"
 
 export function AdvisoryBanner({ locale }: { locale: string }) {
   return (
-    <section style={{ background: "#F8FAFC", padding: "0 32px 72px" }}>
+    <section style={{ background: "#F8FAFC", padding: "56px 32px 72px" }}>
       <div style={{
         maxWidth: 1160, margin: "0 auto",
         background: "#FFFFFF",
