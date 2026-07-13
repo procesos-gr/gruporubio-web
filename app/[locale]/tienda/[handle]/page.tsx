@@ -11,7 +11,7 @@ import { buildAlternates } from "@/lib/seo"
 import { getTranslations } from "next-intl/server"
 import Link from "next/link"
 import { notFound } from "next/navigation"
-import { ShieldCheck, Truck, Award, Package, ChevronRight, FlaskConical, ExternalLink } from "lucide-react"
+import { ShieldCheck, Truck, Award, Package, ChevronRight, FlaskConical, ExternalLink, FileText, Download } from "lucide-react"
 
 const REGION_ID = process.env.NEXT_PUBLIC_MEDUSA_REGION_ID!
 
@@ -23,6 +23,12 @@ type MedusaVariant = {
 }
 type MedusaCategory = { id: string; name: string; handle: string }
 type FichaCampo = { campo: string; valor: string; fuente?: string | null }
+type Documento = {
+  tipo: "ficha_tecnica" | "ficha_seguridad" | "otro"
+  titulo?: string | null
+  url: string
+  dominio?: string | null
+}
 type ProductMetadata = {
   cod_erp?: string | null
   fabricante?: string | null
@@ -30,6 +36,7 @@ type ProductMetadata = {
   url_proveedor?: string | null
   url_web_vieja?: string | null
   ficha_tecnica?: FichaCampo[]
+  documentos?: Documento[]
 }
 type MedusaProduct = {
   id: string
@@ -162,6 +169,11 @@ export default async function ProductPage({
   const esBiocida = ficha.some((f) => f.campo === "registro_biocida") || !!urlBiocida
   const fabricante = meta?.fabricante || ficha.find((f) => f.campo === "fabricante")?.valor || null
   const referencia = meta?.cod_erp || product.handle
+
+  // Fichas descargables en PDF (rehospedadas en Medusa, no hotlinks)
+  const documentos = (meta?.documentos ?? []).filter((d) => d?.url)
+  const tituloDoc = (d: Documento) =>
+    d.titulo || (d.tipo === "ficha_seguridad" ? "Ficha de datos de seguridad" : "Ficha técnica")
 
   let related: RelatedProduct[] = []
   if (category) {
@@ -467,7 +479,7 @@ export default async function ProductPage({
       )}
 
       {/* ── Ficha técnica (metadata migrada del ERP / web antigua) ── */}
-      {ficha.length > 0 && (
+      {(ficha.length > 0 || documentos.length > 0) && (
         <div style={{ background: "#FFFFFF", borderTop: "1px solid #E5E7EB" }}>
           <style dangerouslySetInnerHTML={{ __html: `
             @media (max-width: 640px) {
@@ -490,6 +502,45 @@ export default async function ProductPage({
               </h2>
             </div>
 
+            {/* Descargas: ficha técnica / de seguridad en PDF */}
+            {documentos.length > 0 && (
+              <div style={{
+                display: "flex", flexWrap: "wrap", gap: 10, marginBottom: 20,
+              }}>
+                {documentos.map((d) => (
+                  <a
+                    key={d.url}
+                    href={d.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{
+                      display: "inline-flex", alignItems: "center", gap: 9,
+                      padding: "11px 16px", borderRadius: 8,
+                      border: "1.5px solid #E5E7EB", background: "#FFFFFF",
+                      textDecoration: "none",
+                    }}
+                  >
+                    <span style={{
+                      display: "inline-flex", alignItems: "center", justifyContent: "center",
+                      width: 30, height: 30, borderRadius: 6,
+                      background: d.tipo === "ficha_seguridad" ? "#FEF2F2" : "#EFF6FF",
+                      color: d.tipo === "ficha_seguridad" ? "#B91C1C" : "#2563EB",
+                    }}>
+                      <FileText size={15} />
+                    </span>
+                    <span style={{ display: "flex", flexDirection: "column", lineHeight: 1.3 }}>
+                      <span style={{ fontSize: 13.5, fontWeight: 700, color: "#111827" }}>
+                        {tituloDoc(d)}
+                      </span>
+                      <span style={{ fontSize: 11.5, color: "#9CA3AF" }}>PDF · Descargar</span>
+                    </span>
+                    <Download size={15} style={{ color: "#6B7280", marginLeft: 4 }} />
+                  </a>
+                ))}
+              </div>
+            )}
+
+            {ficha.length > 0 && (
             <div style={{
               border: "1px solid #E5E7EB", borderRadius: 8, overflow: "hidden",
             }}>
@@ -520,6 +571,7 @@ export default async function ProductPage({
                 </div>
               ))}
             </div>
+            )}
 
             {urlBiocida && (
               <a
