@@ -123,9 +123,6 @@ export function CollectionShowcase({
                   }}>
                     {nombreBonito(item.name)}
                   </span>
-                  <span style={{ fontSize: 11.5, fontWeight: 500, color: "#9CA3AF", marginTop: -4 }}>
-                    {item.count} {item.count === 1 ? "producto" : "productos"}
-                  </span>
                 </div>
               </Link>
             )

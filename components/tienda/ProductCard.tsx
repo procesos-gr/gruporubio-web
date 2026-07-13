@@ -15,7 +15,6 @@ type Props = {
   title: string
   description?: string | null
   thumbnail: string | null
-  secondImage?: string | null
   minPrice: number | null
   formats?: string[]
   categoryLabel?: string | null
@@ -29,17 +28,13 @@ type Props = {
 const cardStyles = `
   .card-qv-btn { opacity: 0; transform: translateX(-50%) translateY(6px); }
   .card-wrap:hover .card-qv-btn { opacity: 1; transform: translateX(-50%) translateY(0); }
-  .card-img-main { transition: opacity 0.35s ease; }
-  .card-img-secondary { opacity: 0; transition: opacity 0.35s ease; }
-  .card-wrap:hover .card-img-main { opacity: 0; }
-  .card-wrap:hover .card-img-secondary { opacity: 1; }
   @media (max-width: 640px) {
     .card-qv-btn { display: none !important; }
   }
 `
 
 export function ProductCard({
-  handle, title, thumbnail, secondImage,
+  handle, title, thumbnail,
   locale, variants = [], rating,
   description, minPrice, currency,
 }: Props) {
@@ -77,11 +72,9 @@ export function ProductCard({
               el.style.transform = "translateY(0)"
             }}
           >
-            {/* Imagen, con swap a segunda imagen al hacer hover */}
             <div style={{ position: "relative", aspectRatio: "1 / 1", background: "#F8FAFC", overflow: "hidden" }}>
               {thumbnail ? (
                 <Image
-                  className="card-img-main"
                   src={thumbnail}
                   alt={title}
                   fill
@@ -96,17 +89,6 @@ export function ProductCard({
                 }}>
                   <div style={{ fontSize: 40, opacity: 0.25 }}>🧴</div>
                 </div>
-              )}
-
-              {secondImage && (
-                <Image
-                  className="card-img-secondary"
-                  src={secondImage}
-                  alt={title}
-                  fill
-                  style={{ objectFit: "cover", position: "absolute", inset: 0 }}
-                  sizes="(max-width: 640px) 50vw, (max-width: 1200px) 33vw, 25vw"
-                />
               )}
 
               {/* Rating, solo si el producto tiene reviews */}

@@ -269,8 +269,6 @@ export default async function CategoriaPage({
                   .filter(v => v.id && v.title)
                   .map(v => ({ id: v.id, title: v.title! }))
 
-                const secondImage = (product.images ?? []).find(img => img.url !== product.thumbnail)?.url ?? null
-
                 return (
                   <ProductCard
                     key={product.id}
@@ -278,7 +276,6 @@ export default async function CategoriaPage({
                     title={product.title}
                     description={product.description}
                     thumbnail={product.thumbnail}
-                    secondImage={secondImage}
                     minPrice={minPrice}
                     formats={formats}
                     categoryLabel={category!.name}
