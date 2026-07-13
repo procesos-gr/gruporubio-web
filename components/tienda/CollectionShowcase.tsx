@@ -2,22 +2,57 @@
 
 import Link from "next/link"
 import {
-  SprayCan, Droplets, Bug, HandHeart,
-  Wrench, HardHat, Scroll, Wind,
+  SprayCan, FlaskConical, Bug, HandHeart, Wrench, HardHat,
+  Scroll, Trash2, UtensilsCrossed, Package,
+  type LucideIcon,
 } from "lucide-react"
 
-const COLLECTIONS = [
-  { icon: SprayCan, label: "Limpieza Industrial", handle: "limpieza-profesional" },
-  { icon: Droplets, label: "Desinfección e Higiene", handle: "desinfección" },
-  { icon: Bug, label: "Control de Plagas", handle: "control-de-plagas" },
-  { icon: HandHeart, label: "Higiene Personal", handle: "higiene-industrial" },
-  { icon: Wrench, label: "Maquinaria y Equipos", handle: null },
-  { icon: HardHat, label: "EPIs y Protección", handle: null },
-  { icon: Scroll, label: "Papel y Celulosa", handle: null },
-  { icon: Wind, label: "Ambientadores", handle: null },
-]
+export type Collection = { name: string; handle: string; count: number }
 
-export function CollectionShowcase({ locale }: { locale: string }) {
+// Icono por handle de categoría raíz (las de Medusa, migradas del ERP).
+// Si aparece una categoría nueva sin icono asignado, cae en Package.
+const ICONS: Record<string, LucideIcon> = {
+  "productos-quimicos": FlaskConical,
+  "utiles-de-limpieza": SprayCan,
+  "celulosa": Scroll,
+  "control-de-plagas": Bug,
+  "epis-y-equipos-de-proteccion": HardHat,
+  "guantes-y-productos-desechables": HandHeart,
+  "bolsas-de-basura-contenedores-y-papeleras": Trash2,
+  "industria-alimentaria-y-detectable": UtensilsCrossed,
+  "maquinaria": Wrench,
+}
+
+const CONECTORES = new Set(["de", "del", "y", "e", "la", "el", "los", "las", "para", "con", "en", "a"])
+
+// Las categorías raíz vienen EN MAYÚSCULAS del ERP ("BOLSAS DE BASURA").
+// Solo entonces las suavizamos; las que ya traen minúsculas se dejan tal cual.
+function nombreBonito(nombre: string): string {
+  const esTodoMayus = nombre === nombre.toUpperCase() && /[A-ZÁÉÍÓÚÑ]/.test(nombre)
+  if (!esTodoMayus) return nombre
+
+  // Sentence case: solo la primera palabra en mayúscula inicial; el resto en
+  // minúscula, salvo acrónimos cortos (EPIS, DDD), que se conservan tal cual.
+  return nombre
+    .split(/\s+/)
+    .map((palabra, i) => {
+      const min = palabra.toLowerCase()
+      if (palabra.length <= 4 && !CONECTORES.has(min)) return palabra
+      if (i === 0) return min.charAt(0).toUpperCase() + min.slice(1)
+      return min
+    })
+    .join(" ")
+}
+
+export function CollectionShowcase({
+  locale,
+  collections,
+}: {
+  locale: string
+  collections: Collection[]
+}) {
+  if (!collections.length) return null
+
   return (
     <section style={{ background: "#FFFFFF", padding: "32px 32px 64px" }}>
       <style>{`
@@ -44,12 +79,12 @@ export function CollectionShowcase({ locale }: { locale: string }) {
         </h2>
 
         <div className="collection-grid" style={{ display: "grid", gap: 16 }}>
-          {COLLECTIONS.map((item, i) => {
-            const Icon = item.icon
+          {collections.map((item) => {
+            const Icon = ICONS[item.handle] ?? Package
             return (
               <Link
-                key={i}
-                href={item.handle ? `/${locale}/tienda/categoria/${item.handle}` : `/${locale}/tienda`}
+                key={item.handle}
+                href={`/${locale}/tienda/categoria/${item.handle}`}
                 style={{ textDecoration: "none" }}
               >
                 <div
@@ -86,7 +121,10 @@ export function CollectionShowcase({ locale }: { locale: string }) {
                     fontSize: 13, fontWeight: 700, color: "#111827",
                     letterSpacing: "-0.1px", lineHeight: 1.3,
                   }}>
-                    {item.label}
+                    {nombreBonito(item.name)}
+                  </span>
+                  <span style={{ fontSize: 11.5, fontWeight: 500, color: "#9CA3AF", marginTop: -4 }}>
+                    {item.count} {item.count === 1 ? "producto" : "productos"}
                   </span>
                 </div>
               </Link>

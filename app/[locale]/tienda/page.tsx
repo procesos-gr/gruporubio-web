@@ -96,6 +96,63 @@ export default async function TiendaPage({
     }
   }
 
+  // Categorías raíz reales de Medusa (antes estaban hardcodeadas y los enlaces se
+  // rompían al cambiar el catálogo). Los productos cuelgan de la categoría hoja, así
+  // que cada raíz cuenta los de todas sus descendientes; las que quedan a 0 (p. ej.
+  // Maquinaria, cuyo catálogo es el de alquiler) no se muestran.
+  let collections: { name: string; handle: string; count: number }[] = []
+  try {
+    const all = await medusa.store.category.list({
+      fields: "id,name,handle,parent_category_id",
+      limit: 200,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } as any)
+    const todas = (all.product_categories ?? []) as {
+      id: string; name: string; handle: string; parent_category_id: string | null
+    }[]
+
+    const hijasPorPadre = new Map<string, string[]>()
+    for (const c of todas) {
+      if (!c.parent_category_id) continue
+      const lista = hijasPorPadre.get(c.parent_category_id) ?? []
+      lista.push(c.id)
+      hijasPorPadre.set(c.parent_category_id, lista)
+    }
+    const conDescendientes = (id: string): string[] => {
+      const ids = [id]
+      const pila = [id]
+      while (pila.length) {
+        const actual = pila.pop()!
+        for (const hija of hijasPorPadre.get(actual) ?? []) {
+          ids.push(hija)
+          pila.push(hija)
+        }
+      }
+      return ids
+    }
+
+    const raices = todas.filter(c => !c.parent_category_id)
+    const contadas = await Promise.all(
+      raices.map(async (c) => {
+        try {
+          const res = await medusa.store.product.list({
+            category_id: conDescendientes(c.id),
+            region_id: REGION_ID,
+            fields: "id",
+            limit: 1,
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          } as any)
+          return { name: c.name, handle: c.handle, count: res.count ?? 0 }
+        } catch {
+          return { name: c.name, handle: c.handle, count: 0 }
+        }
+      })
+    )
+    collections = contadas.filter(c => c.count > 0).sort((a, b) => b.count - a.count)
+  } catch {
+    collections = []
+  }
+
   return (
     <div style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", background: "#FFFFFF" }}>
       <Navbar />
@@ -228,7 +285,7 @@ export default async function TiendaPage({
       ) : (
         <>
           {/* ── NUESTRA COLECCIÓN ── 8 categorías con simbología profesional ── */}
-          <CollectionShowcase locale={locale} />
+          <CollectionShowcase locale={locale} collections={collections} />
 
           {/* ── BRAND STORY ── puzzle de imágenes + texto de confianza ── */}
           <BrandStory />

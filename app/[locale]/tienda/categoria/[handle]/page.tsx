@@ -7,8 +7,8 @@ import { buildAlternates } from "@/lib/seo"
 import { notFound } from "next/navigation"
 import Link from "next/link"
 import {
-  ChevronRight, Package, SprayCan, Droplets, Bug, HandHeart,
-  Wrench, HardHat, Scroll, Wind,
+  ChevronRight, Package, SprayCan, FlaskConical, Bug, HandHeart,
+  Wrench, HardHat, Scroll, Trash2, UtensilsCrossed,
 } from "lucide-react"
 
 const REGION_ID = process.env.NEXT_PUBLIC_MEDUSA_REGION_ID!
@@ -40,23 +40,31 @@ type Product = {
   collection?: Collection | null
 }
 
+// Iconos y colores por handle de categoría raíz (las reales de Medusa, migradas
+// del ERP). Las subcategorías y cualquier categoría nueva caen en el fallback.
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const CATEGORY_ICONS: Record<string, any> = {
-  "limpieza-profesional": SprayCan,
-  "desinfección": Droplets,
+  "productos-quimicos": FlaskConical,
+  "utiles-de-limpieza": SprayCan,
+  "celulosa": Scroll,
   "control-de-plagas": Bug,
-  "higiene-industrial": HandHeart,
-  "maquinaria-y-equipos": Wrench,
-  "epis-y-proteccion": HardHat,
-  "papel-y-celulosa": Scroll,
-  "ambientadores": Wind,
+  "epis-y-equipos-de-proteccion": HardHat,
+  "guantes-y-productos-desechables": HandHeart,
+  "bolsas-de-basura-contenedores-y-papeleras": Trash2,
+  "industria-alimentaria-y-detectable": UtensilsCrossed,
+  "maquinaria": Wrench,
 }
 
 const CATEGORY_COLORS: Record<string, { bg: string; text: string; dot: string }> = {
-  "Limpieza Profesional":   { bg: "#EFF6FF", text: "#1D4ED8", dot: "#3B82F6" },
-  "Desinfección":           { bg: "#F0FDF4", text: "#15803D", dot: "#22C55E" },
-  "Control de Plagas":      { bg: "#FFF7ED", text: "#C2410C", dot: "#F97316" },
-  "Higiene Industrial":     { bg: "#F5F3FF", text: "#6D28D9", dot: "#8B5CF6" },
+  "productos-quimicos":                        { bg: "#EFF6FF", text: "#1D4ED8", dot: "#3B82F6" },
+  "utiles-de-limpieza":                        { bg: "#F0FDF4", text: "#15803D", dot: "#22C55E" },
+  "control-de-plagas":                         { bg: "#FFF7ED", text: "#C2410C", dot: "#F97316" },
+  "epis-y-equipos-de-proteccion":              { bg: "#F5F3FF", text: "#6D28D9", dot: "#8B5CF6" },
+  "celulosa":                                  { bg: "#FEFCE8", text: "#A16207", dot: "#EAB308" },
+  "guantes-y-productos-desechables":           { bg: "#ECFEFF", text: "#0E7490", dot: "#06B6D4" },
+  "bolsas-de-basura-contenedores-y-papeleras": { bg: "#F1F5F9", text: "#475569", dot: "#64748B" },
+  "industria-alimentaria-y-detectable":        { bg: "#FEF2F2", text: "#B91C1C", dot: "#EF4444" },
+  "maquinaria":                                { bg: "#F8FAFC", text: "#334155", dot: "#94A3B8" },
 }
 const DEFAULT_COLOR = { bg: "#F1F5F9", text: "#475569", dot: "#94A3B8" }
 
@@ -108,13 +116,47 @@ export default async function CategoriaPage({
 
   if (!category) notFound()
 
+  // Los productos se asignan a la categoría HOJA (ej. "Desincrustantes"), así que
+  // una categoría raíz ("Productos Químicos") no tiene productos directos. Para que
+  // no salga vacía, incluimos los de todas sus descendientes.
+  let categoryIds: string[] = [category.id]
+  try {
+    const all = await medusa.store.category.list({
+      fields: "id,parent_category_id",
+      limit: 200,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } as any)
+    const todas = (all.product_categories ?? []) as { id: string; parent_category_id: string | null }[]
+    const hijasPorPadre = new Map<string, string[]>()
+    for (const c of todas) {
+      if (!c.parent_category_id) continue
+      const lista = hijasPorPadre.get(c.parent_category_id) ?? []
+      lista.push(c.id)
+      hijasPorPadre.set(c.parent_category_id, lista)
+    }
+    const descendientes: string[] = []
+    const pila = [category.id]
+    while (pila.length) {
+      const actual = pila.pop()!
+      for (const hija of hijasPorPadre.get(actual) ?? []) {
+        descendientes.push(hija)
+        pila.push(hija)
+      }
+    }
+    categoryIds = [category.id, ...descendientes]
+  } catch {
+    categoryIds = [category.id]
+  }
+
   let products: Product[] = []
   try {
     const result = await medusa.store.product.list({
-      category_id: [category.id],
+      category_id: categoryIds,
       region_id: REGION_ID,
       fields: "+variants.calculated_price,+collection.id,+collection.title,+collection.handle,+images",
-      limit: 100,
+      // La raíz más grande (Útiles de limpieza) tiene ~148 productos; con 100 se
+      // truncaba en silencio. TODO: paginar cuando el catálogo crezca bastante más.
+      limit: 250,
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } as any)
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -222,7 +264,7 @@ export default async function CategoriaPage({
               {products.map(product => {
                 const minPrice = getMinPrice(product)
                 const formats = getFormats(product)
-                const catColor = CATEGORY_COLORS[category!.name] ?? DEFAULT_COLOR
+                const catColor = CATEGORY_COLORS[category!.handle] ?? DEFAULT_COLOR
                 const variants = (product.variants ?? [])
                   .filter(v => v.id && v.title)
                   .map(v => ({ id: v.id, title: v.title! }))
