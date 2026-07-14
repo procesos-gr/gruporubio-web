@@ -42,14 +42,16 @@ export function MaquinaCard({ maquina, locale }: { maquina: MaquinaAlquiler; loc
           (e.currentTarget as HTMLElement).style.boxShadow = 'none'
         }}
       >
-        {/* Image (placeholder si aún no hay foto, p. ej. modelo por decidir) */}
-        <div style={{ position: 'relative', height: 200, background: '#F3F4F6' }}>
+        {/* Image (placeholder si aún no hay foto, p. ej. modelo por decidir).
+            Fotos de producto de estudio (fondo blanco): contain para no
+            recortar la máquina, nunca cover. */}
+        <div style={{ position: 'relative', height: 200, background: '#fff' }}>
           {maquina.imagen ? (
             <Image
               src={maquina.imagen}
               alt={maquina.titulo}
               fill
-              style={{ objectFit: 'cover' }}
+              style={{ objectFit: 'contain', padding: 16 }}
               sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
               {...blurProps(maquina.imagen)}
             />

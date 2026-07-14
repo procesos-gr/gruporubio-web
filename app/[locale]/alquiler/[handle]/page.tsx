@@ -141,7 +141,7 @@ export default async function AlquilerDetallePage({
                     marginBottom: 24,
                     position: "relative",
                     height: 340,
-                    background: "#F9FAFB",
+                    background: "#fff",
                   }}
                 >
                   <Image
@@ -149,7 +149,7 @@ export default async function AlquilerDetallePage({
                     alt={maquina.titulo}
                     fill
                     sizes="(max-width: 1024px) 100vw, 550px"
-                    style={{ objectFit: "cover" }}
+                    style={{ objectFit: "contain", padding: 24 }}
                   />
                 </div>
               ) : (

@@ -72,13 +72,13 @@ export function MaquinariaAlquilerStrip({ locale }: { locale: string }) {
                     (e.currentTarget as HTMLElement).style.boxShadow = 'none'
                   }}
                 >
-                  {/* Image */}
-                  <div style={{ position: 'relative', height: 130, background: '#F3F4F6' }}>
+                  {/* Image — foto de estudio (fondo blanco): contain, sin recortar */}
+                  <div style={{ position: 'relative', height: 130, background: '#fff' }}>
                     <Image
                       src={m.imagen}
                       alt={m.titulo}
                       fill
-                      style={{ objectFit: 'cover' }}
+                      style={{ objectFit: 'contain', padding: 10 }}
                       sizes="(max-width: 640px) 50vw, 25vw"
                       {...blurProps(m.imagen)}
                     />
