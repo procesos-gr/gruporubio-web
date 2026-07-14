@@ -40,9 +40,18 @@ export type MaquinaAlquiler = {
  * `lib/maquinaria.ts`; este snapshot alimenta los client components (strip,
  * fallback del buscador del hero) y es la red de seguridad si Medusa cae.
  *
+ * Las imágenes se guardan como ruta relativa (/static/...) y se prefijan
+ * aquí con el Medusa del entorno, para que el snapshot valga igual en dev
+ * (localhost:9000) y en producción.
+ *
  * Regenerar tras editar maquinaria en Medusa: `npm run maquinaria:snapshot`
  */
-export const MAQUINARIA: MaquinaAlquiler[] = snapshot as MaquinaAlquiler[]
+const MEDUSA_URL = process.env.NEXT_PUBLIC_MEDUSA_URL || 'http://localhost:9000'
+
+export const MAQUINARIA: MaquinaAlquiler[] = (snapshot as MaquinaAlquiler[]).map((m) => ({
+  ...m,
+  imagen: m.imagen && m.imagen.startsWith('/') ? `${MEDUSA_URL}${m.imagen}` : m.imagen,
+}))
 
 export function getMaquina(handle: string): MaquinaAlquiler | undefined {
   return MAQUINARIA.find((m) => m.handle === handle)

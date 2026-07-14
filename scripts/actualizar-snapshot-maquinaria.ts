@@ -46,7 +46,10 @@ const maquinas = (products ?? [])
       uso: m.uso ?? "ambos",
       perfilCliente: m.perfilCliente ?? "ambos",
       advertencia: m.advertencia ?? undefined,
-      imagen: p.thumbnail ?? "",
+      // Guardar la imagen como ruta relativa: el snapshot debe funcionar en
+      // cualquier entorno (lib/maquinaria-alquiler.ts la prefija con
+      // NEXT_PUBLIC_MEDUSA_URL al importar).
+      imagen: (p.thumbnail ?? "").replace(MEDUSA_URL, ""),
       usos: m.usos ?? [],
       specs: m.specs ?? [],
       specsDestacadas: m.specsDestacadas ?? [],

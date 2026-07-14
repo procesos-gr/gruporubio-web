@@ -12,7 +12,7 @@
     "destacado": true,
     "uso": "interior",
     "perfilCliente": "ambos",
-    "imagen": "http://localhost:9000/static/1784036834126-maquina-fregadora-conductor-pie-1784036834118.jpg",
+    "imagen": "/static/1784036834126-maquina-fregadora-conductor-pie-1784036834118.jpg",
     "usos": [],
     "specs": [
       {
@@ -64,7 +64,7 @@
     "destacado": true,
     "uso": "interior",
     "perfilCliente": "ambos",
-    "imagen": "http://localhost:9000/static/1784036834346-maquina-fregadora-conductor-sentado-1784036834338.jpg",
+    "imagen": "/static/1784036834346-maquina-fregadora-conductor-sentado-1784036834338.jpg",
     "usos": [],
     "specs": [
       {
@@ -116,7 +116,7 @@
     "destacado": false,
     "uso": "interior",
     "perfilCliente": "ambos",
-    "imagen": "http://localhost:9000/static/1784036834400-maquina-barredora-bateria-interior-1784036834392.jpg",
+    "imagen": "/static/1784036834400-maquina-barredora-bateria-interior-1784036834392.jpg",
     "usos": [],
     "specs": [
       {
@@ -172,7 +172,7 @@
     "destacado": false,
     "uso": "exterior",
     "perfilCliente": "ambos",
-    "imagen": "http://localhost:9000/static/1784036834595-maquina-barredora-gasolina-exterior-1784036834589.jpg",
+    "imagen": "/static/1784036834595-maquina-barredora-gasolina-exterior-1784036834589.jpg",
     "usos": [],
     "specs": [
       {
@@ -220,7 +220,7 @@
     "destacado": false,
     "uso": "exterior",
     "perfilCliente": "ambos",
-    "imagen": "http://localhost:9000/static/1784036834724-maquina-barredora-conductor-sentado-1784036834718.jpg",
+    "imagen": "/static/1784036834724-maquina-barredora-conductor-sentado-1784036834718.jpg",
     "usos": [],
     "specs": [
       {
@@ -272,7 +272,7 @@
     "destacado": false,
     "uso": "ambos",
     "perfilCliente": "ambos",
-    "imagen": "http://localhost:9000/static/1784036834770-maquina-hidrolimpiadora-fria-monofasica-1784036834761.jpg",
+    "imagen": "/static/1784036834770-maquina-hidrolimpiadora-fria-monofasica-1784036834761.jpg",
     "usos": [],
     "specs": [
       {
@@ -316,7 +316,7 @@
     "destacado": false,
     "uso": "ambos",
     "perfilCliente": "ambos",
-    "imagen": "http://localhost:9000/static/1784036834960-maquina-hidrolimpiadora-fria-trifasica-1784036834953.jpg",
+    "imagen": "/static/1784036834960-maquina-hidrolimpiadora-fria-trifasica-1784036834953.jpg",
     "usos": [],
     "specs": [
       {
@@ -360,7 +360,7 @@
     "destacado": false,
     "uso": "exterior",
     "perfilCliente": "ambos",
-    "imagen": "http://localhost:9000/static/1784036835170-maquina-hidrolimpiadora-gasolina-1784036835164.jpg",
+    "imagen": "/static/1784036835170-maquina-hidrolimpiadora-gasolina-1784036835164.jpg",
     "usos": [],
     "specs": [
       {
@@ -404,7 +404,7 @@
     "destacado": false,
     "uso": "ambos",
     "perfilCliente": "ambos",
-    "imagen": "http://localhost:9000/static/1784036835363-maquina-aspirador-seco-humedo-1784036835358.jpg",
+    "imagen": "/static/1784036835363-maquina-aspirador-seco-humedo-1784036835358.jpg",
     "usos": [],
     "specs": [
       {
@@ -444,7 +444,7 @@
     "destacado": false,
     "uso": "ambos",
     "perfilCliente": "ambos",
-    "imagen": "http://localhost:9000/static/1784036835426-maquina-aspirador-seco-1784036835420.jpg",
+    "imagen": "/static/1784036835426-maquina-aspirador-seco-1784036835420.jpg",
     "usos": [],
     "specs": [
       {
@@ -484,7 +484,7 @@
     "destacado": false,
     "uso": "ambos",
     "perfilCliente": "ambos",
-    "imagen": "http://localhost:9000/static/1784036835546-maquina-aspirador-bateria-1784036835540.jpg",
+    "imagen": "/static/1784036835546-maquina-aspirador-bateria-1784036835540.jpg",
     "usos": [],
     "specs": [
       {
@@ -524,7 +524,7 @@
     "destacado": false,
     "uso": "interior",
     "perfilCliente": "ambos",
-    "imagen": "http://localhost:9000/static/1784036835591-maquina-rotativa-abrillantadora-1784036835585.jpg",
+    "imagen": "/static/1784036835591-maquina-rotativa-abrillantadora-1784036835585.jpg",
     "usos": [],
     "specs": [
       {
@@ -564,7 +564,7 @@
     "destacado": false,
     "uso": "interior",
     "perfilCliente": "ambos",
-    "imagen": "http://localhost:9000/static/1784036835820-maquina-limpiadora-vapor-1784036835813.jpg",
+    "imagen": "/static/1784036835820-maquina-limpiadora-vapor-1784036835813.jpg",
     "usos": [],
     "specs": [
       {
@@ -596,7 +596,7 @@
     "destacado": false,
     "uso": "interior",
     "perfilCliente": "ambos",
-    "imagen": "http://localhost:9000/static/1784036835903-maquina-lavamoquetas-inyeccion-extraccion-1784036835897.jpg",
+    "imagen": "/static/1784036835903-maquina-lavamoquetas-inyeccion-extraccion-1784036835897.jpg",
     "usos": [],
     "specs": [
       {
