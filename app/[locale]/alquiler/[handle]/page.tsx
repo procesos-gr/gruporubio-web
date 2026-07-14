@@ -2,7 +2,7 @@ import { Navbar } from "@/components/layout/Navbar"
 import Footer from "@/components/sections/Footer"
 import { RentalRequestForm } from "@/components/alquiler/RentalRequestForm"
 import { MaquinasRelacionadas } from "@/components/alquiler/MaquinasRelacionadas"
-import { getTituloConSpec, getMaquinaConsejos, MAQUINARIA } from "@/lib/maquinaria-alquiler"
+import { getTituloConSpec, getMaquinaConsejos } from "@/lib/maquinaria-alquiler"
 import { getMaquinaria, getMaquinaPorHandle } from "@/lib/maquinaria"
 import { ServiceFAQAccordion } from "@/components/sections/services/service-faq"
 import { buildAlternates } from "@/lib/seo"
@@ -20,11 +20,11 @@ import {
 } from "lucide-react"
 import type { Metadata } from "next"
 
-export async function generateStaticParams() {
-  // Semilla de build con el snapshot estático (Medusa puede no estar arriba
-  // al compilar); las máquinas nuevas de Medusa resuelven en runtime.
-  return MAQUINARIA.map((m) => ({ handle: m.handle }))
-}
+// Catálogo vivo (Medusa): render dinámico siempre. El build de Docker corre
+// SIN variables de entorno (.dockerignore excluye .env*), así que prerenderizar
+// aquí hornea datos/URLs incorrectos y provoca DYNAMIC_SERVER_USAGE al servir.
+// La caché de datos del fetch (revalidate 300) amortigua la carga igualmente.
+export const dynamic = "force-dynamic"
 
 export async function generateMetadata({
   params,

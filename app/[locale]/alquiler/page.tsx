@@ -1,6 +1,9 @@
 import { Navbar } from "@/components/layout/Navbar"
 import Footer from "@/components/sections/Footer"
 import { MaquinaCard } from "@/components/alquiler/MaquinaCard"
+
+// Catálogo vivo (Medusa): render dinámico siempre — ver nota en [handle]/page.tsx
+export const dynamic = "force-dynamic"
 import { getMaquinaria, getCategoriasDe } from "@/lib/maquinaria"
 import { buildAlternates } from "@/lib/seo"
 import { blurProps } from "@/lib/img"
