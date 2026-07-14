@@ -21,6 +21,8 @@ const nextConfig: NextConfig = {
       { protocol: 'https', hostname: 'images.unsplash.com' },
       { protocol: 'https', hostname: 'images.pexels.com' },
       { protocol: 'http', hostname: 'localhost', port: '9000' },
+      // Medusa en el VPS Hetzner (hasta que haya dominio con https)
+      { protocol: 'http', hostname: '116.202.27.5', port: '9000' },
       { protocol: 'https', hostname: '*.amazonaws.com' },
     ],
   },
