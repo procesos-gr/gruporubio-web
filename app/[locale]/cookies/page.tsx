@@ -10,7 +10,7 @@ export default function CookiesPage() {
   return (
     <>
       <Navbar />
-      <main style={{ maxWidth: 800, margin: "0 auto", padding: "120px 24px 80px" }}>
+      <main style={{ maxWidth: 800, minWidth: 0, width: "100%", margin: "0 auto", padding: "120px 24px 80px" }}>
         <h1 style={{ fontSize: 28, fontWeight: 700, marginBottom: 8 }}>Política de Cookies</h1>
         <p style={{ color: "#6B7280", marginBottom: 40 }}>Última actualización: junio 2026</p>
 
@@ -23,45 +23,45 @@ export default function CookiesPage() {
           <h2 style={{ fontSize: 18, fontWeight: 600, marginBottom: 12 }}>Cookies que utilizamos</h2>
 
           <div style={{ overflowX: "auto" }}>
-            <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 14 }}>
+            <table style={{ width: "100%", minWidth: 600, tableLayout: "fixed", borderCollapse: "collapse", fontSize: 14 }}>
               <thead>
                 <tr style={{ background: "#F3F4F6" }}>
-                  <th style={{ padding: "10px 12px", textAlign: "left", border: "1px solid #E5E7EB" }}>Cookie</th>
-                  <th style={{ padding: "10px 12px", textAlign: "left", border: "1px solid #E5E7EB" }}>Tipo</th>
+                  <th style={{ padding: "10px 12px", textAlign: "left", border: "1px solid #E5E7EB", width: "22%" }}>Cookie</th>
+                  <th style={{ padding: "10px 12px", textAlign: "left", border: "1px solid #E5E7EB", width: "16%" }}>Tipo</th>
                   <th style={{ padding: "10px 12px", textAlign: "left", border: "1px solid #E5E7EB" }}>Finalidad</th>
-                  <th style={{ padding: "10px 12px", textAlign: "left", border: "1px solid #E5E7EB" }}>Duración</th>
+                  <th style={{ padding: "10px 12px", textAlign: "left", border: "1px solid #E5E7EB", width: "14%" }}>Duración</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
-                  <td style={{ padding: "10px 12px", border: "1px solid #E5E7EB" }}>next-auth.session-token</td>
-                  <td style={{ padding: "10px 12px", border: "1px solid #E5E7EB" }}>Técnica</td>
-                  <td style={{ padding: "10px 12px", border: "1px solid #E5E7EB" }}>Gestión de sesión de usuario (tienda)</td>
-                  <td style={{ padding: "10px 12px", border: "1px solid #E5E7EB" }}>Sesión</td>
+                  <td style={{ padding: "10px 12px", border: "1px solid #E5E7EB", overflowWrap: "break-word" }}>next-auth.session-token</td>
+                  <td style={{ padding: "10px 12px", border: "1px solid #E5E7EB", overflowWrap: "break-word" }}>Técnica</td>
+                  <td style={{ padding: "10px 12px", border: "1px solid #E5E7EB", overflowWrap: "break-word" }}>Gestión de sesión de usuario (tienda)</td>
+                  <td style={{ padding: "10px 12px", border: "1px solid #E5E7EB", overflowWrap: "break-word" }}>Sesión</td>
                 </tr>
                 <tr style={{ background: "#F9FAFB" }}>
-                  <td style={{ padding: "10px 12px", border: "1px solid #E5E7EB" }}>_medusa_jwt</td>
-                  <td style={{ padding: "10px 12px", border: "1px solid #E5E7EB" }}>Técnica</td>
-                  <td style={{ padding: "10px 12px", border: "1px solid #E5E7EB" }}>Autenticación en la tienda online</td>
-                  <td style={{ padding: "10px 12px", border: "1px solid #E5E7EB" }}>Sesión</td>
+                  <td style={{ padding: "10px 12px", border: "1px solid #E5E7EB", overflowWrap: "break-word" }}>_medusa_jwt</td>
+                  <td style={{ padding: "10px 12px", border: "1px solid #E5E7EB", overflowWrap: "break-word" }}>Técnica</td>
+                  <td style={{ padding: "10px 12px", border: "1px solid #E5E7EB", overflowWrap: "break-word" }}>Autenticación en la tienda online</td>
+                  <td style={{ padding: "10px 12px", border: "1px solid #E5E7EB", overflowWrap: "break-word" }}>Sesión</td>
                 </tr>
                 <tr>
-                  <td style={{ padding: "10px 12px", border: "1px solid #E5E7EB" }}>NEXT_LOCALE</td>
-                  <td style={{ padding: "10px 12px", border: "1px solid #E5E7EB" }}>Preferencia</td>
-                  <td style={{ padding: "10px 12px", border: "1px solid #E5E7EB" }}>Idioma preferido del usuario</td>
-                  <td style={{ padding: "10px 12px", border: "1px solid #E5E7EB" }}>1 año</td>
+                  <td style={{ padding: "10px 12px", border: "1px solid #E5E7EB", overflowWrap: "break-word" }}>NEXT_LOCALE</td>
+                  <td style={{ padding: "10px 12px", border: "1px solid #E5E7EB", overflowWrap: "break-word" }}>Preferencia</td>
+                  <td style={{ padding: "10px 12px", border: "1px solid #E5E7EB", overflowWrap: "break-word" }}>Idioma preferido del usuario</td>
+                  <td style={{ padding: "10px 12px", border: "1px solid #E5E7EB", overflowWrap: "break-word" }}>1 año</td>
                 </tr>
                 <tr style={{ background: "#F9FAFB" }}>
-                  <td style={{ padding: "10px 12px", border: "1px solid #E5E7EB" }}>gr_cookie_consent</td>
-                  <td style={{ padding: "10px 12px", border: "1px solid #E5E7EB" }}>Preferencia</td>
-                  <td style={{ padding: "10px 12px", border: "1px solid #E5E7EB" }}>Recuerda tu elección sobre cookies analíticas</td>
-                  <td style={{ padding: "10px 12px", border: "1px solid #E5E7EB" }}>Permanente</td>
+                  <td style={{ padding: "10px 12px", border: "1px solid #E5E7EB", overflowWrap: "break-word" }}>gr_cookie_consent</td>
+                  <td style={{ padding: "10px 12px", border: "1px solid #E5E7EB", overflowWrap: "break-word" }}>Preferencia</td>
+                  <td style={{ padding: "10px 12px", border: "1px solid #E5E7EB", overflowWrap: "break-word" }}>Recuerda tu elección sobre cookies analíticas</td>
+                  <td style={{ padding: "10px 12px", border: "1px solid #E5E7EB", overflowWrap: "break-word" }}>Permanente</td>
                 </tr>
                 <tr>
-                  <td style={{ padding: "10px 12px", border: "1px solid #E5E7EB" }}>_ga, _ga_*</td>
-                  <td style={{ padding: "10px 12px", border: "1px solid #E5E7EB" }}>Analítica (opcional)</td>
-                  <td style={{ padding: "10px 12px", border: "1px solid #E5E7EB" }}>Google Analytics 4 — estadísticas de visitas anónimas (solo si aceptas)</td>
-                  <td style={{ padding: "10px 12px", border: "1px solid #E5E7EB" }}>2 años</td>
+                  <td style={{ padding: "10px 12px", border: "1px solid #E5E7EB", overflowWrap: "break-word" }}>_ga, _ga_*</td>
+                  <td style={{ padding: "10px 12px", border: "1px solid #E5E7EB", overflowWrap: "break-word" }}>Analítica (opcional)</td>
+                  <td style={{ padding: "10px 12px", border: "1px solid #E5E7EB", overflowWrap: "break-word" }}>Google Analytics 4 — estadísticas de visitas anónimas (solo si aceptas)</td>
+                  <td style={{ padding: "10px 12px", border: "1px solid #E5E7EB", overflowWrap: "break-word" }}>2 años</td>
                 </tr>
               </tbody>
             </table>

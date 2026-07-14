@@ -92,7 +92,7 @@ export default async function LocaleLayout({
       <body className={`${plusJakartaSans.variable} font-sans antialiased min-h-screen flex flex-col`}>
         <NextIntlClientProvider messages={messages}>
           <Providers>
-            <main className="flex-1 w-full flex flex-col">
+            <main className="flex-1 w-full min-w-0 flex flex-col">
               {children}
             </main>
             <Toaster />

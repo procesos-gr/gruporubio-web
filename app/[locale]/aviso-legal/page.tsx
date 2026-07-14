@@ -10,7 +10,7 @@ export default function AvisoLegalPage() {
   return (
     <>
       <Navbar />
-      <main style={{ maxWidth: 800, margin: "0 auto", padding: "120px 24px 80px" }}>
+      <main style={{ maxWidth: 800, minWidth: 0, width: "100%", margin: "0 auto", padding: "120px 24px 80px" }}>
         <h1 style={{ fontSize: 28, fontWeight: 700, marginBottom: 8 }}>Aviso Legal</h1>
         <p style={{ color: "#6B7280", marginBottom: 40 }}>Última actualización: junio 2026</p>
 

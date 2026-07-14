@@ -6,7 +6,7 @@ import { Plus, Minus } from 'lucide-react';
 const FAQS = [
   {
     q: '¿En qué zonas trabajáis?',
-    a: 'Operamos principalmente en Navarra, La Rioja y Aragón, aunque realizamos proyectos en todo el ámbito nacional. Contamos con equipos propios en Tudela, Pamplona y Zaragoza.',
+    a: 'Operamos principalmente en Navarra, La Rioja y Aragón, aunque realizamos proyectos en todo el ámbito nacional.',
   },
   {
     q: '¿Cómo solicito un presupuesto?',
