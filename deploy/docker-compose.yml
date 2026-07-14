@@ -74,7 +74,10 @@ services:
     volumes:
       # Caché del optimizador de imágenes: persiste entre deploys para que
       # la transformación lenta de cada imagen solo ocurra una vez
-      - web_image_cache:/app/.next/cache/images
+      # Montar la caché ENTERA (no /images): si se monta solo el subdir, el
+      # padre /app/.next/cache lo crea root y el usuario nextjs no puede
+      # escribir fetch-cache (EACCES en producción)
+      - web_image_cache:/app/.next/cache
     ports:
       - "3000:3000"
     depends_on:
