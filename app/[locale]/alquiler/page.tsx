@@ -1,7 +1,7 @@
 import { Navbar } from "@/components/layout/Navbar"
 import Footer from "@/components/sections/Footer"
 import { MaquinaCard } from "@/components/alquiler/MaquinaCard"
-import { MAQUINARIA, CATEGORIAS } from "@/lib/maquinaria-alquiler"
+import { getMaquinaria, getCategoriasDe } from "@/lib/maquinaria"
 import { buildAlternates } from "@/lib/seo"
 import Link from "next/link"
 import { ArrowRight, Clock, Phone, ShieldCheck } from "lucide-react"
@@ -22,6 +22,8 @@ export default async function AlquilerPage({
   params: Promise<{ locale: string }>
 }) {
   const { locale } = await params
+  const maquinaria = await getMaquinaria()
+  const categorias = getCategoriasDe(maquinaria)
 
   return (
     <div style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
@@ -100,8 +102,8 @@ export default async function AlquilerPage({
       {/* Catalog */}
       <div style={{ background: "#F9FAFB", minHeight: "60vh" }}>
         <div style={{ maxWidth: 1100, margin: "0 auto", padding: "56px 32px" }}>
-          {CATEGORIAS.map((cat) => {
-            const maquinas = MAQUINARIA.filter((m) => m.categoria === cat)
+          {categorias.map((cat) => {
+            const maquinas = maquinaria.filter((m) => m.categoria === cat)
             return (
               <div key={cat} style={{ marginBottom: 56 }}>
                 <div

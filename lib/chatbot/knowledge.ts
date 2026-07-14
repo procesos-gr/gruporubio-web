@@ -1,9 +1,11 @@
 import { SERVICES } from "@/lib/services-data";
-import { MAQUINARIA } from "@/lib/maquinaria-alquiler";
+import { getMaquinaria } from "@/lib/maquinaria";
+import type { MaquinaAlquiler } from "@/lib/maquinaria-alquiler";
 
 /**
  * Base de conocimiento del chatbot — se genera SIEMPRE desde los datos
- * reales del proyecto (services-data.ts y maquinaria-alquiler.ts).
+ * reales del proyecto (services-data.ts y la maquinaria de Medusa, con
+ * fallback al snapshot estático).
  * Nada hardcodeado: si se añade un servicio o una máquina, el bot lo sabe.
  * Los productos de la tienda se consultan en vivo vía tool (Medusa).
  */
@@ -34,8 +36,9 @@ function buildServicesCatalog(): string {
   ).join("\n");
 }
 
-function buildMaquinariaCatalog(): string {
-  return MAQUINARIA.filter((m) => m.disponible)
+function buildMaquinariaCatalog(maquinaria: MaquinaAlquiler[]): string {
+  return maquinaria
+    .filter((m) => m.disponible)
     .map(
       (m) =>
         `- **${m.titulo}** (${m.marca}, ${m.categoria}) → /alquiler/${m.handle}\n  ${m.descripcionCorta} Precio: ${m.precioDesde}. Uso: ${m.uso}. Cliente: ${m.perfilCliente}.`
@@ -43,7 +46,8 @@ function buildMaquinariaCatalog(): string {
     .join("\n");
 }
 
-export function buildSystemPrompt(): string {
+export async function buildSystemPrompt(): Promise<string> {
+  const maquinaria = await getMaquinaria();
   return `Eres Ignacio, el asistente virtual de Grupo Rubio, empresa de limpieza profesional, control de plagas e higiene de Tudela (Navarra). Si te preguntan quién eres, di que eres Ignacio, el asistente virtual de Grupo Rubio (no un humano). Tu objetivo: resolver la duda del cliente en el menor número de mensajes posible y guiarle al siguiente paso correcto (página del servicio, presupuesto o teléfono).
 
 ${COMPANY_INFO}
@@ -53,7 +57,7 @@ ${buildServicesCatalog()}
 </catalogo_servicios>
 
 <maquinaria_alquiler>
-${buildMaquinariaCatalog()}
+${buildMaquinariaCatalog(maquinaria)}
 </maquinaria_alquiler>
 
 <tienda>

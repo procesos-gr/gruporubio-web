@@ -1,6 +1,6 @@
 import { MetadataRoute } from 'next';
 import { SERVICES } from '@/lib/services-data';
-import { MAQUINARIA } from '@/lib/maquinaria-alquiler';
+import { getMaquinaria } from '@/lib/maquinaria';
 import { medusa } from '@/lib/medusa';
 
 const BASE_URL = 'https://gruporubio.es';
@@ -45,9 +45,10 @@ async function getCategoryHandles(): Promise<string[]> {
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const entries: MetadataRoute.Sitemap = [];
-  const [productHandles, categoryHandles] = await Promise.all([
+  const [productHandles, categoryHandles, maquinaria] = await Promise.all([
     getProductHandles(),
     getCategoryHandles(),
+    getMaquinaria(),
   ]);
 
   for (const locale of LOCALES) {
@@ -69,7 +70,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       });
     }
 
-    for (const maquina of MAQUINARIA) {
+    for (const maquina of maquinaria) {
       entries.push({
         url: `${BASE_URL}/${locale}/alquiler/${maquina.handle}`,
         lastModified: new Date(),

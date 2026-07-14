@@ -117,7 +117,7 @@ export async function POST(req: Request) {
   try {
     result = streamText({
       model: anthropic("claude-haiku-4-5"),
-      system: buildSystemPrompt(),
+      system: await buildSystemPrompt(),
       messages,
       tools: { buscarProductos },
       stopWhen: stepCountIs(3), // máx. 2 rondas de tools + respuesta

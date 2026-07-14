@@ -2,10 +2,12 @@ import { Navbar } from "@/components/layout/Navbar"
 import Footer from "@/components/sections/Footer"
 import { RentalRequestForm } from "@/components/alquiler/RentalRequestForm"
 import { MaquinasRelacionadas } from "@/components/alquiler/MaquinasRelacionadas"
-import { getMaquina, getTituloConSpec, getMaquinaConsejos, MAQUINARIA } from "@/lib/maquinaria-alquiler"
+import { getTituloConSpec, getMaquinaConsejos, MAQUINARIA } from "@/lib/maquinaria-alquiler"
+import { getMaquinaria, getMaquinaPorHandle } from "@/lib/maquinaria"
 import { ServiceFAQAccordion } from "@/components/sections/services/service-faq"
 import { buildAlternates } from "@/lib/seo"
 import Link from "next/link"
+import Image from "next/image"
 import { notFound } from "next/navigation"
 import {
   ArrowLeft,
@@ -19,6 +21,8 @@ import {
 import type { Metadata } from "next"
 
 export async function generateStaticParams() {
+  // Semilla de build con el snapshot estático (Medusa puede no estar arriba
+  // al compilar); las máquinas nuevas de Medusa resuelven en runtime.
   return MAQUINARIA.map((m) => ({ handle: m.handle }))
 }
 
@@ -28,7 +32,7 @@ export async function generateMetadata({
   params: Promise<{ locale: string; handle: string }>
 }): Promise<Metadata> {
   const { locale, handle } = await params
-  const maquina = getMaquina(handle)
+  const maquina = await getMaquinaPorHandle(handle)
   if (!maquina) return {}
   return {
     title: `Alquiler de ${getTituloConSpec(maquina)} | Grupo Rubio`,
@@ -43,8 +47,9 @@ export default async function AlquilerDetallePage({
   params: Promise<{ locale: string; handle: string }>
 }) {
   const { locale, handle } = await params
-  const maquina = getMaquina(handle)
+  const maquina = await getMaquinaPorHandle(handle)
   if (!maquina) notFound()
+  const todasLasMaquinas = await getMaquinaria()
 
   const disponibleColor = maquina.disponible ? "#15803D" : "#DC2626"
   const disponibleBg = maquina.disponible ? "#F0FDF4" : "#FEF2F2"
@@ -126,27 +131,49 @@ export default async function AlquilerDetallePage({
 
             {/* Left: image placeholder + specs */}
             <div>
-              {/* Image area */}
-              <div
-                style={{
-                  borderRadius: 8,
-                  border: "1px solid #E5E7EB",
-                  overflow: "hidden",
-                  marginBottom: 24,
-                  background: "linear-gradient(135deg, #F3F4F6 0%, #E5E7EB 100%)",
-                  height: 340,
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  flexDirection: "column",
-                  gap: 12,
-                }}
-              >
-                <Wrench size={64} color="#D1D5DB" strokeWidth={1} />
-                <span style={{ fontSize: 12, color: "#9CA3AF", fontWeight: 500 }}>
-                  Foto próximamente
-                </span>
-              </div>
+              {/* Image area — foto real (gestionada en Medusa) o placeholder */}
+              {maquina.imagen ? (
+                <div
+                  style={{
+                    borderRadius: 8,
+                    border: "1px solid #E5E7EB",
+                    overflow: "hidden",
+                    marginBottom: 24,
+                    position: "relative",
+                    height: 340,
+                    background: "#F9FAFB",
+                  }}
+                >
+                  <Image
+                    src={maquina.imagen}
+                    alt={maquina.titulo}
+                    fill
+                    sizes="(max-width: 1024px) 100vw, 550px"
+                    style={{ objectFit: "cover" }}
+                  />
+                </div>
+              ) : (
+                <div
+                  style={{
+                    borderRadius: 8,
+                    border: "1px solid #E5E7EB",
+                    overflow: "hidden",
+                    marginBottom: 24,
+                    background: "linear-gradient(135deg, #F3F4F6 0%, #E5E7EB 100%)",
+                    height: 340,
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    flexDirection: "column",
+                    gap: 12,
+                  }}
+                >
+                  <Wrench size={64} color="#D1D5DB" strokeWidth={1} />
+                  <span style={{ fontSize: 12, color: "#9CA3AF", fontWeight: 500 }}>
+                    Foto próximamente
+                  </span>
+                </div>
+              )}
 
               {/* Specs card */}
               <div
@@ -399,7 +426,7 @@ export default async function AlquilerDetallePage({
       </section>
 
       <MaquinasRelacionadas
-        maquinas={MAQUINARIA.filter((m) => m.handle !== handle).slice(0, 3)}
+        maquinas={todasLasMaquinas.filter((m) => m.handle !== handle).slice(0, 3)}
         locale={locale}
       />
 

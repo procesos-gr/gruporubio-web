@@ -1,12 +1,47 @@
-// Sube servicios y maquinaria de alquiler (datos estáticos) al índice
-// "content" de Meilisearch para el buscador del hero.
+// Sube servicios y maquinaria de alquiler al índice "content" de
+// Meilisearch para el buscador del hero.
+//
+// La maquinaria se lee de Medusa (canal "Alquiler Maquinaria", key
+// NEXT_PUBLIC_MEDUSA_ALQUILER_KEY) con fallback al snapshot estático.
 //
 // Uso: npm run search:sync-content
 // Requiere Node >= 23.6 (TS nativo) y MEILISEARCH_ADMIN_KEY en el entorno.
-// Ejecutar tras cada cambio en lib/services-data.ts o lib/maquinaria-alquiler.ts.
+// Ejecutar tras cambiar lib/services-data.ts o editar maquinaria en Medusa.
 
 import { SERVICES } from "../lib/services-data.ts"
-import { MAQUINARIA } from "../lib/maquinaria-alquiler.ts"
+import { MAQUINARIA as MAQUINARIA_ESTATICA, type MaquinaAlquiler } from "../lib/maquinaria-alquiler.ts"
+
+async function cargarMaquinaria(): Promise<MaquinaAlquiler[]> {
+  const medusaUrl = process.env.NEXT_PUBLIC_MEDUSA_URL || "http://localhost:9000"
+  const key = process.env.NEXT_PUBLIC_MEDUSA_ALQUILER_KEY
+  if (!key) return MAQUINARIA_ESTATICA
+  try {
+    const res = await fetch(
+      `${medusaUrl}/store/products?limit=100&fields=handle,title,description,+metadata`,
+      { headers: { "x-publishable-api-key": key }, signal: AbortSignal.timeout(5000) }
+    )
+    if (!res.ok) throw new Error(`Medusa ${res.status}`)
+    const { products } = await res.json()
+    const maquinas = (products ?? [])
+      .filter((p: any) => p.metadata?.tipo === "maquinaria_alquiler")
+      .map((p: any) => ({
+        handle: p.handle,
+        titulo: p.title,
+        marca: p.metadata.marca ?? "Kärcher",
+        categoria: p.metadata.categoria ?? "",
+        descripcionCorta: p.metadata.descripcionCorta ?? "",
+        disponible: p.metadata.disponible ?? true,
+      }))
+    if (!maquinas.length) return MAQUINARIA_ESTATICA
+    console.log(`Maquinaria desde Medusa: ${maquinas.length} máquinas`)
+    return maquinas as MaquinaAlquiler[]
+  } catch (e) {
+    console.warn(`Medusa no disponible (${e}), usando snapshot estático`)
+    return MAQUINARIA_ESTATICA
+  }
+}
+
+const MAQUINARIA = await cargarMaquinaria()
 
 const HOST =
   process.env.MEILISEARCH_HOST ||
