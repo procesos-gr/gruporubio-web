@@ -3,7 +3,9 @@ import Footer from "@/components/sections/Footer"
 import { MaquinaCard } from "@/components/alquiler/MaquinaCard"
 import { getMaquinaria, getCategoriasDe } from "@/lib/maquinaria"
 import { buildAlternates } from "@/lib/seo"
+import { blurProps } from "@/lib/img"
 import Link from "next/link"
+import Image from "next/image"
 import { ArrowRight, Clock, Phone, ShieldCheck } from "lucide-react"
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
@@ -97,6 +99,20 @@ export default async function AlquilerPage({
             ))}
           </div>
         </div>
+      </div>
+
+      {/* Banner oficial Kärcher (distribuidor oficial) — rehospedado, sin hotlink */}
+      <div style={{ background: "#FFE000" }}>
+        <Image
+          src="/images/alquiler/banner-karcher-alquiler-2026.webp"
+          alt="Maquinaria Kärcher en alquiler — Grupo Rubio"
+          width={1600}
+          height={579}
+          sizes="100vw"
+          priority
+          style={{ width: "100%", height: "auto", display: "block" }}
+          {...blurProps("/images/alquiler/banner-karcher-alquiler-2026.webp")}
+        />
       </div>
 
       {/* Catalog */}
