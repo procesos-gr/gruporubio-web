@@ -65,11 +65,13 @@ function mapear(p: ProductoMedusa): MaquinaAlquiler | null {
 export async function getMaquinaria(): Promise<MaquinaAlquiler[]> {
   if (!ALQUILER_KEY) return CATALOGO_ESTATICO
   try {
+    // OJO: nada de AbortSignal aquí — pasar `signal` a fetch cuenta como API
+    // dinámica para Next y rompe las páginas prerenderizadas en producción
+    // (DYNAMIC_SERVER_USAGE). El try/catch + revalidate cubren los fallos.
     const res = await fetch(
       `${MEDUSA_URL}/store/products?limit=100&fields=handle,title,description,thumbnail,+metadata`,
       {
         headers: { "x-publishable-api-key": ALQUILER_KEY },
-        signal: AbortSignal.timeout(4000),
         next: { revalidate: REVALIDATE_SEGUNDOS },
       }
     )
