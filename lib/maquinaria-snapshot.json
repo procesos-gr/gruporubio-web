@@ -1,0 +1,692 @@
+[
+  {
+    "handle": "fregadora-conductor-pie",
+    "titulo": "Fregadora conductor a pie",
+    "marca": "Kärcher",
+    "categoria": "Fregadoras",
+    "categoriaSlug": "fregadoras",
+    "descripcion": "Fregadora-aspiradora con conductor a pie, funcionamiento por baterías, cepillo circular. Kits de batería no incluidos, se piden aparte.",
+    "descripcionCorta": "Fregadora-aspiradora con conductor a pie, funcionamiento por baterías, cepillo circular.",
+    "precioDesde": "Consultar precio",
+    "disponible": true,
+    "destacado": true,
+    "uso": "interior",
+    "perfilCliente": "ambos",
+    "imagen": "http://localhost:9000/static/1784036834126-maquina-fregadora-conductor-pie-1784036834118.jpg",
+    "usos": [],
+    "specs": [
+      {
+        "label": "Ancho cepillo/aspiración",
+        "valor": "510/850 mm"
+      },
+      {
+        "label": "Rendimiento",
+        "valor": "2.000 m²/h"
+      },
+      {
+        "label": "Depósitos",
+        "valor": "70/75 L"
+      },
+      {
+        "label": "Alimentación",
+        "valor": "batería 24V"
+      },
+      {
+        "label": "Peso",
+        "valor": "112 kg"
+      }
+    ],
+    "specsDestacadas": [
+      [
+        "Ancho cepillo/aspiración",
+        "510/850 mm"
+      ],
+      [
+        "Rendimiento",
+        "2.000 m²/h"
+      ]
+    ],
+    "modelo": "BD 50/70 R Classic Bp",
+    "skuFabricante": "1.161-070.0",
+    "urlFichaFabricante": "https://www.kaercher.com/es/professional/fregadoras-y-fregadoras-aspiradoras/fregadoras-aspiradoras-con-conductor-sentado-o-de-pie/bd-50-70-r-classic-bp-11610700.html",
+    "modeloConfirmadoFlota": false
+  },
+  {
+    "handle": "fregadora-conductor-sentado",
+    "titulo": "Fregadora conductor sentado",
+    "marca": "Kärcher",
+    "categoria": "Fregadoras",
+    "categoriaSlug": "fregadoras",
+    "descripcion": "Fregadora-aspiradora con conductor sentado, cepillos cilíndricos, sistema KIK y modo eco!efficiency.",
+    "descripcionCorta": "Fregadora-aspiradora con conductor sentado, cepillos cilíndricos, sistema KIK y modo eco!efficiency.",
+    "precioDesde": "Consultar precio",
+    "disponible": true,
+    "destacado": true,
+    "uso": "interior",
+    "perfilCliente": "ambos",
+    "imagen": "http://localhost:9000/static/1784036834346-maquina-fregadora-conductor-sentado-1784036834338.jpg",
+    "usos": [],
+    "specs": [
+      {
+        "label": "Ancho de trabajo",
+        "valor": "900 mm"
+      },
+      {
+        "label": "Rendimiento",
+        "valor": "7.200 m²/h"
+      },
+      {
+        "label": "Depósitos",
+        "valor": "150 L"
+      },
+      {
+        "label": "Velocidad",
+        "valor": "8 km/h"
+      },
+      {
+        "label": "Batería",
+        "valor": "36V/240Ah"
+      }
+    ],
+    "specsDestacadas": [
+      [
+        "Ancho de trabajo",
+        "900 mm"
+      ],
+      [
+        "Rendimiento",
+        "7.200 m²/h"
+      ]
+    ],
+    "modelo": "B 150 R Bc + R85",
+    "skuFabricante": "1.246-155.0",
+    "urlFichaFabricante": "https://www.kaercher.com/es/professional/fregadoras-y-fregadoras-aspiradoras/fregadoras-aspiradoras-con-conductor-sentado-o-de-pie/b-150-r-bc-r85-12461550.html",
+    "modeloConfirmadoFlota": false
+  },
+  {
+    "handle": "barredora-bateria-interior",
+    "titulo": "Barredora conductor a pie (baterías)",
+    "marca": "Kärcher",
+    "categoria": "Barredoras",
+    "categoriaSlug": "barredoras",
+    "descripcion": "Barredora-aspiradora a batería con conductor a pie, doble función de barrido y fregado, buena recogida en terreno irregular.",
+    "descripcionCorta": "Barredora-aspiradora a batería con conductor a pie, doble función de barrido y fregado, buena recogida en terreno irregular.",
+    "precioDesde": "Consultar precio",
+    "disponible": true,
+    "destacado": false,
+    "uso": "interior",
+    "perfilCliente": "ambos",
+    "imagen": "http://localhost:9000/static/1784036834400-maquina-barredora-bateria-interior-1784036834392.jpg",
+    "usos": [],
+    "specs": [
+      {
+        "label": "Ancho de trabajo",
+        "valor": "615-1085 mm"
+      },
+      {
+        "label": "Rendimiento",
+        "valor": "3.825 m²/h"
+      },
+      {
+        "label": "Depósito",
+        "valor": "50 L"
+      },
+      {
+        "label": "Motor",
+        "valor": "24V/912W"
+      },
+      {
+        "label": "Velocidad",
+        "valor": "4,5 km/h"
+      },
+      {
+        "label": "Peso",
+        "valor": "226 kg"
+      }
+    ],
+    "specsDestacadas": [
+      [
+        "Ancho de trabajo",
+        "615-1085 mm"
+      ],
+      [
+        "Rendimiento",
+        "3.825 m²/h"
+      ]
+    ],
+    "modelo": "KM 85/50 W Bp",
+    "skuFabricante": "1.351-116.0",
+    "urlFichaFabricante": "https://www.kaercher.com/ar/professional/barredoras/barredoras-con-conductor-a-pie/km-85-50-w-bp-13511160.html",
+    "modeloConfirmadoFlota": false
+  },
+  {
+    "handle": "barredora-gasolina-exterior",
+    "titulo": "Barredora conductor a pie (gasolina)",
+    "marca": "Kärcher",
+    "categoria": "Barredoras",
+    "categoriaSlug": "barredoras",
+    "descripcion": "Barredora con conductor a pie y motor de gasolina Honda, para limpieza exterior intensiva.",
+    "descripcionCorta": "Barredora con conductor a pie y motor de gasolina Honda, para limpieza exterior intensiva.",
+    "precioDesde": "Consultar precio",
+    "disponible": true,
+    "destacado": false,
+    "uso": "exterior",
+    "perfilCliente": "ambos",
+    "imagen": "http://localhost:9000/static/1784036834595-maquina-barredora-gasolina-exterior-1784036834589.jpg",
+    "usos": [],
+    "specs": [
+      {
+        "label": "Ancho de trabajo",
+        "valor": "750 mm"
+      },
+      {
+        "label": "Superficie",
+        "valor": "~600 m²"
+      },
+      {
+        "label": "Motor",
+        "valor": "Honda gasolina"
+      },
+      {
+        "label": "Depósito",
+        "valor": "40 L"
+      }
+    ],
+    "specsDestacadas": [
+      [
+        "Ancho de trabajo",
+        "750 mm"
+      ],
+      [
+        "Superficie",
+        "~600 m²"
+      ]
+    ],
+    "modelo": "KM 75/40 W P",
+    "skuFabricante": "1.049-205.0",
+    "urlFichaFabricante": "https://www.kaercher.com/ar/professional/barredoras/barredoras-con-conductor-a-pie/km-75-40-w-p-10492050.html",
+    "modeloConfirmadoFlota": false
+  },
+  {
+    "handle": "barredora-conductor-sentado",
+    "titulo": "Barredora conductor sentado",
+    "marca": "Kärcher",
+    "categoria": "Barredoras",
+    "categoriaSlug": "barredoras",
+    "descripcion": "Barredora-aspiradora con conductor sentado y motor de gasolina, compacta y robusta para jornadas largas en exteriores.",
+    "descripcionCorta": "Barredora-aspiradora con conductor sentado y motor de gasolina, compacta y robusta para jornadas largas en exteriores.",
+    "precioDesde": "Consultar precio",
+    "disponible": true,
+    "destacado": false,
+    "uso": "exterior",
+    "perfilCliente": "ambos",
+    "imagen": "http://localhost:9000/static/1784036834724-maquina-barredora-conductor-sentado-1784036834718.jpg",
+    "usos": [],
+    "specs": [
+      {
+        "label": "Ancho de trabajo",
+        "valor": "615-1150 mm"
+      },
+      {
+        "label": "Rendimiento",
+        "valor": "7.200-9.200 m²/h"
+      },
+      {
+        "label": "Motor",
+        "valor": "gasolina 6,6 kW"
+      },
+      {
+        "label": "Depósito",
+        "valor": "60 L"
+      },
+      {
+        "label": "Velocidad",
+        "valor": "8 km/h"
+      }
+    ],
+    "specsDestacadas": [
+      [
+        "Ancho de trabajo",
+        "615-1150 mm"
+      ],
+      [
+        "Rendimiento",
+        "7.200-9.200 m²/h"
+      ]
+    ],
+    "modelo": "KM 90/60 R G",
+    "skuFabricante": "1.047-310.0",
+    "urlFichaFabricante": "https://www.kaercher.com/es/professional/barredoras-y-barredoras-aspiradoras/barredoras-con-conductor/km-90-60-r-g-10473100.html",
+    "modeloConfirmadoFlota": false
+  },
+  {
+    "handle": "hidrolimpiadora-fria-monofasica",
+    "titulo": "Hidrolimpiadora agua fría (monofásica)",
+    "marca": "Kärcher",
+    "categoria": "Alta presión",
+    "categoriaSlug": "alta-presion",
+    "descripcion": "Compacta, manejable y versátil, para servicio vertical u horizontal. Descarga de presión automática, almacenaje de accesorios.",
+    "descripcionCorta": "Compacta, manejable y versátil, para servicio vertical u horizontal.",
+    "precioDesde": "Consultar precio",
+    "disponible": true,
+    "destacado": false,
+    "uso": "ambos",
+    "perfilCliente": "ambos",
+    "imagen": "http://localhost:9000/static/1784036834770-maquina-hidrolimpiadora-fria-monofasica-1784036834761.jpg",
+    "usos": [],
+    "specs": [
+      {
+        "label": "Presión",
+        "valor": "170 bar"
+      },
+      {
+        "label": "Caudal",
+        "valor": "500 L/h"
+      },
+      {
+        "label": "Alimentación",
+        "valor": "monofásica"
+      }
+    ],
+    "specsDestacadas": [
+      [
+        "Presión",
+        "170 bar"
+      ],
+      [
+        "Caudal",
+        "500 L/h"
+      ]
+    ],
+    "modelo": "HD 5/17 C",
+    "skuFabricante": "1.520-940.0",
+    "urlFichaFabricante": "https://www.kaercher.com/es/professional/limpiadoras-de-alta-presion/limpiadoras-de-alta-presion-de-agua-fria/gama-compacta/hd-5-17-c-15209400.html",
+    "modeloConfirmadoFlota": false
+  },
+  {
+    "handle": "hidrolimpiadora-fria-trifasica",
+    "titulo": "Hidrolimpiadora agua fría (trifásica)",
+    "marca": "Kärcher",
+    "categoria": "Alta presión",
+    "categoriaSlug": "alta-presion",
+    "descripcion": "Bomba axial de 3 pistones en acero fino templado, descarga de presión automática, motor trifásico fiable.",
+    "descripcionCorta": "Bomba axial de 3 pistones en acero fino templado, descarga de presión automática, motor trifásico fiable.",
+    "precioDesde": "Consultar precio",
+    "disponible": true,
+    "destacado": false,
+    "uso": "ambos",
+    "perfilCliente": "ambos",
+    "imagen": "http://localhost:9000/static/1784036834960-maquina-hidrolimpiadora-fria-trifasica-1784036834953.jpg",
+    "usos": [],
+    "specs": [
+      {
+        "label": "Presión",
+        "valor": "170 bar"
+      },
+      {
+        "label": "Caudal",
+        "valor": "700 L/h"
+      },
+      {
+        "label": "Alimentación",
+        "valor": "trifásica"
+      }
+    ],
+    "specsDestacadas": [
+      [
+        "Presión",
+        "170 bar"
+      ],
+      [
+        "Caudal",
+        "700 L/h"
+      ]
+    ],
+    "modelo": "HD 7/17 M (3x230)",
+    "skuFabricante": "1.151-935.0",
+    "urlFichaFabricante": "https://www.kaercher.com/es/professional/limpiadoras-de-alta-presion/limpiadoras-de-alta-presion-de-agua-fria/gama-media/hd-7-17-m-3x230-11519350.html",
+    "modeloConfirmadoFlota": false
+  },
+  {
+    "handle": "hidrolimpiadora-gasolina",
+    "titulo": "Hidrolimpiadora de gasolina",
+    "marca": "Kärcher",
+    "categoria": "Alta presión",
+    "categoriaSlug": "alta-presion",
+    "descripcion": "Motor de gasolina potente, para tareas de limpieza exigentes en lugares sin suministro eléctrico.",
+    "descripcionCorta": "Motor de gasolina potente, para tareas de limpieza exigentes en lugares sin suministro eléctrico.",
+    "precioDesde": "Consultar precio",
+    "disponible": true,
+    "destacado": false,
+    "uso": "exterior",
+    "perfilCliente": "ambos",
+    "imagen": "http://localhost:9000/static/1784036835170-maquina-hidrolimpiadora-gasolina-1784036835164.jpg",
+    "usos": [],
+    "specs": [
+      {
+        "label": "Presión",
+        "valor": "200 bar"
+      },
+      {
+        "label": "Caudal",
+        "valor": "700 L/h"
+      },
+      {
+        "label": "Alimentación",
+        "valor": "autónoma (gasolina)"
+      }
+    ],
+    "specsDestacadas": [
+      [
+        "Presión",
+        "200 bar"
+      ],
+      [
+        "Caudal",
+        "700 L/h"
+      ]
+    ],
+    "modelo": "HD 7/20 G Classic",
+    "skuFabricante": "1.187-011.0",
+    "urlFichaFabricante": "https://www.kaercher.com/es/professional/limpiadoras-de-alta-presion/limpiadoras-de-alta-presion-de-agua-fria/motor-de-explosion/hd-7-20-g-classic-11870110.html",
+    "modeloConfirmadoFlota": false
+  },
+  {
+    "handle": "aspirador-seco-humedo",
+    "titulo": "Aspirador seco/húmedo",
+    "marca": "Kärcher",
+    "categoria": "Aspiradores",
+    "categoriaSlug": "aspiradores",
+    "descripcion": "Aspirador en seco y húmedo resistente y potente, dos motores, depósito de 70 L para suciedad gruesa, polvo y líquidos.",
+    "descripcionCorta": "Aspirador en seco y húmedo resistente y potente, dos motores, depósito de 70 L para suciedad gruesa, polvo y líquidos.",
+    "precioDesde": "Consultar precio",
+    "disponible": true,
+    "destacado": false,
+    "uso": "ambos",
+    "perfilCliente": "ambos",
+    "imagen": "http://localhost:9000/static/1784036835363-maquina-aspirador-seco-humedo-1784036835358.jpg",
+    "usos": [],
+    "specs": [
+      {
+        "label": "Depósito",
+        "valor": "70 L"
+      },
+      {
+        "label": "Motores",
+        "valor": "2"
+      }
+    ],
+    "specsDestacadas": [
+      [
+        "Depósito",
+        "70 L"
+      ],
+      [
+        "Motores",
+        "2"
+      ]
+    ],
+    "modelo": "NT 70/2 Me Classic Edition",
+    "skuFabricante": "1.667-306.0",
+    "urlFichaFabricante": "https://www.kaercher.com/es/professional/aspiradores-en-seco-humedo/gama-estandar/nt-70-2-me-classic-edition-16673060.html",
+    "modeloConfirmadoFlota": false
+  },
+  {
+    "handle": "aspirador-seco",
+    "titulo": "Aspirador en seco",
+    "marca": "Kärcher",
+    "categoria": "Aspiradores",
+    "categoriaSlug": "aspiradores",
+    "descripcion": "Peso reducido, elevada potencia de aspiración, muy robusto, buena relación precio-prestaciones para uso profesional.",
+    "descripcionCorta": "Peso reducido, elevada potencia de aspiración, muy robusto, buena relación precio-prestaciones para uso profesional.",
+    "precioDesde": "Consultar precio",
+    "disponible": true,
+    "destacado": false,
+    "uso": "ambos",
+    "perfilCliente": "ambos",
+    "imagen": "http://localhost:9000/static/1784036835426-maquina-aspirador-seco-1784036835420.jpg",
+    "usos": [],
+    "specs": [
+      {
+        "label": "Depósito",
+        "valor": "11 L"
+      },
+      {
+        "label": "Alimentación",
+        "valor": "con cable"
+      }
+    ],
+    "specsDestacadas": [
+      [
+        "Depósito",
+        "11 L"
+      ],
+      [
+        "Alimentación",
+        "con cable"
+      ]
+    ],
+    "modelo": "T 11/1 Classic",
+    "skuFabricante": "1.527-197.0",
+    "urlFichaFabricante": "https://www.kaercher.com/es/professional/aspiradores/aspiradores-en-seco/aspiradores-en-seco/t-11-1-classic-15271970.html",
+    "modeloConfirmadoFlota": false
+  },
+  {
+    "handle": "aspirador-bateria",
+    "titulo": "Aspirador en seco a batería",
+    "marca": "Kärcher",
+    "categoria": "Aspiradores",
+    "categoriaSlug": "aspiradores",
+    "descripcion": "Aspirador en seco a batería, 45% material reciclado, filtro HEPA 14 disponible.",
+    "descripcionCorta": "Aspirador en seco a batería, 45% material reciclado, filtro HEPA 14 disponible.",
+    "precioDesde": "Consultar precio",
+    "disponible": true,
+    "destacado": false,
+    "uso": "ambos",
+    "perfilCliente": "ambos",
+    "imagen": "http://localhost:9000/static/1784036835546-maquina-aspirador-bateria-1784036835540.jpg",
+    "usos": [],
+    "specs": [
+      {
+        "label": "Depósito",
+        "valor": "15 L"
+      },
+      {
+        "label": "Batería",
+        "valor": "36V Bp (no incluida)"
+      }
+    ],
+    "specsDestacadas": [
+      [
+        "Depósito",
+        "15 L"
+      ],
+      [
+        "Batería",
+        "36V Bp (no incluida)"
+      ]
+    ],
+    "modelo": "T 15/1 Bp",
+    "skuFabricante": "1.355-352.0",
+    "urlFichaFabricante": "https://www.kaercher.com/es/professional/aspiradores/aspirador-en-seco-a-bateria/t-15-1-bp-13553520.html",
+    "modeloConfirmadoFlota": false
+  },
+  {
+    "handle": "rotativa-abrillantadora",
+    "titulo": "Rotativa abrillantadora",
+    "marca": "Kärcher",
+    "categoria": "Tratamiento de suelos",
+    "categoriaSlug": "tratamiento-de-suelos",
+    "descripcion": "Equipo monodisco robusto para diversos usos en limpieza de suelos, engranaje planetario sin mantenimiento.",
+    "descripcionCorta": "Equipo monodisco robusto para diversos usos en limpieza de suelos, engranaje planetario sin mantenimiento.",
+    "precioDesde": "Consultar precio",
+    "disponible": true,
+    "destacado": false,
+    "uso": "interior",
+    "perfilCliente": "ambos",
+    "imagen": "http://localhost:9000/static/1784036835591-maquina-rotativa-abrillantadora-1784036835585.jpg",
+    "usos": [],
+    "specs": [
+      {
+        "label": "Ancho",
+        "valor": "430 mm"
+      },
+      {
+        "label": "Motor",
+        "valor": "1.500 W"
+      }
+    ],
+    "specsDestacadas": [
+      [
+        "Ancho",
+        "430 mm"
+      ],
+      [
+        "Motor",
+        "1.500 W"
+      ]
+    ],
+    "modelo": "BDS 43/150 C Classic",
+    "skuFabricante": "1.291-243.0",
+    "urlFichaFabricante": "https://www.kaercher.com/es/professional/fregadoras-y-fregadoras-aspiradoras/otras-soluciones-de-limpieza/limpiadoras-circulares/bds-43-150-c-classic-12912430.html",
+    "modeloConfirmadoFlota": false
+  },
+  {
+    "handle": "limpiadora-vapor",
+    "titulo": "Limpiadora de vapor",
+    "marca": "Kärcher",
+    "categoria": "Limpieza con vapor",
+    "categoriaSlug": "limpieza-con-vapor",
+    "descripcion": "Limpiadora de vapor compacta con función VapoHydro, desinfección certificada sin productos químicos.",
+    "descripcionCorta": "Limpiadora de vapor compacta con función VapoHydro, desinfección certificada sin productos químicos.",
+    "precioDesde": "Consultar precio",
+    "disponible": true,
+    "destacado": false,
+    "uso": "interior",
+    "perfilCliente": "ambos",
+    "imagen": "http://localhost:9000/static/1784036835820-maquina-limpiadora-vapor-1784036835813.jpg",
+    "usos": [],
+    "specs": [
+      {
+        "label": "Presión de vapor",
+        "valor": "4 bar"
+      }
+    ],
+    "specsDestacadas": [
+      [
+        "Presión de vapor",
+        "4 bar"
+      ]
+    ],
+    "modelo": "SG 4/4",
+    "skuFabricante": "1.092-104.0",
+    "urlFichaFabricante": "https://www.kaercher.com/es/professional/limpiadoras-y-aspiradores-de-vapor/limpiadoras-de-vapor/sg-4-4-10921040.html",
+    "modeloConfirmadoFlota": false
+  },
+  {
+    "handle": "lavamoquetas-inyeccion-extraccion",
+    "titulo": "Lavamoquetas inyección-extracción",
+    "marca": "Kärcher",
+    "categoria": "Limpieza textil",
+    "categoriaSlug": "limpieza-textil",
+    "descripcion": "Lava-aspirador por pulverización-extracción, con boquilla de 240 mm para alfombras y boquilla para tapicerías.",
+    "descripcionCorta": "Lava-aspirador por pulverización-extracción, con boquilla de 240 mm para alfombras y boquilla para tapicerías.",
+    "precioDesde": "Consultar precio",
+    "disponible": true,
+    "destacado": false,
+    "uso": "interior",
+    "perfilCliente": "ambos",
+    "imagen": "http://localhost:9000/static/1784036835903-maquina-lavamoquetas-inyeccion-extraccion-1784036835897.jpg",
+    "usos": [],
+    "specs": [
+      {
+        "label": "Ancho boquilla",
+        "valor": "240 mm"
+      },
+      {
+        "label": "Método",
+        "valor": "spray-extracción"
+      }
+    ],
+    "specsDestacadas": [
+      [
+        "Ancho boquilla",
+        "240 mm"
+      ],
+      [
+        "Método",
+        "spray-extracción"
+      ]
+    ],
+    "modelo": "Puzzi 10/1",
+    "skuFabricante": "1.100-130.0",
+    "urlFichaFabricante": "https://www.kaercher.com/es/professional/limpiadoras-de-moquetas/lava-aspiradores/puzzi-10-1-11001300.html",
+    "modeloConfirmadoFlota": false
+  },
+  {
+    "handle": "generador-ozono",
+    "titulo": "Generador de ozono",
+    "marca": "",
+    "categoria": "Desinfección ambiental",
+    "categoriaSlug": "desinfeccion-ambiental",
+    "descripcion": "Equipo disponible en alquiler para proyectos, obras y emergencias. Trabajamos con varias marcas profesionales según disponibilidad: consúltanos y te asesoramos sobre el modelo adecuado para tu caso.",
+    "descripcionCorta": "Equipo disponible en alquiler para proyectos, obras y emergencias.",
+    "precioDesde": "Consultar precio",
+    "disponible": true,
+    "destacado": false,
+    "uso": "interior",
+    "perfilCliente": "ambos",
+    "imagen": "",
+    "usos": [],
+    "specs": [],
+    "specsDestacadas": [],
+    "modelo": null,
+    "skuFabricante": null,
+    "urlFichaFabricante": null,
+    "modeloConfirmadoFlota": false
+  },
+  {
+    "handle": "deshumidificadora-industrial",
+    "titulo": "Deshumidificadora industrial",
+    "marca": "",
+    "categoria": "Desinfección ambiental",
+    "categoriaSlug": "desinfeccion-ambiental",
+    "descripcion": "Equipo disponible en alquiler para proyectos, obras y emergencias. Trabajamos con varias marcas profesionales según disponibilidad: consúltanos y te asesoramos sobre el modelo adecuado para tu caso.",
+    "descripcionCorta": "Equipo disponible en alquiler para proyectos, obras y emergencias.",
+    "precioDesde": "Consultar precio",
+    "disponible": true,
+    "destacado": false,
+    "uso": "ambos",
+    "perfilCliente": "ambos",
+    "imagen": "",
+    "usos": [],
+    "specs": [],
+    "specsDestacadas": [],
+    "modelo": null,
+    "skuFabricante": null,
+    "urlFichaFabricante": null,
+    "modeloConfirmadoFlota": false
+  },
+  {
+    "handle": "generador-luz",
+    "titulo": "Generador de luz",
+    "marca": "",
+    "categoria": "Equipos auxiliares",
+    "categoriaSlug": "equipos-auxiliares",
+    "descripcion": "Equipo disponible en alquiler para proyectos, obras y emergencias. Trabajamos con varias marcas profesionales según disponibilidad: consúltanos y te asesoramos sobre el modelo adecuado para tu caso.",
+    "descripcionCorta": "Equipo disponible en alquiler para proyectos, obras y emergencias.",
+    "precioDesde": "Consultar precio",
+    "disponible": true,
+    "destacado": false,
+    "uso": "exterior",
+    "perfilCliente": "ambos",
+    "imagen": "",
+    "usos": [],
+    "specs": [],
+    "specsDestacadas": [],
+    "modelo": null,
+    "skuFabricante": null,
+    "urlFichaFabricante": null,
+    "modeloConfirmadoFlota": false
+  }
+]

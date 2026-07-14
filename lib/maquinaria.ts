@@ -55,6 +55,10 @@ function mapear(p: ProductoMedusa): MaquinaAlquiler | null {
     usos: (m.usos as string[]) ?? [],
     specs: (m.specs as MaquinaAlquiler["specs"]) ?? [],
     specsDestacadas: (m.specsDestacadas as MaquinaAlquiler["specsDestacadas"]) ?? [],
+    modelo: (m.modelo as string) ?? null,
+    skuFabricante: (m.skuFabricante as string) ?? null,
+    urlFichaFabricante: (m.urlFichaFabricante as string) ?? null,
+    modeloConfirmadoFlota: (m.modeloConfirmadoFlota as boolean) ?? false,
   }
 }
 

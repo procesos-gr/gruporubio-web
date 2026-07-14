@@ -297,6 +297,52 @@ export default async function AlquilerDetallePage({
                 )}
               </h1>
 
+              {/* Modelo de referencia (catálogo Kärcher; puede variar según flota) */}
+              {maquina.modelo && (
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    flexWrap: "wrap",
+                    gap: 8,
+                    marginBottom: 16,
+                  }}
+                >
+                  <span style={{ fontSize: 13.5, color: "#4B5563" }}>
+                    Modelo de referencia:{" "}
+                    <strong style={{ color: "#111827" }}>
+                      {maquina.marca} {maquina.modelo}
+                    </strong>
+                  </span>
+                  {maquina.modeloConfirmadoFlota === false && (
+                    <span
+                      style={{
+                        fontSize: 11,
+                        fontWeight: 600,
+                        color: "#92400E",
+                        background: "#FEF3C7",
+                        border: "1px solid #FDE68A",
+                        borderRadius: 6,
+                        padding: "2px 8px",
+                        whiteSpace: "nowrap",
+                      }}
+                    >
+                      La unidad entregada puede variar según disponibilidad
+                    </span>
+                  )}
+                  {maquina.urlFichaFabricante && (
+                    <a
+                      href={maquina.urlFichaFabricante}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{ fontSize: 12.5, fontWeight: 600, color: "#1e3a8a" }}
+                    >
+                      Ficha oficial del fabricante ↗
+                    </a>
+                  )}
+                </div>
+              )}
+
               {/* Price */}
               <div
                 style={{

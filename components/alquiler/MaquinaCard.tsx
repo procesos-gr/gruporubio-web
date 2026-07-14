@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import Image from 'next/image'
-import { ArrowRight } from 'lucide-react'
+import { ArrowRight, Wrench } from 'lucide-react'
 import type { MaquinaAlquiler } from '@/lib/maquinaria-alquiler'
 import { blurProps } from '@/lib/img'
 
@@ -10,10 +10,13 @@ const CATEGORIA_COLOR: Record<string, string> = {
   Fregadoras:              '#1D4ED8',
   Barredoras:              '#6D28D9',
   'Aspiración industrial': '#B45309',
+  Aspiradores:             '#B45309',
   'Alta presión':          '#0E7490',
   'Limpieza textil':       '#9D174D',
+  'Limpieza con vapor':    '#0F766E',
   'Desinfección ambiental':'#065F46',
   'Tratamiento de suelos': '#92400E',
+  'Equipos auxiliares':    '#475569',
 }
 
 export function MaquinaCard({ maquina, locale }: { maquina: MaquinaAlquiler; locale: string }) {
@@ -39,16 +42,36 @@ export function MaquinaCard({ maquina, locale }: { maquina: MaquinaAlquiler; loc
           (e.currentTarget as HTMLElement).style.boxShadow = 'none'
         }}
       >
-        {/* Image */}
+        {/* Image (placeholder si aún no hay foto, p. ej. modelo por decidir) */}
         <div style={{ position: 'relative', height: 200, background: '#F3F4F6' }}>
-          <Image
-            src={maquina.imagen}
-            alt={maquina.titulo}
-            fill
-            style={{ objectFit: 'cover' }}
-            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-            {...blurProps(maquina.imagen)}
-          />
+          {maquina.imagen ? (
+            <Image
+              src={maquina.imagen}
+              alt={maquina.titulo}
+              fill
+              style={{ objectFit: 'cover' }}
+              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+              {...blurProps(maquina.imagen)}
+            />
+          ) : (
+            <div
+              style={{
+                position: 'absolute',
+                inset: 0,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                flexDirection: 'column',
+                gap: 8,
+                background: 'linear-gradient(135deg, #F3F4F6 0%, #E5E7EB 100%)',
+              }}
+            >
+              <Wrench size={40} color="#D1D5DB" strokeWidth={1} />
+              <span style={{ fontSize: 11, color: '#9CA3AF', fontWeight: 500 }}>
+                Foto próximamente
+              </span>
+            </div>
+          )}
           {/* Category pill over image */}
           <span
             style={{

@@ -31,88 +31,113 @@ export default async function AlquilerPage({
     <div style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
       <Navbar />
 
-      {/* Hero */}
-      <div
-        style={{
-          background: "#111827",
-          padding: "120px 32px 72px",
-          position: "relative",
-          overflow: "hidden",
-        }}
-      >
-        <div
-          style={{
-            position: "absolute",
-            inset: 0,
-            background:
-              "radial-gradient(ellipse 70% 60% at 65% 50%, rgba(37,99,235,0.14) 0%, transparent 70%)",
-            pointerEvents: "none",
-          }}
-        />
-        <div style={{ maxWidth: 1100, margin: "0 auto", position: "relative" }}>
-          <h1
-            style={{
-              fontSize: "clamp(30px, 4vw, 52px)",
-              fontWeight: 800,
-              color: "#F9FAFB",
-              letterSpacing: "-2px",
-              lineHeight: 1.06,
-              maxWidth: 620,
-              marginBottom: 16,
-            }}
-          >
-            Alquiler de maquinaria industrial
-          </h1>
-          <p
-            style={{
-              fontSize: 17,
-              color: "#9CA3AF",
-              maxWidth: 520,
-              lineHeight: 1.65,
-              marginBottom: 32,
-            }}
-          >
-            Maquinaria de limpieza profesional disponible para alquiler por días, semanas o meses.
-            Entrega en obra, asistencia técnica incluida.
-          </p>
-
-          <div style={{ display: "flex", gap: 32, flexWrap: "wrap" }}>
-            {[
-              { icon: <Clock size={14} />, text: "Entrega en 24h" },
-              { icon: <ShieldCheck size={14} />, text: "Mantenimiento incluido" },
-              { icon: <Phone size={14} />, text: "Soporte técnico" },
-            ].map(({ icon, text }) => (
+      {/* Hero — banner oficial Kärcher (distribuidor oficial, rehospedado)
+          enmarcado igual que el hero de la home: tarjeta con esquinas 16px
+          y margen, full-bleed en móvil. Texto oscuro sobre el amarillo Kärcher. */}
+      <div style={{ paddingTop: 84 }}>
+        <div className="alquiler-hero-card" style={{ position: "relative", zIndex: 1 }}>
+          <style>{`
+            .alquiler-hero-card { margin: 16px; }
+            .alquiler-hero-card section,
+            .alquiler-hero-card .alquiler-hero-bg { border-radius: 16px; }
+            @media (max-width: 640px) {
+              .alquiler-hero-card { margin: 0; }
+              .alquiler-hero-card section,
+              .alquiler-hero-card .alquiler-hero-bg { border-radius: 0 !important; }
+            }
+          `}</style>
+          <section style={{ padding: "96px 32px 88px", position: "relative" }}>
+            <div
+              className="alquiler-hero-bg"
+              style={{ position: "absolute", inset: 0, overflow: "hidden", zIndex: 0 }}
+            >
+              <Image
+                src="/images/alquiler/banner-karcher-alquiler-2026.webp"
+                alt="Maquinaria Kärcher en alquiler — Grupo Rubio"
+                fill
+                priority
+                quality={85}
+                sizes="100vw"
+                style={{ objectFit: "cover", objectPosition: "center right" }}
+                {...blurProps("/images/alquiler/banner-karcher-alquiler-2026.webp")}
+              />
+              {/* Degradado del mismo amarillo Kärcher para que el texto respire
+                  sin tapar las máquinas de la derecha */}
               <div
-                key={text}
                 style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: 7,
-                  fontSize: 13,
-                  fontWeight: 600,
-                  color: "rgba(255,255,255,0.55)",
+                  position: "absolute",
+                  inset: 0,
+                  background:
+                    "linear-gradient(90deg, rgba(255,224,0,0.97) 0%, rgba(255,224,0,0.88) 36%, rgba(255,224,0,0.12) 66%, rgba(255,224,0,0) 100%)",
+                }}
+              />
+            </div>
+
+            <div style={{ maxWidth: 1100, margin: "0 auto", position: "relative", zIndex: 2 }}>
+              <p
+                style={{
+                  fontSize: 12,
+                  fontWeight: 700,
+                  color: "#111827",
+                  letterSpacing: "0.1em",
+                  textTransform: "uppercase",
+                  marginBottom: 10,
                 }}
               >
-                <span style={{ color: "#2563EB" }}>{icon}</span>
-                {text}
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
+                Distribuidor y Servicio Técnico Oficial Kärcher
+              </p>
+              <h1
+                style={{
+                  fontSize: "clamp(30px, 4vw, 52px)",
+                  fontWeight: 800,
+                  color: "#111827",
+                  letterSpacing: "-2px",
+                  lineHeight: 1.06,
+                  maxWidth: 620,
+                  marginBottom: 16,
+                }}
+              >
+                Alquiler de maquinaria industrial
+              </h1>
+              <p
+                style={{
+                  fontSize: 17,
+                  color: "#1F2937",
+                  maxWidth: 480,
+                  lineHeight: 1.65,
+                  marginBottom: 32,
+                }}
+              >
+                Fregadoras, barredoras, hidrolimpiadoras y más equipos profesionales
+                Kärcher, en alquiler por días, semanas o meses. Entrega en obra y
+                asistencia técnica incluida.
+              </p>
 
-      {/* Banner oficial Kärcher (distribuidor oficial) — rehospedado, sin hotlink */}
-      <div style={{ background: "#FFE000" }}>
-        <Image
-          src="/images/alquiler/banner-karcher-alquiler-2026.webp"
-          alt="Maquinaria Kärcher en alquiler — Grupo Rubio"
-          width={1600}
-          height={579}
-          sizes="100vw"
-          priority
-          style={{ width: "100%", height: "auto", display: "block" }}
-          {...blurProps("/images/alquiler/banner-karcher-alquiler-2026.webp")}
-        />
+              <div style={{ display: "flex", gap: 32, flexWrap: "wrap" }}>
+                {[
+                  { icon: <Clock size={14} />, text: "Entrega en 24h" },
+                  { icon: <ShieldCheck size={14} />, text: "Mantenimiento incluido" },
+                  { icon: <Phone size={14} />, text: "Soporte técnico" },
+                ].map(({ icon, text }) => (
+                  <div
+                    key={text}
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: 7,
+                      fontSize: 13,
+                      fontWeight: 700,
+                      color: "rgba(17,24,39,0.8)",
+                    }}
+                  >
+                    <span style={{ color: "#111827" }}>{icon}</span>
+                    {text}
+                  </div>
+                ))}
+              </div>
+            </div>
+          </section>
+        </div>
       </div>
 
       {/* Catalog */}
